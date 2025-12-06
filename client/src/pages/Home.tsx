@@ -1,4 +1,6 @@
 import { useAuth } from "@/_core/hooks/useAuth";
+import { Navigation } from "@/components/Navigation";
+import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { getLoginUrl } from "@/const";
@@ -28,32 +30,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Navigation */}
-      <nav className="border-b bg-card/50 backdrop-blur-sm sticky top-0 z-50">
-        <div className="container py-4">
-          <div className="flex items-center justify-between">
-            <Link href="/">
-              <div className="flex items-center gap-3 cursor-pointer">
-                <img src="/logo.png" alt="AI Learning Curve" style={{height: '120px'}} />
-              </div>
-            </Link>
-            <div className="flex items-center gap-4">
-              <Link href="/">
-                <Button variant="ghost">Home</Button>
-              </Link>
-              <Link href="/paths">
-                <Button variant="ghost">Learning Paths</Button>
-              </Link>
-              <Link href="/resources">
-                <Button variant="ghost">Resources</Button>
-              </Link>
-              <Link href="/dashboard">
-                <Button>Dashboard</Button>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </nav>
+      <Navigation />
 
       {/* Hero Section */}
       <section className="py-20 md:py-32 relative overflow-hidden">
@@ -215,19 +192,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="py-12 border-t bg-card/50">
-        <div className="container">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <div className="flex items-center gap-2">
-              <img src="/logo.png" alt="AI Learning Curve" className="h-10" />
-            </div>
-            <p className="text-sm text-muted-foreground">
-              © 2024 AI Learning Curve. Empowering the next generation of AI practitioners.
-            </p>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }

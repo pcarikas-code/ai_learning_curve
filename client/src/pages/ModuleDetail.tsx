@@ -1,5 +1,7 @@
 import { useAuth } from "@/_core/hooks/useAuth";
 import { Button } from "@/components/ui/button";
+import { Navigation } from "@/components/Navigation";
+import { Footer } from "@/components/Footer";
 import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { getLoginUrl } from "@/const";
@@ -114,46 +116,7 @@ export default function ModuleDetail() {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Navigation */}
-      <nav className="border-b bg-card/50 backdrop-blur-sm sticky top-0 z-50">
-        <div className="container py-4">
-          <div className="flex items-center justify-between">
-            <Link href="/">
-              <div className="flex items-center gap-3 cursor-pointer">
-                <img src="/logo.png" alt="AI Learning Curve" style={{height: '120px'}} />
-              </div>
-            </Link>
-            <div className="flex items-center gap-4">
-              <Link href="/">
-                <Button variant="ghost">Home</Button>
-              </Link>
-              <Link href="/paths">
-                <Button variant="ghost">Learning Paths</Button>
-              </Link>
-              <Link href="/resources">
-                <Button variant="ghost">Resources</Button>
-              </Link>
-              {isAuthenticated && (
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={handleToggleBookmark}
-                  disabled={addBookmark.isPending || removeBookmark.isPending}
-                >
-                  {isBookmarked ? (
-                    <BookmarkCheck className="w-5 h-5" />
-                  ) : (
-                    <Bookmark className="w-5 h-5" />
-                  )}
-                </Button>
-              )}
-              <Link href="/dashboard">
-                <Button>Dashboard</Button>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </nav>
+      <Navigation />
 
       {/* Module Content */}
       <article className="py-12">
@@ -231,6 +194,7 @@ export default function ModuleDetail() {
           )}
         </div>
       </article>
+      <Footer />
     </div>
   );
 }
