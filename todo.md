@@ -58,3 +58,6 @@
 ## Navigation Improvements
 - [x] Add Home link to navigation bar on all pages
 - [x] Increase logo size from h-10 to h-12 for better visibility
+
+## Logo Size Enhancement
+- [x] Increase navigation logo from h-12 to h-16 for better prominence

@@ -37,7 +37,7 @@ export default function LearningPaths() {
           <div className="flex items-center justify-between">
             <Link href="/">
               <div className="flex items-center gap-3 cursor-pointer">
-                <img src="/logo.png" alt="AI Learning Curve" className="h-12" />
+                <img src="/logo.png" alt="AI Learning Curve" className="h-16" />
               </div>
             </Link>
             <div className="flex items-center gap-4">
