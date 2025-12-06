@@ -56,7 +56,7 @@ export default function Resources() {
           <div className="flex items-center justify-between">
             <Link href="/">
               <div className="flex items-center gap-3 cursor-pointer">
-                <img src="/logo.png" alt="AI Learning Curve" className="h-16" />
+                <img src="/logo.png" alt="AI Learning Curve" style={{height: '120px'}} />
               </div>
             </Link>
             <div className="flex items-center gap-4">

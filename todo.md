@@ -61,3 +61,6 @@
 
 ## Logo Size Enhancement
 - [x] Increase navigation logo from h-12 to h-16 for better prominence
+
+## Logo Size Update to 120px
+- [x] Increase navigation logo to 120px height (custom size) for maximum prominence
