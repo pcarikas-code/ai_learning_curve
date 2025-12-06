@@ -80,3 +80,6 @@
 - [x] Create certificate generation system for completed learning paths
 - [x] Add certificate download functionality
 - [x] Store certificate metadata in database
+
+## Bug Fixes (Round 2)
+- [x] Fix certificate query returning undefined instead of null when no certificate exists

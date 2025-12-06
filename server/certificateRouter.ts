@@ -63,7 +63,7 @@ export const certificateRouter = router({
     .input(z.object({ pathId: z.number() }))
     .query(async ({ ctx, input }) => {
       const certificate = await db.getCertificate(ctx.user.id, input.pathId);
-      return certificate;
+      return certificate || null;
     }),
 
   // Verify certificate by number (public)
