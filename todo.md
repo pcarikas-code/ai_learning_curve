@@ -70,3 +70,6 @@
 - [x] Create sticky header effect with scroll-based logo shrinking
 - [x] Implement mobile hamburger menu for responsive navigation
 - [x] Create comprehensive footer with logo, quick links, and copyright
+
+## Bug Fixes
+- [x] Fix nested anchor tag error in Footer component (Link already renders as <a>)

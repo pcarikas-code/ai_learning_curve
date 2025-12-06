@@ -25,38 +25,28 @@ export function Footer() {
             <h3 className="font-semibold mb-4">Learning Paths</h3>
             <ul className="space-y-2">
               <li>
-                <Link href="/paths">
-                  <a className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                    AI Fundamentals
-                  </a>
+                <Link href="/paths" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                  AI Fundamentals
                 </Link>
               </li>
               <li>
-                <Link href="/paths">
-                  <a className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                    Machine Learning
-                  </a>
+                <Link href="/paths" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                  Machine Learning
                 </Link>
               </li>
               <li>
-                <Link href="/paths">
-                  <a className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                    Deep Learning
-                  </a>
+                <Link href="/paths" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                  Deep Learning
                 </Link>
               </li>
               <li>
-                <Link href="/paths">
-                  <a className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                    Natural Language Processing
-                  </a>
+                <Link href="/paths" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                  Natural Language Processing
                 </Link>
               </li>
               <li>
-                <Link href="/paths">
-                  <a className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                    Computer Vision
-                  </a>
+                <Link href="/paths" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                  Computer Vision
                 </Link>
               </li>
             </ul>
@@ -67,31 +57,23 @@ export function Footer() {
             <h3 className="font-semibold mb-4">Quick Links</h3>
             <ul className="space-y-2">
               <li>
-                <Link href="/">
-                  <a className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                    Home
-                  </a>
+                <Link href="/" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                  Home
                 </Link>
               </li>
               <li>
-                <Link href="/paths">
-                  <a className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                    All Learning Paths
-                  </a>
+                <Link href="/paths" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                  All Learning Paths
                 </Link>
               </li>
               <li>
-                <Link href="/resources">
-                  <a className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                    Resources
-                  </a>
+                <Link href="/resources" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                  Resources
                 </Link>
               </li>
               <li>
-                <Link href="/dashboard">
-                  <a className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                    Dashboard
-                  </a>
+                <Link href="/dashboard" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                  Dashboard
                 </Link>
               </li>
             </ul>
