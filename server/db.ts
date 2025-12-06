@@ -1,11 +1,29 @@
-import { eq } from "drizzle-orm";
+import { eq, and, desc, asc } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, users } from "../drizzle/schema";
+import { 
+  InsertUser, 
+  users, 
+  learningPaths, 
+  modules, 
+  userProgress, 
+  quizzes, 
+  quizQuestions, 
+  quizAttempts, 
+  resources, 
+  bookmarks,
+  InsertLearningPath,
+  InsertModule,
+  InsertUserProgress,
+  InsertQuiz,
+  InsertQuizQuestion,
+  InsertQuizAttempt,
+  InsertResource,
+  InsertBookmark
+} from "../drizzle/schema";
 import { ENV } from './_core/env';
 
 let _db: ReturnType<typeof drizzle> | null = null;
 
-// Lazily create the drizzle instance so local tooling can run without a DB.
 export async function getDb() {
   if (!_db && process.env.DATABASE_URL) {
     try {
@@ -17,6 +35,8 @@ export async function getDb() {
   }
   return _db;
 }
+
+// ===== User Management =====
 
 export async function upsertUser(user: InsertUser): Promise<void> {
   if (!user.openId) {
@@ -89,4 +109,175 @@ export async function getUserByOpenId(openId: string) {
   return result.length > 0 ? result[0] : undefined;
 }
 
-// TODO: add feature queries here as your schema grows.
+// ===== Learning Paths =====
+
+export async function getAllLearningPaths() {
+  const db = await getDb();
+  if (!db) return [];
+  
+  return db.select().from(learningPaths).where(eq(learningPaths.isPublished, true)).orderBy(asc(learningPaths.order));
+}
+
+export async function getLearningPathBySlug(slug: string) {
+  const db = await getDb();
+  if (!db) return undefined;
+  
+  const result = await db.select().from(learningPaths).where(eq(learningPaths.slug, slug)).limit(1);
+  return result.length > 0 ? result[0] : undefined;
+}
+
+// ===== Modules =====
+
+export async function getModulesByPathId(pathId: number) {
+  const db = await getDb();
+  if (!db) return [];
+  
+  return db.select().from(modules).where(
+    and(eq(modules.pathId, pathId), eq(modules.isPublished, true))
+  ).orderBy(asc(modules.order));
+}
+
+export async function getModuleBySlug(slug: string) {
+  const db = await getDb();
+  if (!db) return undefined;
+  
+  const result = await db.select().from(modules).where(eq(modules.slug, slug)).limit(1);
+  return result.length > 0 ? result[0] : undefined;
+}
+
+export async function getModuleById(id: number) {
+  const db = await getDb();
+  if (!db) return undefined;
+  
+  const result = await db.select().from(modules).where(eq(modules.id, id)).limit(1);
+  return result.length > 0 ? result[0] : undefined;
+}
+
+// ===== User Progress =====
+
+export async function getUserProgress(userId: number, moduleId: number) {
+  const db = await getDb();
+  if (!db) return undefined;
+  
+  const result = await db.select().from(userProgress).where(
+    and(eq(userProgress.userId, userId), eq(userProgress.moduleId, moduleId))
+  ).limit(1);
+  
+  return result.length > 0 ? result[0] : undefined;
+}
+
+export async function getAllUserProgress(userId: number) {
+  const db = await getDb();
+  if (!db) return [];
+  
+  return db.select().from(userProgress).where(eq(userProgress.userId, userId));
+}
+
+export async function upsertUserProgress(progress: InsertUserProgress) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  await db.insert(userProgress).values(progress).onDuplicateKeyUpdate({
+    set: {
+      status: progress.status,
+      progressPercent: progress.progressPercent,
+      completedAt: progress.completedAt,
+      lastAccessedAt: new Date(),
+    },
+  });
+}
+
+// ===== Quizzes =====
+
+export async function getQuizByModuleId(moduleId: number) {
+  const db = await getDb();
+  if (!db) return undefined;
+  
+  const result = await db.select().from(quizzes).where(eq(quizzes.moduleId, moduleId)).limit(1);
+  return result.length > 0 ? result[0] : undefined;
+}
+
+export async function getQuizQuestions(quizId: number) {
+  const db = await getDb();
+  if (!db) return [];
+  
+  return db.select().from(quizQuestions).where(eq(quizQuestions.quizId, quizId)).orderBy(asc(quizQuestions.order));
+}
+
+export async function saveQuizAttempt(attempt: InsertQuizAttempt) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const result = await db.insert(quizAttempts).values(attempt);
+  return result;
+}
+
+export async function getUserQuizAttempts(userId: number, quizId: number) {
+  const db = await getDb();
+  if (!db) return [];
+  
+  return db.select().from(quizAttempts).where(
+    and(eq(quizAttempts.userId, userId), eq(quizAttempts.quizId, quizId))
+  ).orderBy(desc(quizAttempts.completedAt));
+}
+
+// ===== Resources =====
+
+export async function getAllResources() {
+  const db = await getDb();
+  if (!db) return [];
+  
+  return db.select().from(resources).where(eq(resources.isPublished, true)).orderBy(desc(resources.createdAt));
+}
+
+export async function getResourceById(id: number) {
+  const db = await getDb();
+  if (!db) return undefined;
+  
+  const result = await db.select().from(resources).where(eq(resources.id, id)).limit(1);
+  return result.length > 0 ? result[0] : undefined;
+}
+
+// ===== Bookmarks =====
+
+export async function getUserBookmarks(userId: number) {
+  const db = await getDb();
+  if (!db) return [];
+  
+  return db.select().from(bookmarks).where(eq(bookmarks.userId, userId)).orderBy(desc(bookmarks.createdAt));
+}
+
+export async function addBookmark(bookmark: InsertBookmark) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  await db.insert(bookmarks).values(bookmark);
+}
+
+export async function removeBookmark(userId: number, itemType: "module" | "resource", itemId: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  await db.delete(bookmarks).where(
+    and(
+      eq(bookmarks.userId, userId),
+      eq(bookmarks.itemType, itemType),
+      eq(bookmarks.itemId, itemId)
+    )
+  );
+}
+
+export async function checkBookmark(userId: number, itemType: "module" | "resource", itemId: number) {
+  const db = await getDb();
+  if (!db) return false;
+  
+  const result = await db.select().from(bookmarks).where(
+    and(
+      eq(bookmarks.userId, userId),
+      eq(bookmarks.itemType, itemType),
+      eq(bookmarks.itemId, itemId)
+    )
+  ).limit(1);
+  
+  return result.length > 0;
+}
