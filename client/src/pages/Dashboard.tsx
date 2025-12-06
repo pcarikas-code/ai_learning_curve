@@ -62,15 +62,21 @@ export default function Dashboard() {
           <div className="flex items-center justify-between">
             <Link href="/">
               <div className="flex items-center gap-3 cursor-pointer">
-                <img src="/logo.png" alt="AI Learning Curve" className="h-10" />
+                <img src="/logo.png" alt="AI Learning Curve" className="h-12" />
               </div>
             </Link>
             <div className="flex items-center gap-4">
+              <Link href="/">
+                <Button variant="ghost">Home</Button>
+              </Link>
               <Link href="/paths">
                 <Button variant="ghost">Learning Paths</Button>
               </Link>
               <Link href="/resources">
                 <Button variant="ghost">Resources</Button>
+              </Link>
+              <Link href="/dashboard">
+                <Button>Dashboard</Button>
               </Link>
             </div>
           </div>

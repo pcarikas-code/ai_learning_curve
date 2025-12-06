@@ -120,33 +120,36 @@ export default function ModuleDetail() {
           <div className="flex items-center justify-between">
             <Link href="/">
               <div className="flex items-center gap-3 cursor-pointer">
-                <img src="/logo.png" alt="AI Learning Curve" className="h-10" />
+                <img src="/logo.png" alt="AI Learning Curve" className="h-12" />
               </div>
             </Link>
             <div className="flex items-center gap-4">
-              {isAuthenticated ? (
-                <>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={handleToggleBookmark}
-                    disabled={addBookmark.isPending || removeBookmark.isPending}
-                  >
-                    {isBookmarked ? (
-                      <BookmarkCheck className="w-5 h-5" />
-                    ) : (
-                      <Bookmark className="w-5 h-5" />
-                    )}
-                  </Button>
-                  <Link href="/dashboard">
-                    <Button>Dashboard</Button>
-                  </Link>
-                </>
-              ) : (
-                <a href={getLoginUrl()}>
-                  <Button>Sign In</Button>
-                </a>
+              <Link href="/">
+                <Button variant="ghost">Home</Button>
+              </Link>
+              <Link href="/paths">
+                <Button variant="ghost">Learning Paths</Button>
+              </Link>
+              <Link href="/resources">
+                <Button variant="ghost">Resources</Button>
+              </Link>
+              {isAuthenticated && (
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={handleToggleBookmark}
+                  disabled={addBookmark.isPending || removeBookmark.isPending}
+                >
+                  {isBookmarked ? (
+                    <BookmarkCheck className="w-5 h-5" />
+                  ) : (
+                    <Bookmark className="w-5 h-5" />
+                  )}
+                </Button>
               )}
+              <Link href="/dashboard">
+                <Button>Dashboard</Button>
+              </Link>
             </div>
           </div>
         </div>

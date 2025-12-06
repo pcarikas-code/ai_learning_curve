@@ -34,22 +34,22 @@ export default function Home() {
           <div className="flex items-center justify-between">
             <Link href="/">
               <div className="flex items-center gap-3 cursor-pointer">
-                <img src="/logo.png" alt="AI Learning Curve" className="h-10" />
+                <img src="/logo.png" alt="AI Learning Curve" className="h-12" />
               </div>
             </Link>
             <div className="flex items-center gap-4">
+              <Link href="/">
+                <Button variant="ghost">Home</Button>
+              </Link>
+              <Link href="/paths">
+                <Button variant="ghost">Learning Paths</Button>
+              </Link>
               <Link href="/resources">
                 <Button variant="ghost">Resources</Button>
               </Link>
-              {isAuthenticated ? (
-                <Link href="/dashboard">
-                  <Button>Dashboard</Button>
-                </Link>
-              ) : (
-                <a href={getLoginUrl()}>
-                  <Button>Get Started</Button>
-                </a>
-              )}
+              <Link href="/dashboard">
+                <Button>Dashboard</Button>
+              </Link>
             </div>
           </div>
         </div>
@@ -220,7 +220,7 @@ export default function Home() {
         <div className="container">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <div className="flex items-center gap-2">
-              <img src="/logo.png" alt="AI Learning Curve" className="h-8" />
+              <img src="/logo.png" alt="AI Learning Curve" className="h-10" />
             </div>
             <p className="text-sm text-muted-foreground">
               © 2024 AI Learning Curve. Empowering the next generation of AI practitioners.

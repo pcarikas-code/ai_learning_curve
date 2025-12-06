@@ -54,3 +54,7 @@
 - [x] Replace navigation logo with Artboard1.png across all pages
 - [x] Configure Artboard2.png as favicon
 - [x] Update HTML meta tags for favicon
+
+## Navigation Improvements
+- [x] Add Home link to navigation bar on all pages
+- [x] Increase logo size from h-10 to h-12 for better visibility
