@@ -34,7 +34,7 @@ export default function Home() {
           <div className="flex items-center justify-between">
             <Link href="/">
               <div className="flex items-center gap-2 cursor-pointer">
-                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-500 to-blue-600 flex items-center justify-center">
+                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-900 flex items-center justify-center">
                   <Sparkles className="w-5 h-5 text-white" />
                 </div>
                 <span className="font-bold text-xl">AI Learning Curve</span>
@@ -60,14 +60,14 @@ export default function Home() {
 
       {/* Hero Section */}
       <section className="py-20 md:py-32 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-purple-50 via-blue-50 to-background dark:from-purple-950/20 dark:via-blue-950/20 dark:to-background" />
+        <div className="absolute inset-0 bg-gradient-to-br from-cyan-50 via-blue-50 to-background dark:from-cyan-950/20 dark:via-blue-950/20 dark:to-background" />
         <div className="container relative">
           <div className="max-w-3xl mx-auto text-center">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary mb-6">
               <Sparkles className="w-4 h-4" />
               <span className="text-sm font-medium">Master AI from Basics to Advanced</span>
             </div>
-            <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+            <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-cyan-500 to-blue-900 bg-clip-text text-transparent">
               Navigate Your AI Learning Journey
             </h1>
             <p className="text-xl text-muted-foreground mb-8">
@@ -163,8 +163,8 @@ export default function Home() {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             <div className="text-center">
-              <div className="w-16 h-16 rounded-full bg-purple-100 dark:bg-purple-900/20 flex items-center justify-center mx-auto mb-4">
-                <BookOpen className="w-8 h-8 text-purple-600 dark:text-purple-400" />
+              <div className="w-16 h-16 rounded-full bg-cyan-100 dark:bg-cyan-900/20 flex items-center justify-center mx-auto mb-4">
+                <BookOpen className="w-8 h-8 text-cyan-600 dark:text-cyan-400" />
               </div>
               <h3 className="text-xl font-semibold mb-2">Structured Learning</h3>
               <p className="text-muted-foreground">
@@ -196,7 +196,7 @@ export default function Home() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-br from-purple-600 to-blue-600 text-white">
+      <section className="py-20 bg-gradient-to-br from-cyan-500 to-blue-900 text-white">
         <div className="container text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">Ready to Start Your AI Journey?</h2>
           <p className="text-xl mb-8 opacity-90">
@@ -223,7 +223,7 @@ export default function Home() {
         <div className="container">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <div className="flex items-center gap-2">
-              <div className="w-6 h-6 rounded-lg bg-gradient-to-br from-purple-500 to-blue-600 flex items-center justify-center">
+              <div className="w-6 h-6 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-900 flex items-center justify-center">
                 <Sparkles className="w-4 h-4 text-white" />
               </div>
               <span className="font-semibold">AI Learning Curve</span>

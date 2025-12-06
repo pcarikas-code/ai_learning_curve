@@ -37,7 +37,7 @@ export default function LearningPaths() {
           <div className="flex items-center justify-between">
             <Link href="/">
               <div className="flex items-center gap-2 cursor-pointer">
-                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-500 to-blue-600 flex items-center justify-center">
+                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-900 flex items-center justify-center">
                   <Sparkles className="w-5 h-5 text-white" />
                 </div>
                 <span className="font-bold text-xl">AI Learning Curve</span>
@@ -56,7 +56,7 @@ export default function LearningPaths() {
       </nav>
 
       {/* Header */}
-      <section className="py-12 bg-gradient-to-br from-purple-50 via-blue-50 to-background dark:from-purple-950/20 dark:via-blue-950/20 dark:to-background">
+      <section className="py-12 bg-gradient-to-br from-cyan-50 via-blue-50 to-background dark:from-cyan-950/20 dark:via-blue-950/20 dark:to-background">
         <div className="container">
           <div className="max-w-3xl">
             <h1 className="text-4xl md:text-5xl font-bold mb-4">Learning Paths</h1>

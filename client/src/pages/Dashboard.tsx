@@ -62,7 +62,7 @@ export default function Dashboard() {
           <div className="flex items-center justify-between">
             <Link href="/">
               <div className="flex items-center gap-2 cursor-pointer">
-                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-500 to-blue-600 flex items-center justify-center">
+                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-900 flex items-center justify-center">
                   <Sparkles className="w-5 h-5 text-white" />
                 </div>
                 <span className="font-bold text-xl">AI Learning Curve</span>
@@ -116,7 +116,7 @@ export default function Dashboard() {
             <Card>
               <CardHeader className="flex flex-row items-center justify-between pb-2">
                 <CardTitle className="text-sm font-medium">Bookmarks</CardTitle>
-                <BookmarkCheck className="w-4 h-4 text-purple-600" />
+                <BookmarkCheck className="w-4 h-4 text-cyan-600" />
               </CardHeader>
               <CardContent>
                 <div className="text-3xl font-bold">{bookmarks?.length || 0}</div>
@@ -246,7 +246,7 @@ export default function Dashboard() {
                               Saved on {new Date(bookmark.createdAt).toLocaleDateString()}
                             </CardDescription>
                           </div>
-                          <BookmarkCheck className="w-5 h-5 text-purple-600" />
+                          <BookmarkCheck className="w-5 h-5 text-cyan-600" />
                         </div>
                       </CardHeader>
                     </Card>

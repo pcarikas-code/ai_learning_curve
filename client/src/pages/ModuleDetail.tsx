@@ -120,7 +120,7 @@ export default function ModuleDetail() {
           <div className="flex items-center justify-between">
             <Link href="/">
               <div className="flex items-center gap-2 cursor-pointer">
-                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-500 to-blue-600 flex items-center justify-center">
+                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-900 flex items-center justify-center">
                   <Sparkles className="w-5 h-5 text-white" />
                 </div>
                 <span className="font-bold text-xl">AI Learning Curve</span>
@@ -217,7 +217,7 @@ export default function ModuleDetail() {
           )}
 
           {!isAuthenticated && (
-            <Card className="bg-gradient-to-br from-purple-50 to-blue-50 dark:from-purple-950/20 dark:to-blue-950/20 border-purple-200 dark:border-purple-800">
+            <Card className="bg-gradient-to-br from-cyan-50 to-blue-50 dark:from-cyan-950/20 dark:to-blue-950/20 border-cyan-200 dark:border-cyan-800">
               <CardContent className="py-8 text-center">
                 <h3 className="text-xl font-semibold mb-2">Sign in to track your progress</h3>
                 <p className="text-muted-foreground mb-4">

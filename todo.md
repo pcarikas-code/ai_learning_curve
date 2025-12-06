@@ -42,3 +42,9 @@
 - [x] Unit tests for modules API
 - [x] Unit tests for resources API
 - [x] All tests passing
+
+## Design Updates
+- [x] Update color palette to Deep Blue (#1E3A8A) and Vibrant Cyan (#06B6D4)
+- [x] Apply Light Gray (#F3F4F6) and Dark Gray (#4B5563) for secondary elements
+- [x] Update all gradient backgrounds with new colors
+- [x] Update component hover states and accents

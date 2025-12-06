@@ -56,7 +56,7 @@ export default function Resources() {
           <div className="flex items-center justify-between">
             <Link href="/">
               <div className="flex items-center gap-2 cursor-pointer">
-                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-500 to-blue-600 flex items-center justify-center">
+                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-900 flex items-center justify-center">
                   <Sparkles className="w-5 h-5 text-white" />
                 </div>
                 <span className="font-bold text-xl">AI Learning Curve</span>
@@ -75,7 +75,7 @@ export default function Resources() {
       </nav>
 
       {/* Header */}
-      <section className="py-12 bg-gradient-to-br from-purple-50 via-blue-50 to-background dark:from-purple-950/20 dark:via-blue-950/20 dark:to-background">
+      <section className="py-12 bg-gradient-to-br from-cyan-50 via-blue-50 to-background dark:from-cyan-950/20 dark:via-blue-950/20 dark:to-background">
         <div className="container">
           <div className="max-w-3xl">
             <h1 className="text-4xl md:text-5xl font-bold mb-4">Learning Resources</h1>
@@ -160,7 +160,7 @@ export default function Resources() {
                     <Card key={resource.id} className="h-full hover:shadow-lg transition-all group">
                       <CardHeader>
                         <div className="flex items-start justify-between mb-3">
-                          <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-purple-500 to-blue-600 flex items-center justify-center">
+                          <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-900 flex items-center justify-center">
                             {Icon && <Icon className="w-5 h-5 text-white" />}
                           </div>
                           <ExternalLink className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors" />
