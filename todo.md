@@ -48,3 +48,9 @@
 - [x] Apply Light Gray (#F3F4F6) and Dark Gray (#4B5563) for secondary elements
 - [x] Update all gradient backgrounds with new colors
 - [x] Update component hover states and accents
+
+## Branding Updates
+- [x] Copy custom logo files to project public directory
+- [x] Replace navigation logo with Artboard1.png across all pages
+- [x] Configure Artboard2.png as favicon
+- [x] Update HTML meta tags for favicon

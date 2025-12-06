@@ -33,11 +33,8 @@ export default function Home() {
         <div className="container py-4">
           <div className="flex items-center justify-between">
             <Link href="/">
-              <div className="flex items-center gap-2 cursor-pointer">
-                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-900 flex items-center justify-center">
-                  <Sparkles className="w-5 h-5 text-white" />
-                </div>
-                <span className="font-bold text-xl">AI Learning Curve</span>
+              <div className="flex items-center gap-3 cursor-pointer">
+                <img src="/logo.png" alt="AI Learning Curve" className="h-10" />
               </div>
             </Link>
             <div className="flex items-center gap-4">
@@ -223,10 +220,7 @@ export default function Home() {
         <div className="container">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <div className="flex items-center gap-2">
-              <div className="w-6 h-6 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-900 flex items-center justify-center">
-                <Sparkles className="w-4 h-4 text-white" />
-              </div>
-              <span className="font-semibold">AI Learning Curve</span>
+              <img src="/logo.png" alt="AI Learning Curve" className="h-8" />
             </div>
             <p className="text-sm text-muted-foreground">
               © 2024 AI Learning Curve. Empowering the next generation of AI practitioners.
