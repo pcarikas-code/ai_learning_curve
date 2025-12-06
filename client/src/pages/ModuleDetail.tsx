@@ -2,6 +2,7 @@ import { useAuth } from "@/_core/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
+import { Breadcrumb } from "@/components/Breadcrumb";
 import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { getLoginUrl } from "@/const";
@@ -121,6 +122,15 @@ export default function ModuleDetail() {
       {/* Module Content */}
       <article className="py-12">
         <div className="container max-w-4xl">
+          {module && (
+            <Breadcrumb
+              items={[
+                { label: "Learning Paths", href: "/paths" },
+                { label: "Path", href: `/paths/${module.pathId}` },
+                { label: module.title },
+              ]}
+            />
+          )}
           {/* Module Header */}
           <div className="mb-8">
             <h1 className="text-4xl md:text-5xl font-bold mb-4">{module.title}</h1>

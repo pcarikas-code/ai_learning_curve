@@ -2,6 +2,8 @@ import { useAuth } from "@/_core/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
+import { Breadcrumb } from "@/components/Breadcrumb";
+import { toast } from "sonner";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { getLoginUrl } from "@/const";
@@ -12,6 +14,7 @@ import { Link, useParams } from "wouter";
 export default function PathDetail() {
   const { slug } = useParams<{ slug: string }>();
   const { isAuthenticated } = useAuth();
+  const utils = trpc.useUtils();
   
   const { data: path, isLoading: pathLoading } = trpc.learningPaths.getBySlug.useQuery({ slug: slug || "" });
   const { data: modules, isLoading: modulesLoading } = trpc.modules.getByPathId.useQuery(
@@ -19,6 +22,20 @@ export default function PathDetail() {
     { enabled: !!path?.id }
   );
   const { data: userProgress } = trpc.progress.getAll.useQuery(undefined, { enabled: isAuthenticated });
+  const { data: certificate } = trpc.certificates.getByPath.useQuery(
+    { pathId: path?.id || 0 },
+    { enabled: !!path?.id && isAuthenticated }
+  );
+
+  const generateCertificate = trpc.certificates.generate.useMutation({
+    onSuccess: () => {
+      toast.success("Certificate generated successfully!");
+      utils.certificates.getByPath.invalidate();
+    },
+    onError: (error) => {
+      toast.error(error.message || "Failed to generate certificate");
+    },
+  });
 
   const getModuleProgress = (moduleId: number) => {
     if (!userProgress) return null;
@@ -68,6 +85,12 @@ export default function PathDetail() {
       {/* Path Header */}
       <section className="py-12 bg-gradient-to-br from-cyan-50 via-blue-50 to-background dark:from-cyan-950/20 dark:via-blue-950/20 dark:to-background">
         <div className="container">
+          <Breadcrumb
+            items={[
+              { label: "Learning Paths", href: "/paths" },
+              { label: path?.title || "Loading..." },
+            ]}
+          />
           <div className="max-w-4xl">
             <Link href="/paths">
               <Button variant="ghost" className="mb-4 -ml-4">
@@ -104,6 +127,23 @@ export default function PathDetail() {
                   </span>
                 </div>
                 <Progress value={progressPercent} className="h-2" />
+                
+                {/* Certificate Button */}
+                {certificate ? (
+                  <Link href={`/certificate/${path.id}`}>
+                    <Button variant="default" className="mt-4 w-full">
+                      View Certificate
+                    </Button>
+                  </Link>
+                ) : progressPercent === 100 && (
+                  <Button 
+                    onClick={() => generateCertificate.mutate({ pathId: path.id })}
+                    disabled={generateCertificate.isPending}
+                    className="mt-4 w-full"
+                  >
+                    {generateCertificate.isPending ? "Generating..." : "Generate Certificate"}
+                  </Button>
+                )}
               </div>
             )}
           </div>

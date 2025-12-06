@@ -3,6 +3,7 @@ import { drizzle } from "drizzle-orm/mysql2";
 import { 
   InsertUser, 
   users, 
+  certificates,
   learningPaths, 
   modules, 
   userProgress, 
@@ -280,4 +281,56 @@ export async function checkBookmark(userId: number, itemType: "module" | "resour
   ).limit(1);
   
   return result.length > 0;
+}
+
+// Certificate functions
+export async function createCertificate(userId: number, pathId: number, certificateNumber: string) {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot create certificate: database not available");
+    return undefined;
+  }
+
+  const result = await db.insert(certificates).values({
+    userId,
+    pathId,
+    certificateNumber,
+  });
+
+  return result;
+}
+
+export async function getCertificate(userId: number, pathId: number) {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot get certificate: database not available");
+    return undefined;
+  }
+
+  const result = await db
+    .select()
+    .from(certificates)
+    .where(and(
+      eq(certificates.userId, userId),
+      eq(certificates.pathId, pathId)
+    ))
+    .limit(1);
+
+  return result.length > 0 ? result[0] : undefined;
+}
+
+export async function getCertificateByNumber(certificateNumber: string) {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot get certificate: database not available");
+    return undefined;
+  }
+
+  const result = await db
+    .select()
+    .from(certificates)
+    .where(eq(certificates.certificateNumber, certificateNumber))
+    .limit(1);
+
+  return result.length > 0 ? result[0] : undefined;
 }

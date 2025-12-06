@@ -4,6 +4,7 @@ import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, protectedProcedure, router } from "./_core/trpc";
 import { z } from "zod";
 import * as db from "./db";
+import { certificateRouter } from "./certificateRouter";
 
 export const appRouter = router({
   system: systemRouter,
@@ -122,6 +123,8 @@ export const appRouter = router({
         return db.getResourceById(input.id);
       }),
   }),
+
+  certificates: certificateRouter,
 
   bookmarks: router({
     list: protectedProcedure.query(async ({ ctx }) => {

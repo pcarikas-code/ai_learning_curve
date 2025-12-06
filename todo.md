@@ -73,3 +73,10 @@
 
 ## Bug Fixes
 - [x] Fix nested anchor tag error in Footer component (Link already renders as <a>)
+
+## New Features
+- [x] Add active page highlighting in navigation and footer
+- [x] Implement breadcrumb navigation on detail pages
+- [x] Create certificate generation system for completed learning paths
+- [x] Add certificate download functionality
+- [x] Store certificate metadata in database

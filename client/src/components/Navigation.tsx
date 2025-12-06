@@ -1,9 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 import { useState, useEffect } from "react";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 
 export function Navigation() {
+  const [location] = useLocation();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -42,16 +43,16 @@ export function Navigation() {
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-4">
             <Link href="/">
-              <Button variant="ghost">Home</Button>
+              <Button variant={location === "/" ? "default" : "ghost"}>Home</Button>
             </Link>
             <Link href="/paths">
-              <Button variant="ghost">Learning Paths</Button>
+              <Button variant={location.startsWith("/path") ? "default" : "ghost"}>Learning Paths</Button>
             </Link>
             <Link href="/resources">
-              <Button variant="ghost">Resources</Button>
+              <Button variant={location === "/resources" ? "default" : "ghost"}>Resources</Button>
             </Link>
             <Link href="/dashboard">
-              <Button>Dashboard</Button>
+              <Button variant={location === "/dashboard" ? "default" : "ghost"}>Dashboard</Button>
             </Link>
           </div>
 
@@ -73,22 +74,22 @@ export function Navigation() {
         {isMobileMenuOpen && (
           <div className="md:hidden mt-4 pb-4 flex flex-col gap-2">
             <Link href="/" onClick={() => setIsMobileMenuOpen(false)}>
-              <Button variant="ghost" className="w-full justify-start">
+              <Button variant={location === "/" ? "default" : "ghost"} className="w-full justify-start">
                 Home
               </Button>
             </Link>
             <Link href="/paths" onClick={() => setIsMobileMenuOpen(false)}>
-              <Button variant="ghost" className="w-full justify-start">
+              <Button variant={location.startsWith("/path") ? "default" : "ghost"} className="w-full justify-start">
                 Learning Paths
               </Button>
             </Link>
             <Link href="/resources" onClick={() => setIsMobileMenuOpen(false)}>
-              <Button variant="ghost" className="w-full justify-start">
+              <Button variant={location === "/resources" ? "default" : "ghost"} className="w-full justify-start">
                 Resources
               </Button>
             </Link>
             <Link href="/dashboard" onClick={() => setIsMobileMenuOpen(false)}>
-              <Button className="w-full justify-start">Dashboard</Button>
+              <Button variant={location === "/dashboard" ? "default" : "ghost"} className="w-full justify-start">Dashboard</Button>
             </Link>
           </div>
         )}
