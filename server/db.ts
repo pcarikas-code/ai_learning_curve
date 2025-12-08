@@ -200,6 +200,14 @@ export async function getQuizByModuleId(moduleId: number) {
   return result.length > 0 ? result[0] : undefined;
 }
 
+export async function getQuizById(quizId: number) {
+  const db = await getDb();
+  if (!db) return undefined;
+  
+  const result = await db.select().from(quizzes).where(eq(quizzes.id, quizId)).limit(1);
+  return result.length > 0 ? result[0] : undefined;
+}
+
 export async function getQuizQuestions(quizId: number) {
   const db = await getDb();
   if (!db) return [];
@@ -212,7 +220,7 @@ export async function saveQuizAttempt(attempt: InsertQuizAttempt) {
   if (!db) throw new Error("Database not available");
   
   const result = await db.insert(quizAttempts).values(attempt);
-  return result;
+  return Number(result[0].insertId);
 }
 
 export async function getUserQuizAttempts(userId: number, quizId: number) {

@@ -1,0 +1,2 @@
+ALTER TABLE `quiz_questions` MODIFY COLUMN `question_type` enum('multiple_choice','true_false','code') NOT NULL DEFAULT 'multiple_choice';--> statement-breakpoint
+ALTER TABLE `quiz_questions` MODIFY COLUMN `correct_answer` int NOT NULL;

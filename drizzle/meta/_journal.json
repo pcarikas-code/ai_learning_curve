@@ -36,6 +36,20 @@
       "when": 1765158150036,
       "tag": "0004_abnormal_stephen_strange",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1765158697195,
+      "tag": "0005_lovely_the_stranger",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "5",
+      "when": 1765158728098,
+      "tag": "0006_past_reaper",
+      "breakpoints": true
     }
   ]
 }

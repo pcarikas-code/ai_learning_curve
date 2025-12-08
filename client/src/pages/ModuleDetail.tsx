@@ -4,6 +4,7 @@ import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { ModuleNotes } from "@/components/ModuleNotes";
+import { Quiz } from "@/components/Quiz";
 import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { getLoginUrl } from "@/const";
@@ -181,6 +182,11 @@ export default function ModuleDetail() {
               <ModuleNotes moduleId={module.id} />
             </div>
           )}
+
+          {/* Quiz Section */}
+          <div className="mb-8">
+            <Quiz moduleId={module.id} />
+          </div>
 
           {/* Action Buttons */}
           {isAuthenticated && !isCompleted && (

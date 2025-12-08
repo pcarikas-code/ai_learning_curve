@@ -1,0 +1,1 @@
+ALTER TABLE `quizzes` ADD `time_limit` int;

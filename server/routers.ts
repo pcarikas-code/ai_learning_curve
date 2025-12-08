@@ -93,22 +93,48 @@ export const appRouter = router({
       .query(async ({ input }) => {
         return db.getQuizQuestions(input.quizId);
       }),
-    submit: protectedProcedure
+    submitAttempt: protectedProcedure
       .input(z.object({
         quizId: z.number(),
-        answers: z.string(),
-        score: z.number(),
-        passed: z.boolean(),
+        answers: z.array(z.object({
+          questionId: z.number(),
+          selectedAnswer: z.number(),
+        })),
       }))
       .mutation(async ({ ctx, input }) => {
-        await db.saveQuizAttempt({
+        const quiz = await db.getQuizById(input.quizId);
+        if (!quiz) throw new Error("Quiz not found");
+
+        const questions = await db.getQuizQuestions(input.quizId);
+        
+        // Calculate score
+        let correctCount = 0;
+        for (const answer of input.answers) {
+          const question = questions.find(q => q.id === answer.questionId);
+          if (question && question.correctAnswer === answer.selectedAnswer) {
+            correctCount++;
+          }
+        }
+
+        const score = Math.round((correctCount / questions.length) * 100);
+        const passed = score >= quiz.passingScore;
+
+        // Save attempt
+        const attemptId = await db.saveQuizAttempt({
           userId: ctx.user.id,
           quizId: input.quizId,
-          answers: input.answers,
-          score: input.score,
-          passed: input.passed,
+          answers: JSON.stringify(input.answers),
+          score,
+          passed,
         });
-        return { success: true };
+
+        return {
+          attemptId,
+          score,
+          passed,
+          correctCount,
+          totalQuestions: questions.length,
+        };
       }),
     getAttempts: protectedProcedure
       .input(z.object({ quizId: z.number() }))
