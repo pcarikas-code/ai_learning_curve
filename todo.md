@@ -266,3 +266,8 @@
 - [x] Create environment variable checklist
 - [x] Add troubleshooting section
 - [ ] Test OAuth flows with test credentials
+
+## Bug Fix - Profile Component
+- [x] Fix setState-in-render error in Profile component
+- [x] Wrap navigation in useEffect hook
+- [x] Test Profile page with unauthenticated user
