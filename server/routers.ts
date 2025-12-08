@@ -38,6 +38,92 @@ export const appRouter = router({
   system: systemRouter,
   auth: router({
     me: publicProcedure.query(opts => opts.ctx.user),
+    register: publicProcedure
+      .input(z.object({
+        name: z.string().min(1),
+        email: z.string().email(),
+        password: z.string().min(6),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        const bcrypt = await import('bcryptjs');
+        const jwt = await import('jsonwebtoken');
+        const database = await getDb();
+        if (!database) throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Database not available' });
+        
+        // Check if user already exists
+        const existingUser = await database.select().from(users).where(eq(users.email, input.email));
+        if (existingUser.length > 0) {
+          throw new TRPCError({ code: 'CONFLICT', message: 'Email already registered' });
+        }
+        
+        // Hash password
+        const hashedPassword = await bcrypt.hash(input.password, 10);
+        
+        // Create user
+        const result = await database.insert(users).values({
+          name: input.name,
+          email: input.email,
+          password: hashedPassword,
+          loginMethod: 'email',
+          role: 'user',
+        });
+        
+        const userId = Number((result as any).insertId);
+        
+        // Create JWT token
+        const jwtSecret = process.env.JWT_SECRET || 'default-secret-change-in-production';
+        const token = jwt.sign({ userId, email: input.email }, jwtSecret, { expiresIn: '7d' });
+        
+        // Set cookie
+        const cookieOptions = getSessionCookieOptions(ctx.req);
+        ctx.res.cookie(COOKIE_NAME, token, cookieOptions);
+        
+        return { success: true, userId };
+      }),
+    login: publicProcedure
+      .input(z.object({
+        email: z.string().email(),
+        password: z.string(),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        const bcrypt = await import('bcryptjs');
+        const jwt = await import('jsonwebtoken');
+        const database = await getDb();
+        if (!database) throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Database not available' });
+        
+        // Find user
+        const userResult = await database.select().from(users).where(eq(users.email, input.email));
+        if (userResult.length === 0) {
+          throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Invalid email or password' });
+        }
+        
+        const user = userResult[0];
+        
+        // Verify password
+        if (!user.password) {
+          throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Invalid email or password' });
+        }
+        
+        const isValidPassword = await bcrypt.compare(input.password, user.password);
+        if (!isValidPassword) {
+          throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Invalid email or password' });
+        }
+        
+        // Update last signed in
+        await database.update(users)
+          .set({ lastSignedIn: new Date() })
+          .where(eq(users.id, user.id));
+        
+        // Create JWT token
+        const jwtSecret = process.env.JWT_SECRET || 'default-secret-change-in-production';
+        const token = jwt.sign({ userId: user.id, email: user.email }, jwtSecret, { expiresIn: '7d' });
+        
+        // Set cookie
+        const cookieOptions = getSessionCookieOptions(ctx.req);
+        ctx.res.cookie(COOKIE_NAME, token, cookieOptions);
+        
+        return { success: true, user: { id: user.id, name: user.name, email: user.email } };
+      }),
     logout: publicProcedure.mutation(({ ctx }) => {
       const cookieOptions = getSessionCookieOptions(ctx.req);
       ctx.res.clearCookie(COOKIE_NAME, { ...cookieOptions, maxAge: -1 });

@@ -12,11 +12,15 @@ import ModuleDetail from "./pages/ModuleDetail";
 import Dashboard from "./pages/Dashboard";
 import Resources from "./pages/Resources";
 import Achievements from "./pages/Achievements";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 
 function Router() {
   return (
     <Switch>
       <Route path="/" component={Home} />
+      <Route path="/login" component={Login} />
+      <Route path="/register" component={Register} />
       <Route path="/paths" component={LearningPaths} />
       <Route path="/paths/:slug" component={PathDetail} />
       <Route path="/modules/:slug" component={ModuleDetail} />

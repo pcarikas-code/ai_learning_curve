@@ -257,47 +257,74 @@ class SDKServer {
   }
 
   async authenticateRequest(req: Request): Promise<User> {
-    // Regular authentication flow
     const cookies = this.parseCookies(req.headers.cookie);
     const sessionCookie = cookies.get(COOKIE_NAME);
-    const session = await this.verifySession(sessionCookie);
-
-    if (!session) {
-      throw ForbiddenError("Invalid session cookie");
+    
+    if (!sessionCookie) {
+      throw ForbiddenError("No session cookie");
     }
 
-    const sessionUserId = session.openId;
-    const signedInAt = new Date();
-    let user = await db.getUserByOpenId(sessionUserId);
-
-    // If user not in DB, sync from OAuth server automatically
-    if (!user) {
-      try {
-        const userInfo = await this.getUserInfoWithJwt(sessionCookie ?? "");
-        await db.upsertUser({
-          openId: userInfo.openId,
-          name: userInfo.name || null,
-          email: userInfo.email ?? null,
-          loginMethod: userInfo.loginMethod ?? userInfo.platform ?? null,
-          lastSignedIn: signedInAt,
-        });
-        user = await db.getUserByOpenId(userInfo.openId);
-      } catch (error) {
-        console.error("[Auth] Failed to sync user from OAuth:", error);
-        throw ForbiddenError("Failed to sync user info");
+    // Try JWT verification first (for email/password auth)
+    try {
+      const jwt = await import('jsonwebtoken');
+      const jwtSecret = process.env.JWT_SECRET || 'default-secret-change-in-production';
+      const decoded = jwt.verify(sessionCookie, jwtSecret) as { userId: number; email: string };
+      
+      const db = await import('../db');
+      const database = await db.getDb();
+      if (!database) throw ForbiddenError("Database not available");
+      
+      const userResult = await database.select().from((await import('../../drizzle/schema')).users)
+        .where((await import('drizzle-orm')).eq((await import('../../drizzle/schema')).users.id, decoded.userId));
+      
+      if (userResult.length === 0) {
+        throw ForbiddenError("User not found");
       }
+      
+      return userResult[0];
+    } catch (jwtError) {
+      // If JWT fails, try OAuth session verification
+      const session = await this.verifySession(sessionCookie);
+
+      if (!session) {
+        throw ForbiddenError("Invalid session cookie");
+      }
+
+      const sessionUserId = session.openId;
+      const signedInAt = new Date();
+      let user = await db.getUserByOpenId(sessionUserId);
+
+      // If user not in DB, sync from OAuth server automatically
+      if (!user) {
+        try {
+          const userInfo = await this.getUserInfoWithJwt(sessionCookie ?? "");
+          await db.upsertUser({
+            openId: userInfo.openId,
+            name: userInfo.name || 'User',
+            email: userInfo.email || '',
+            loginMethod: userInfo.loginMethod ?? userInfo.platform ?? 'oauth',
+            lastSignedIn: signedInAt,
+          });
+          user = await db.getUserByOpenId(userInfo.openId);
+        } catch (error) {
+          console.error("[Auth] Failed to sync user from OAuth:", error);
+          throw ForbiddenError("Failed to sync user info");
+        }
+      }
+
+      if (!user) {
+        throw ForbiddenError("User not found");
+      }
+
+      await db.upsertUser({
+        openId: user.openId || undefined,
+        name: user.name,
+        email: user.email,
+        lastSignedIn: signedInAt,
+      });
+
+      return user;
     }
-
-    if (!user) {
-      throw ForbiddenError("User not found");
-    }
-
-    await db.upsertUser({
-      openId: user.openId,
-      lastSignedIn: signedInAt,
-    });
-
-    return user;
   }
 }
 

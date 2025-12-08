@@ -184,3 +184,16 @@
 - [x] Seed achievements data
 - [x] Verify database connection
 - [x] Document connection string for Vercel
+
+## Email/Password Authentication Implementation
+- [x] Update database schema to add password field
+- [x] Install bcrypt for password hashing
+- [x] Create registration API endpoint
+- [x] Create login API endpoint
+- [x] Implement JWT session management
+- [x] Create Login UI component
+- [x] Create Registration UI component
+- [x] Update authentication context
+- [x] Remove Manus OAuth dependencies
+- [x] Test authentication flow
+- [x] Update environment variables documentation

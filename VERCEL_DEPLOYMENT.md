@@ -1,179 +1,120 @@
-# Vercel Deployment Guide for AI Learning Curve
+# Vercel Deployment Guide
 
-This guide will help you deploy the AI Learning Curve platform to Vercel through GitHub.
+This guide will help you deploy the AI Learning Curve platform to Vercel with email/password authentication.
 
 ## Prerequisites
 
-1. A GitHub account
-2. A Vercel account (sign up at https://vercel.com)
-3. A MySQL/TiDB database (PlanetScale, TiDB Cloud, or similar)
-4. Required API keys and credentials
+- GitHub account
+- Vercel account (sign up at https://vercel.com)
+- TiDB Cloud database (already set up - see DATABASE_SETUP.md)
 
 ## Step 1: Push Code to GitHub
 
-1. Create a new repository on GitHub
-2. Initialize git in your project (if not already done):
-   ```bash
-   git init
-   git add .
-   git commit -m "Initial commit"
-   ```
-3. Add your GitHub repository as remote:
-   ```bash
-   git remote add origin https://github.com/YOUR_USERNAME/YOUR_REPO.git
-   git branch -M main
-   git push -u origin main
-   ```
+1. Download the project files from Manus
+2. Extract and navigate to the project folder
+3. Initialize Git and push to GitHub:
 
-## Step 2: Connect to Vercel
+```bash
+cd ai_learning_curve
+git init
+git add .
+git commit -m "Initial commit: AI Learning Curve with email/password auth"
+git branch -M main
+git remote add origin https://github.com/pcarikas-code/ai-learning-curve.git
+git push -u origin main
+```
 
-1. Go to https://vercel.com and sign in
-2. Click "Add New Project"
-3. Import your GitHub repository
-4. Vercel will auto-detect the framework settings
+## Step 2: Connect GitHub to Vercel
+
+1. Go to https://vercel.com/new
+2. Click "Import Project"
+3. Select "Import Git Repository"
+4. Choose your GitHub repository: `pcarikas-code/ai-learning-curve`
+5. Click "Import"
 
 ## Step 3: Configure Build Settings
 
-Vercel should automatically detect the configuration from `vercel.json`, but verify:
+Vercel should auto-detect the settings, but verify:
 
-- **Framework Preset**: Other
+- **Framework Preset**: None (or Other)
 - **Build Command**: `pnpm vercel-build`
 - **Output Directory**: `dist/public`
 - **Install Command**: `pnpm install`
-- **Node Version**: 20.x
 
-## Step 4: Set Environment Variables
+## Step 4: Add Environment Variables
 
-In the Vercel project settings, add the following environment variables:
+Click "Environment Variables" and add the following:
 
-### Required Database Variables
-
-```
-DATABASE_URL=mysql://user:password@host:port/database?ssl={"rejectUnauthorized":true}
-```
-
-### Required Auth Variables
+### Required Variables
 
 ```
-JWT_SECRET=your-secure-random-jwt-secret-min-32-chars
-OAUTH_SERVER_URL=https://api.manus.im
-VITE_OAUTH_PORTAL_URL=https://portal.manus.im
-VITE_APP_ID=your-manus-app-id
+DATABASE_URL=mysql://2xXUA2GWModsgbc.root:XEzVpe5kDhpLddhe@gateway01.ap-southeast-1.prod.aws.tidbcloud.com:4000/test?ssl={"minVersion":"TLSv1.2","rejectUnauthorized":true}
+
+JWT_SECRET=your-super-secret-jwt-key-change-this-to-random-string
+
+NODE_ENV=production
 ```
 
-### Required Owner Variables
+**Important Notes:**
 
-```
-OWNER_OPEN_ID=your-owner-open-id
-OWNER_NAME=Your Name
-```
-
-### Required Forge API Variables
-
-```
-BUILT_IN_FORGE_API_URL=https://forge-api.manus.im
-BUILT_IN_FORGE_API_KEY=your-forge-api-key
-VITE_FRONTEND_FORGE_API_URL=https://forge-api.manus.im
-VITE_FRONTEND_FORGE_API_KEY=your-frontend-forge-api-key
-```
-
-### Optional Analytics Variables
-
-```
-VITE_ANALYTICS_ENDPOINT=your-analytics-endpoint
-VITE_ANALYTICS_WEBSITE_ID=your-website-id
-```
-
-### Optional Branding Variables
-
-```
-VITE_APP_TITLE=AI Learning Curve
-VITE_APP_LOGO=/logo.png
-```
-
-## Step 5: Run Database Migrations
-
-Before deploying, you need to push your database schema:
-
-1. Set the `DATABASE_URL` in your local `.env` file
-2. Run migrations:
+1. **DATABASE_URL**: Use the connection string from DATABASE_SETUP.md (includes TLS configuration)
+2. **JWT_SECRET**: Generate a strong random string (at least 32 characters). You can use:
    ```bash
-   pnpm db:push
+   node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
    ```
-3. Seed achievements:
-   ```bash
-   pnpm tsx server/seedAchievements.ts
-   ```
+3. Set all variables for **Production**, **Preview**, and **Development** environments
 
-## Step 6: Deploy
+## Step 5: Deploy
 
-1. Click "Deploy" in Vercel
-2. Wait for the build to complete
-3. Vercel will provide you with a deployment URL
+1. Click "Deploy"
+2. Wait for the build to complete (~2-3 minutes)
+3. Once deployed, you'll get a URL like: `https://ai-learning-curve.vercel.app`
 
-## Step 7: Configure Custom Domain (Optional)
+## Step 6: Test the Deployment
 
-1. Go to your Vercel project settings
-2. Navigate to "Domains"
-3. Add your custom domain
-4. Follow Vercel's instructions to update your DNS records
+1. Visit your Vercel URL
+2. Click "Sign Up" or navigate to `/register`
+3. Create a new account
+4. Test login and authentication flow
 
-## Post-Deployment Checklist
+## Authentication System
 
-- [ ] Test user authentication (OAuth login)
-- [ ] Verify database connection
-- [ ] Test module and quiz functionality
-- [ ] Check achievement system
-- [ ] Verify file uploads work
-- [ ] Test responsive design on mobile
-- [ ] Check all API endpoints
-- [ ] Monitor error logs in Vercel dashboard
+The platform uses **email/password authentication**:
+
+- **Registration**: `/register` - Create new account
+- **Login**: `/login` - Sign in with email/password
+- **Session**: JWT tokens stored in HTTP-only cookies (7-day expiration)
+- **Password**: Hashed with bcrypt (10 rounds)
 
 ## Troubleshooting
 
 ### Build Fails
 
-- Check the build logs in Vercel dashboard
-- Ensure all environment variables are set correctly
-- Verify Node version is 20.x
+**Error**: "Cannot find module 'bcryptjs'"
+- **Solution**: Ensure `bcryptjs` and `jsonwebtoken` are in `dependencies` in `package.json`
 
-### Database Connection Issues
+**Error**: "DATABASE_URL is not defined"
+- **Solution**: Double-check environment variables in Vercel dashboard
 
-- Ensure `DATABASE_URL` is correct and includes SSL parameters
-- Check if your database allows connections from Vercel's IP ranges
-- For PlanetScale: Enable "Automatically copy migration data" in settings
+### Runtime Errors
 
-### OAuth Not Working
+**Error**: "Invalid email or password"
+- **Solution**: Ensure you're using the correct credentials
 
-- Verify `OAUTH_SERVER_URL` and `VITE_OAUTH_PORTAL_URL` are correct
-- Check `VITE_APP_ID` matches your Manus application
-- Ensure callback URL in Manus settings includes your Vercel domain
+**Error**: "Database connection failed"
+- **Solution**: Verify DATABASE_URL is correct and includes SSL parameters
 
-### API Routes 404
+## Security Recommendations
 
-- Check that `vercel.json` rewrites are configured correctly
-- Verify the `api/index.ts` file exists and is properly configured
-
-## Environment-Specific Notes
-
-### Development vs Production
-
-The app automatically detects the environment:
-- Development: Uses `NODE_ENV=development`
-- Production: Vercel sets `NODE_ENV=production` automatically
-
-### Database Migrations
-
-- Run migrations locally before deploying
-- Consider using a migration service for production
-- Always backup your database before running migrations
+1. **JWT_SECRET**: Use a strong random string (32+ characters)
+2. **HTTPS**: Vercel automatically provides SSL certificates
+3. **Rate Limiting**: Consider adding rate limiting to auth endpoints
+4. **Password Policy**: Current minimum is 6 characters
 
 ## Support
 
-For Vercel-specific issues:
+For deployment issues:
 - Vercel Documentation: https://vercel.com/docs
-- Vercel Support: https://vercel.com/support
+- TiDB Cloud Support: https://docs.pingcap.com/tidbcloud
 
-For application issues:
-- Check the GitHub repository issues
-- Review application logs in Vercel dashboard
+Congratulations! Your AI Learning Curve platform is now live on Vercel! 🎉
