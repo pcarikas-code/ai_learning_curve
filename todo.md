@@ -83,3 +83,11 @@
 
 ## Bug Fixes (Round 2)
 - [x] Fix certificate query returning undefined instead of null when no certificate exists
+
+## Content Expansion
+- [x] Add modules for Machine Learning learning path
+- [x] Add modules for Deep Learning learning path
+- [x] Add modules for Natural Language Processing learning path
+- [x] Add modules for Computer Vision learning path
+- [x] Reorder learning paths from beginner to advanced (AI Fundamentals → ML → Deep Learning → NLP/Computer Vision)
+- [x] Update path order/sequence numbers in database
