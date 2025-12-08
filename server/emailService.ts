@@ -29,11 +29,19 @@ export interface SendEmailOptions {
 }
 
 export async function sendEmail(options: SendEmailOptions): Promise<boolean> {
+  // Skip email sending if SMTP is not configured
+  if (!process.env.SMTP_HOST || !process.env.SMTP_USER || !process.env.SMTP_PASS) {
+    console.log('[Email] SMTP not configured, skipping email to:', options.to);
+    console.log('[Email] Subject:', options.subject);
+    // Return true to not block the flow, but email won't actually be sent
+    return true;
+  }
+
   try {
     const transporter = createTransporter();
     
     const info = await transporter.sendMail({
-      from: process.env.EMAIL_FROM || '"AI Learning Curve" <noreply@ailearningcurve.com>',
+      from: process.env.SMTP_FROM || '"AI Learning Curve" <noreply@ailearningcurve.com>',
       to: options.to,
       subject: options.subject,
       text: options.text,

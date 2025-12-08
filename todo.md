@@ -283,3 +283,10 @@
 - [x] Disable Passport initialization in server
 - [x] Test email/password login only
 - [ ] Redeploy to Vercel
+
+## Fix JSON Parsing Error on Vercel
+- [x] Diagnose server error causing non-JSON response
+- [x] Fix email service SMTP configuration
+- [x] Make email features optional when SMTP not configured
+- [ ] Test API endpoints return valid JSON
+- [ ] Redeploy to Vercel
