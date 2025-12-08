@@ -271,3 +271,8 @@
 - [x] Fix setState-in-render error in Profile component
 - [x] Wrap navigation in useEffect hook
 - [x] Test Profile page with unauthenticated user
+
+## Disable Google and Facebook OAuth
+- [x] Update SocialLoginButtons component to show only Microsoft
+- [x] Comment out Google and Facebook buttons
+- [x] Test Microsoft-only social login
