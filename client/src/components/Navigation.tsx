@@ -57,6 +57,9 @@ export function Navigation() {
             <Link href="/achievements">
               <Button variant={location === "/achievements" ? "default" : "ghost"}>Achievements</Button>
             </Link>
+            <Link href="/profile">
+              <Button variant={location === "/profile" ? "default" : "ghost"}>Profile</Button>
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}
@@ -96,6 +99,9 @@ export function Navigation() {
             </Link>
             <Link href="/achievements" onClick={() => setIsMobileMenuOpen(false)}>
               <Button variant={location === "/achievements" ? "default" : "ghost"} className="w-full justify-start">Achievements</Button>
+            </Link>
+            <Link href="/profile" onClick={() => setIsMobileMenuOpen(false)}>
+              <Button variant={location === "/profile" ? "default" : "ghost"} className="w-full justify-start">Profile</Button>
             </Link>
           </div>
         )}

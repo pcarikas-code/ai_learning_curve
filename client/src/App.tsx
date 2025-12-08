@@ -17,6 +17,7 @@ import Register from "./pages/Register";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import VerifyEmail from "./pages/VerifyEmail";
+import Profile from "./pages/Profile";
 
 function Router() {
   return (
@@ -32,6 +33,7 @@ function Router() {
       <Route path="/modules/:slug" component={ModuleDetail} />
       <Route path="/dashboard" component={Dashboard} />
       <Route path="/achievements" component={Achievements} />
+      <Route path="/profile" component={Profile} />
       <Route path="/certificate/:pathId" component={Certificate} />
       <Route path="/404" component={NotFound} />
       <Route component={NotFound} />

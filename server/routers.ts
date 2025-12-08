@@ -288,6 +288,77 @@ export const appRouter = router({
         success: true,
       } as const;
     }),
+    updateProfile: protectedProcedure
+      .input(z.object({
+        name: z.string().min(1).optional(),
+        email: z.string().email().optional(),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        const database = await getDb();
+        if (!database) throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Database not available' });
+        
+        const updateData: any = {};
+        if (input.name) updateData.name = input.name;
+        if (input.email && input.email !== ctx.user.email) {
+          // Check if email already exists
+          const existingUser = await database.select().from(users).where(eq(users.email, input.email));
+          if (existingUser.length > 0 && existingUser[0].id !== ctx.user.id) {
+            throw new TRPCError({ code: 'BAD_REQUEST', message: 'Email already in use' });
+          }
+          updateData.email = input.email;
+          updateData.emailVerified = 0; // Reset verification if email changed
+        }
+        
+        if (Object.keys(updateData).length > 0) {
+          await database.update(users)
+            .set(updateData)
+            .where(eq(users.id, ctx.user.id));
+        }
+        
+        return { success: true, message: 'Profile updated successfully' };
+      }),
+    changePassword: protectedProcedure
+      .input(z.object({
+        currentPassword: z.string(),
+        newPassword: z.string().min(6),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        const bcrypt = await import('bcryptjs');
+        const database = await getDb();
+        if (!database) throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Database not available' });
+        
+        // Only allow password change for email/password accounts
+        if (ctx.user.loginMethod !== 'email') {
+          throw new TRPCError({ code: 'BAD_REQUEST', message: 'Password change not available for social login accounts' });
+        }
+        
+        // Get user with password
+        const userResult = await database.select().from(users).where(eq(users.id, ctx.user.id));
+        if (userResult.length === 0) {
+          throw new TRPCError({ code: 'NOT_FOUND', message: 'User not found' });
+        }
+        
+        const user = userResult[0];
+        if (!user.password) {
+          throw new TRPCError({ code: 'BAD_REQUEST', message: 'No password set for this account' });
+        }
+        
+        // Verify current password
+        const isValid = await bcrypt.compare(input.currentPassword, user.password);
+        if (!isValid) {
+          throw new TRPCError({ code: 'BAD_REQUEST', message: 'Current password is incorrect' });
+        }
+        
+        // Hash new password
+        const hashedPassword = await bcrypt.hash(input.newPassword, 10);
+        
+        // Update password
+        await database.update(users)
+          .set({ password: hashedPassword })
+          .where(eq(users.id, ctx.user.id));
+        
+        return { success: true, message: 'Password changed successfully' };
+      }),
   }),
 
   learningPaths: router({

@@ -243,3 +243,26 @@
 - [ ] Test Google login flow
 - [ ] Test Microsoft login flow
 - [ ] Test Facebook login flow
+
+## User Profile Management
+- [x] Create Profile page component
+- [x] Add profile route to App.tsx
+- [x] Add profile link to navigation
+- [x] Implement update profile name endpoint
+- [x] Implement update email endpoint
+- [x] Implement change password endpoint
+- [x] Create password change form
+- [x] Add email change confirmation flow
+- [x] Display connected social accounts
+- [ ] Add account deletion functionality
+- [ ] Add profile avatar upload
+- [ ] Test profile update functionality
+
+## OAuth Provider Configuration
+- [x] Create step-by-step OAuth setup guide
+- [x] Document Google OAuth configuration
+- [x] Document Microsoft OAuth configuration
+- [x] Document Facebook OAuth configuration
+- [x] Create environment variable checklist
+- [x] Add troubleshooting section
+- [ ] Test OAuth flows with test credentials
