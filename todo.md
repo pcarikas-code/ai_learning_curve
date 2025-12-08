@@ -352,3 +352,14 @@
 - [ ] Seed learning paths and modules
 - [ ] Create final checkpoint for Manus deployment
 - [ ] Publish to Manus hosting
+
+## NLP and Computer Vision Content
+- [x] Create initial NLP modules (2 modules added)
+- [x] Create initial Computer Vision modules (2 modules added)
+- [x] Create seed script for NLP and CV modules
+- [x] Test module loading locally
+- [x] Verify modules display on learning paths pages
+- [ ] Add more comprehensive NLP content (6-8 more modules)
+- [ ] Add more comprehensive CV content (6-8 more modules)
+- [ ] Create quizzes for NLP and CV modules
+- [ ] Clean up duplicate modules in database
