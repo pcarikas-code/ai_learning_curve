@@ -276,3 +276,10 @@
 - [x] Update SocialLoginButtons component to show only Microsoft
 - [x] Comment out Google and Facebook buttons
 - [x] Test Microsoft-only social login
+
+## Disable Microsoft OAuth
+- [x] Remove SocialLoginButtons from Login page
+- [x] Remove SocialLoginButtons from Register page
+- [x] Disable Passport initialization in server
+- [x] Test email/password login only
+- [ ] Redeploy to Vercel

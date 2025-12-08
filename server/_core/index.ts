@@ -2,14 +2,14 @@ import "dotenv/config";
 import express from "express";
 import { createServer } from "http";
 import net from "net";
-import session from "express-session";
-import passport from "passport";
+// import session from "express-session";
+// import passport from "passport";
 import { createExpressMiddleware } from "@trpc/server/adapters/express";
 import { registerOAuthRoutes } from "./oauth";
 import { appRouter } from "../routers";
 import { createContext } from "./context";
 import { serveStatic, setupVite } from "./vite";
-import { configureSocialAuth } from "../socialAuth";
+// import { configureSocialAuth } from "../socialAuth";
 import jwt from "jsonwebtoken";
 import { COOKIE_NAME, getSessionCookieOptions } from "./cookies";
 
@@ -43,7 +43,8 @@ async function startServer() {
   app.use(express.json({ limit: "50mb" }));
   app.use(express.urlencoded({ limit: "50mb", extended: true }));
   
-  // Session configuration for Passport
+  // Session configuration for Passport (disabled)
+  /*
   app.use(
     session({
       secret: process.env.JWT_SECRET || 'default-secret-change-in-production',
@@ -56,16 +57,17 @@ async function startServer() {
       },
     })
   );
+  */
   
-  // Initialize Passport
-  app.use(passport.initialize());
-  app.use(passport.session());
+  // Initialize Passport (disabled)
+  // app.use(passport.initialize());
+  // app.use(passport.session());
   
-  // Configure social auth strategies
-  const baseUrl = process.env.NODE_ENV === 'production'
-    ? process.env.BASE_URL || 'https://ai-learning-curve.vercel.app'
-    : 'http://localhost:3000';
-  configureSocialAuth(baseUrl);
+  // Configure social auth strategies (disabled)
+  // const baseUrl = process.env.NODE_ENV === 'production'
+  //   ? process.env.BASE_URL || 'https://ai-learning-curve.vercel.app'
+  //   : 'http://localhost:3000';
+  // configureSocialAuth(baseUrl);
   
   // Import rate limiters
   const { apiRateLimiter } = await import("../rateLimiter");
@@ -73,7 +75,8 @@ async function startServer() {
   // Apply general API rate limiting
   app.use("/api", apiRateLimiter);
   
-  // Social auth routes
+  // Social auth routes (disabled)
+  /*
   app.get('/api/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
   app.get('/api/auth/google/callback',
     passport.authenticate('google', { failureRedirect: '/login?error=google_auth_failed' }),
@@ -124,6 +127,7 @@ async function startServer() {
       res.redirect('/dashboard');
     }
   );
+  */
   
   // OAuth callback under /api/oauth/callback
   registerOAuthRoutes(app);
