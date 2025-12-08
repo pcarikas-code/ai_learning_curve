@@ -5,8 +5,35 @@ import { publicProcedure, protectedProcedure, router } from "./_core/trpc";
 import { z } from "zod";
 import * as db from "./db";
 import { certificateRouter } from "./certificateRouter";
+import { TRPCError } from "@trpc/server";
+import { eq } from "drizzle-orm";
+import { users } from "../drizzle/schema";
+import { getDb } from "./db";
 
 export const appRouter = router({
+  user: router({
+    updateOnboarding: protectedProcedure
+      .input(z.object({
+        experienceLevel: z.string(),
+        learningGoals: z.string(),
+        interests: z.string(),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        const db = await getDb();
+        if (!db) throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Database not available' });
+        
+        await db.update(users)
+          .set({
+            experienceLevel: input.experienceLevel,
+            learningGoals: input.learningGoals,
+            interests: input.interests,
+            onboardingCompleted: 1,
+          })
+          .where(eq(users.id, ctx.user.id));
+        
+        return { success: true };
+      }),
+  }),
   system: systemRouter,
   auth: router({
     me: publicProcedure.query(opts => opts.ctx.user),

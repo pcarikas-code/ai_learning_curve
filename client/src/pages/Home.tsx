@@ -1,6 +1,9 @@
 import { useAuth } from "@/_core/hooks/useAuth";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
+import { WelcomeWizard } from "@/components/WelcomeWizard";
+import { InteractiveTutorial } from "@/components/InteractiveTutorial";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { getLoginUrl } from "@/const";
@@ -9,7 +12,28 @@ import { ArrowRight, BookOpen, Brain, Cpu, Eye, MessageSquare, Network, Sparkles
 import { Link } from "wouter";
 
 export default function Home() {
-  const { isAuthenticated, loading: authLoading } = useAuth();
+  const { user, isAuthenticated, loading: authLoading } = useAuth();
+  const [showWizard, setShowWizard] = useState(false);
+  const [showTutorial, setShowTutorial] = useState(false);
+
+  useEffect(() => {
+    if (user && user.onboardingCompleted === 0) {
+      setShowWizard(true);
+    }
+  }, [user]);
+
+  const handleWizardComplete = () => {
+    setShowWizard(false);
+    setShowTutorial(true);
+  };
+
+  const handleTutorialComplete = () => {
+    setShowTutorial(false);
+  };
+
+  const handleTutorialSkip = () => {
+    setShowTutorial(false);
+  };
   const { data: learningPaths, isLoading } = trpc.learningPaths.list.useQuery();
 
   const iconMap: Record<string, React.ElementType> = {
@@ -29,8 +53,13 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navigation />
+    <>
+      {showWizard && <WelcomeWizard onComplete={handleWizardComplete} />}
+      {showTutorial && (
+        <InteractiveTutorial onComplete={handleTutorialComplete} onSkip={handleTutorialSkip} />
+      )}
+      <div className="min-h-screen bg-background">
+        <Navigation />
 
       {/* Hero Section */}
       <section className="py-20 md:py-32 relative overflow-hidden">
@@ -193,6 +222,7 @@ export default function Home() {
       </section>
 
       <Footer />
-    </div>
+      </div>
+    </>
   );
 }

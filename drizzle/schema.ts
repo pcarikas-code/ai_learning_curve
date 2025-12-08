@@ -13,7 +13,13 @@ export const users = mysqlTable("users", {
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
   lastSignedIn: timestamp("lastSignedIn").defaultNow().notNull(),
-});export type User = typeof users.$inferSelect;
+  onboardingCompleted: int("onboardingCompleted").default(0).notNull(), // 0 = not started, 1 = completed
+  experienceLevel: varchar("experienceLevel", { length: 50 }), // beginner, intermediate, advanced
+  learningGoals: text("learningGoals"), // JSON array of goals
+  interests: text("interests"), // JSON array of interest areas
+});
+
+export type User = typeof users.$inferSelect;
 export type InsertUser = typeof users.$inferInsert;
 
 /**

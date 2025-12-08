@@ -122,3 +122,17 @@
 - [x] Create quiz questions for all NLP modules (7 modules × 3-5 questions each)
 - [x] Create quiz questions for all Computer Vision modules (7 modules × 3-5 questions each)
 - [x] Verify all quiz questions are properly seeded to database
+
+## Onboarding System
+- [x] Create user preferences/profile table in database (added fields to users table)
+- [x] Build welcome wizard component with multi-step form
+- [x] Add experience level selection (Beginner, Intermediate, Advanced)
+- [x] Add learning goals selection (Career change, Skill upgrade, Academic, Hobby)
+- [x] Add interest areas selection (ML, DL, NLP, CV, all)
+- [x] Generate personalized path recommendations based on selections
+- [x] Create interactive tutorial component with tooltips
+- [x] Add feature highlights (Progress tracking, Quizzes, Notes, Certificates)
+- [x] Implement tutorial navigation and skip functionality
+- [x] Store onboarding completion status in user profile
+- [x] Show wizard only for first-time users
+- [ ] Add "Take Tour" option in user menu for returning users

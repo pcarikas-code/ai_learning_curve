@@ -1,0 +1,22 @@
+{
+  "query": "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'users' AND COLUMN_NAME IN ('onboardingCompleted', 'experienceLevel', 'learningGoals', 'interests')",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3xdfM6hBeGk8i8i.49c2bd1d0122 --database WzEfFSNW3r85DCdw7RuniC --execute SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'users' AND COLUMN_NAME IN ('onboardingCompleted', 'experienceLevel', 'learningGoals', 'interests')",
+  "rows": [
+    {
+      "COLUMN_NAME": "onboardingCompleted"
+    },
+    {
+      "COLUMN_NAME": "experienceLevel"
+    },
+    {
+      "COLUMN_NAME": "learningGoals"
+    },
+    {
+      "COLUMN_NAME": "interests"
+    }
+  ],
+  "messages": [],
+  "stdout": "COLUMN_NAME\nonboardingCompleted\nexperienceLevel\nlearningGoals\ninterests\n",
+  "stderr": "",
+  "execution_time_ms": 1607
+}
