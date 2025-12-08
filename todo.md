@@ -136,3 +136,8 @@
 - [x] Store onboarding completion status in user profile
 - [x] Show wizard only for first-time users
 - [ ] Add "Take Tour" option in user menu for returning users
+
+## Bug Fix - Vite WebSocket Connection
+- [x] Fix Vite HMR WebSocket connection error in proxied environment
+- [x] Configure Vite server.hmr settings for Manus proxy
+- [x] Test hot module replacement functionality
