@@ -7,6 +7,7 @@ import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { getLoginUrl } from "@/const";
 import { trpc } from "@/lib/trpc";
+import EmailVerificationBanner from "@/components/EmailVerificationBanner";
 import { ArrowRight, BookOpen, BookmarkCheck, Brain, CheckCircle2, Clock, Sparkles, TrendingUp } from "lucide-react";
 import { Link, useLocation } from "wouter";
 
@@ -67,6 +68,11 @@ export default function Dashboard() {
       {/* Dashboard Content */}
       <div className="py-12">
         <div className="container">
+          {/* Email Verification Banner */}
+          {user && user.emailVerified === 0 && user.email && (
+            <EmailVerificationBanner email={user.email} />
+          )}
+
           {/* Header */}
           <div className="mb-8">
             <h1 className="text-4xl font-bold mb-2">Welcome back, {user?.name || "Learner"}!</h1>

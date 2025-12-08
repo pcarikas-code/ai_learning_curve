@@ -221,3 +221,25 @@
 - [x] Apply rate limiting to password reset endpoint
 - [x] Add rate limit error handling
 - [ ] Test rate limiting functionality
+
+## Email Verification Banner
+- [x] Create email verification banner component
+- [x] Add banner to Dashboard page
+- [x] Implement resend verification email functionality
+- [x] Add dismiss functionality for banner
+- [ ] Test verification banner display
+
+## Social Login Implementation
+- [x] Install Passport.js and OAuth strategies
+- [x] Configure Google OAuth strategy
+- [x] Configure Microsoft OAuth strategy
+- [x] Configure Facebook OAuth strategy
+- [x] Create social login callback endpoints
+- [x] Update database schema for social login provider info
+- [x] Create social login buttons UI
+- [x] Add social login to Login page
+- [x] Add social login to Register page
+- [x] Handle account linking for existing emails
+- [ ] Test Google login flow
+- [ ] Test Microsoft login flow
+- [ ] Test Facebook login flow

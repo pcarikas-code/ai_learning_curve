@@ -2,11 +2,16 @@ import "dotenv/config";
 import express from "express";
 import { createServer } from "http";
 import net from "net";
+import session from "express-session";
+import passport from "passport";
 import { createExpressMiddleware } from "@trpc/server/adapters/express";
 import { registerOAuthRoutes } from "./oauth";
 import { appRouter } from "../routers";
 import { createContext } from "./context";
 import { serveStatic, setupVite } from "./vite";
+import { configureSocialAuth } from "../socialAuth";
+import jwt from "jsonwebtoken";
+import { COOKIE_NAME, getSessionCookieOptions } from "./cookies";
 
 function isPortAvailable(port: number): Promise<boolean> {
   return new Promise(resolve => {
@@ -38,11 +43,87 @@ async function startServer() {
   app.use(express.json({ limit: "50mb" }));
   app.use(express.urlencoded({ limit: "50mb", extended: true }));
   
+  // Session configuration for Passport
+  app.use(
+    session({
+      secret: process.env.JWT_SECRET || 'default-secret-change-in-production',
+      resave: false,
+      saveUninitialized: false,
+      cookie: {
+        secure: process.env.NODE_ENV === 'production',
+        httpOnly: true,
+        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+      },
+    })
+  );
+  
+  // Initialize Passport
+  app.use(passport.initialize());
+  app.use(passport.session());
+  
+  // Configure social auth strategies
+  const baseUrl = process.env.NODE_ENV === 'production'
+    ? process.env.BASE_URL || 'https://ai-learning-curve.vercel.app'
+    : 'http://localhost:3000';
+  configureSocialAuth(baseUrl);
+  
   // Import rate limiters
   const { apiRateLimiter } = await import("../rateLimiter");
   
   // Apply general API rate limiting
   app.use("/api", apiRateLimiter);
+  
+  // Social auth routes
+  app.get('/api/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+  app.get('/api/auth/google/callback',
+    passport.authenticate('google', { failureRedirect: '/login?error=google_auth_failed' }),
+    (req, res) => {
+      // Create JWT token
+      const user = req.user as any;
+      const jwtSecret = process.env.JWT_SECRET || 'default-secret-change-in-production';
+      const token = jwt.sign({ userId: user.id, email: user.email }, jwtSecret, { expiresIn: '7d' });
+      
+      // Set cookie
+      const cookieOptions = getSessionCookieOptions(req);
+      res.cookie(COOKIE_NAME, token, cookieOptions);
+      
+      res.redirect('/dashboard');
+    }
+  );
+  
+  app.get('/api/auth/microsoft', passport.authenticate('microsoft', { scope: ['user.read'] }));
+  app.get('/api/auth/microsoft/callback',
+    passport.authenticate('microsoft', { failureRedirect: '/login?error=microsoft_auth_failed' }),
+    (req, res) => {
+      // Create JWT token
+      const user = req.user as any;
+      const jwtSecret = process.env.JWT_SECRET || 'default-secret-change-in-production';
+      const token = jwt.sign({ userId: user.id, email: user.email }, jwtSecret, { expiresIn: '7d' });
+      
+      // Set cookie
+      const cookieOptions = getSessionCookieOptions(req);
+      res.cookie(COOKIE_NAME, token, cookieOptions);
+      
+      res.redirect('/dashboard');
+    }
+  );
+  
+  app.get('/api/auth/facebook', passport.authenticate('facebook', { scope: ['email'] }));
+  app.get('/api/auth/facebook/callback',
+    passport.authenticate('facebook', { failureRedirect: '/login?error=facebook_auth_failed' }),
+    (req, res) => {
+      // Create JWT token
+      const user = req.user as any;
+      const jwtSecret = process.env.JWT_SECRET || 'default-secret-change-in-production';
+      const token = jwt.sign({ userId: user.id, email: user.email }, jwtSecret, { expiresIn: '7d' });
+      
+      // Set cookie
+      const cookieOptions = getSessionCookieOptions(req);
+      res.cookie(COOKIE_NAME, token, cookieOptions);
+      
+      res.redirect('/dashboard');
+    }
+  );
   
   // OAuth callback under /api/oauth/callback
   registerOAuthRoutes(app);
