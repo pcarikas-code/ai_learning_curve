@@ -64,6 +64,7 @@ export const appRouter = router({
         moduleId: z.number(),
         status: z.enum(["not_started", "in_progress", "completed"]),
         progressPercent: z.number().min(0).max(100),
+        timeSpentMinutes: z.number().optional(),
         completedAt: z.date().optional(),
       }))
       .mutation(async ({ ctx, input }) => {
@@ -72,6 +73,8 @@ export const appRouter = router({
           moduleId: input.moduleId,
           status: input.status,
           progressPercent: input.progressPercent,
+          timeSpentMinutes: input.timeSpentMinutes,
+          lastAccessedAt: new Date(),
           completedAt: input.completedAt,
           startedAt: input.status !== "not_started" ? new Date() : undefined,
         });
@@ -126,6 +129,42 @@ export const appRouter = router({
   }),
 
   certificates: certificateRouter,
+
+  notes: router({
+    list: protectedProcedure
+      .input(z.object({ moduleId: z.number() }))
+      .query(async ({ ctx, input }) => {
+        return db.getModuleNotes(ctx.user.id, input.moduleId);
+      }),
+    create: protectedProcedure
+      .input(z.object({
+        moduleId: z.number(),
+        content: z.string(),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        await db.createModuleNote({
+          userId: ctx.user.id,
+          moduleId: input.moduleId,
+          content: input.content,
+        });
+        return { success: true };
+      }),
+    update: protectedProcedure
+      .input(z.object({
+        id: z.number(),
+        content: z.string(),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        await db.updateModuleNote(input.id, input.content);
+        return { success: true };
+      }),
+    delete: protectedProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(async ({ ctx, input }) => {
+        await db.deleteModuleNote(input.id, ctx.user.id);
+        return { success: true };
+      }),
+  }),
 
   bookmarks: router({
     list: protectedProcedure.query(async ({ ctx }) => {

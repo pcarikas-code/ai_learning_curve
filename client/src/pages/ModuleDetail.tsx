@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { Breadcrumb } from "@/components/Breadcrumb";
+import { ModuleNotes } from "@/components/ModuleNotes";
 import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { getLoginUrl } from "@/const";
@@ -173,6 +174,13 @@ export default function ModuleDetail() {
               <Streamdown>{module.content}</Streamdown>
             </CardContent>
           </Card>
+
+          {/* Module Notes */}
+          {isAuthenticated && (
+            <div className="mb-8">
+              <ModuleNotes moduleId={module.id} />
+            </div>
+          )}
 
           {/* Action Buttons */}
           {isAuthenticated && !isCompleted && (

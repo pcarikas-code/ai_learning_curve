@@ -22,6 +22,20 @@
       "when": 1765060042970,
       "tag": "0002_bent_hairball",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1765158030463,
+      "tag": "0003_mighty_logan",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1765158150036,
+      "tag": "0004_abnormal_stephen_strange",
+      "breakpoints": true
     }
   ]
 }

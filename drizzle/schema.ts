@@ -13,10 +13,25 @@ export const users = mysqlTable("users", {
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
   lastSignedIn: timestamp("lastSignedIn").defaultNow().notNull(),
+});export type User = typeof users.$inferSelect;
+export type InsertUser = typeof users.$inferInsert;
+
+/**
+ * Module notes table for user's personal learning notes
+ */
+export const moduleNotes = mysqlTable("module_notes", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("user_id").notNull(),
+  moduleId: int("module_id").notNull(),
+  content: text("content").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
 });
 
-export type User = typeof users.$inferSelect;
-export type InsertUser = typeof users.$inferInsert;
+export type ModuleNote = typeof moduleNotes.$inferSelect;
+export type InsertModuleNote = typeof moduleNotes.$inferInsert;
+
+// TODO: Add your tables here
 
 export const certificates = mysqlTable("certificates", {
   id: int("id").autoincrement().primaryKey(),
@@ -79,9 +94,10 @@ export const userProgress = mysqlTable("user_progress", {
   moduleId: int("module_id").notNull(),
   status: mysqlEnum("status", ["not_started", "in_progress", "completed"]).default("not_started").notNull(),
   progressPercent: int("progress_percent").default(0).notNull(),
+  timeSpentMinutes: int("time_spent_minutes").default(0).notNull(),
+  lastAccessedAt: timestamp("last_accessed_at"),
   startedAt: timestamp("started_at"),
   completedAt: timestamp("completed_at"),
-  lastAccessedAt: timestamp("last_accessed_at").defaultNow().notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
 });

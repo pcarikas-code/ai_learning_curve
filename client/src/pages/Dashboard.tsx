@@ -53,7 +53,11 @@ export default function Dashboard() {
   const totalStarted = completedCount + inProgressCount;
 
   const recentProgress = userProgress
-    ?.sort((a, b) => new Date(b.lastAccessedAt).getTime() - new Date(a.lastAccessedAt).getTime())
+    ?.sort((a, b) => {
+      const dateA = a.lastAccessedAt ? new Date(a.lastAccessedAt).getTime() : 0;
+      const dateB = b.lastAccessedAt ? new Date(b.lastAccessedAt).getTime() : 0;
+      return dateB - dateA;
+    })
     .slice(0, 5);
 
   return (
@@ -140,7 +144,7 @@ export default function Dashboard() {
                           <div className="flex-1">
                             <CardTitle className="text-lg">Module #{progress.moduleId}</CardTitle>
                             <CardDescription>
-                              Last accessed: {new Date(progress.lastAccessedAt).toLocaleDateString()}
+                              Last accessed: {progress.lastAccessedAt ? new Date(progress.lastAccessedAt).toLocaleDateString() : 'Never'}
                             </CardDescription>
                           </div>
                           <div className="flex items-center gap-2">

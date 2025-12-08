@@ -12,12 +12,14 @@ import {
   quizAttempts, 
   resources, 
   bookmarks,
+  moduleNotes,
   InsertLearningPath,
   InsertModule,
   InsertUserProgress,
   InsertQuiz,
   InsertQuizQuestion,
   InsertQuizAttempt,
+  InsertModuleNote,
   InsertResource,
   InsertBookmark
 } from "../drizzle/schema";
@@ -333,4 +335,83 @@ export async function getCertificateByNumber(certificateNumber: string) {
     .limit(1);
 
   return result.length > 0 ? result[0] : undefined;
+}
+
+// Module Notes functions
+export async function createModuleNote(note: InsertModuleNote) {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot create note: database not available");
+    return undefined;
+  }
+
+  const result = await db.insert(moduleNotes).values(note);
+  return result;
+}
+
+export async function updateModuleNote(id: number, content: string) {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot update note: database not available");
+    return undefined;
+  }
+
+  await db
+    .update(moduleNotes)
+    .set({ content, updatedAt: new Date() })
+    .where(eq(moduleNotes.id, id));
+  
+  return { success: true };
+}
+
+export async function deleteModuleNote(id: number, userId: number) {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot delete note: database not available");
+    return undefined;
+  }
+
+  await db
+    .delete(moduleNotes)
+    .where(and(
+      eq(moduleNotes.id, id),
+      eq(moduleNotes.userId, userId)
+    ));
+  
+  return { success: true };
+}
+
+export async function getModuleNotes(userId: number, moduleId: number) {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot get notes: database not available");
+    return [];
+  }
+
+  const result = await db
+    .select()
+    .from(moduleNotes)
+    .where(and(
+      eq(moduleNotes.userId, userId),
+      eq(moduleNotes.moduleId, moduleId)
+    ))
+    .orderBy(desc(moduleNotes.createdAt));
+
+  return result;
+}
+
+export async function getAllUserNotes(userId: number) {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot get notes: database not available");
+    return [];
+  }
+
+  const result = await db
+    .select()
+    .from(moduleNotes)
+    .where(eq(moduleNotes.userId, userId))
+    .orderBy(desc(moduleNotes.createdAt));
+
+  return result;
 }

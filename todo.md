@@ -94,3 +94,12 @@
 
 ## Bug Fixes (Round 3)
 - [x] Fix progress query returning undefined instead of null when no progress exists
+
+## New Features - Progress & Notes
+- [x] Add module notes database schema
+- [x] Create notes API endpoints (create, update, delete, list)
+- [x] Implement auto-save progress tracking based on scroll position
+- [x] Track time spent on each module
+- [x] Create notes UI component with rich text editor
+- [x] Add notes sidebar/panel to module detail page
+- [x] Implement auto-save for notes
