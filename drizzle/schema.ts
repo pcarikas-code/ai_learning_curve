@@ -57,6 +57,24 @@ export const certificates = mysqlTable("certificates", {
 export type Certificate = typeof certificates.$inferSelect;
 export type InsertCertificate = typeof certificates.$inferInsert;
 
+/**
+ * Path enrollment tracking
+ */
+export const pathEnrollments = mysqlTable("path_enrollments", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("user_id").notNull(),
+  pathId: int("path_id").notNull(),
+  enrolledAt: timestamp("enrolled_at").defaultNow().notNull(),
+  completedAt: timestamp("completed_at"),
+  progressPercent: int("progress_percent").default(0).notNull(),
+  lastAccessedAt: timestamp("last_accessed_at"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+});
+
+export type PathEnrollment = typeof pathEnrollments.$inferSelect;
+export type InsertPathEnrollment = typeof pathEnrollments.$inferInsert;
+
 // TODO: Add your tables here
 export const learningPaths = mysqlTable("learning_paths", {
   id: int("id").autoincrement().primaryKey(),

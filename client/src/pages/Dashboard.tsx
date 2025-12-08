@@ -8,6 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { getLoginUrl } from "@/const";
 import { trpc } from "@/lib/trpc";
 import EmailVerificationBanner from "@/components/EmailVerificationBanner";
+import { MyLearning } from "@/components/MyLearning";
 import { ArrowRight, BookOpen, BookmarkCheck, Brain, CheckCircle2, Clock, Sparkles, TrendingUp } from "lucide-react";
 import { Link, useLocation } from "wouter";
 
@@ -77,6 +78,11 @@ export default function Dashboard() {
           <div className="mb-8">
             <h1 className="text-4xl font-bold mb-2">Welcome back, {user?.name || "Learner"}!</h1>
             <p className="text-xl text-muted-foreground">Continue your AI learning journey</p>
+          </div>
+
+          {/* My Learning Section */}
+          <div className="mb-8">
+            <MyLearning />
           </div>
 
           {/* Stats Cards */}

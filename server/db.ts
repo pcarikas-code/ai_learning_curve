@@ -13,6 +13,7 @@ import {
   resources, 
   bookmarks,
   moduleNotes,
+  pathEnrollments,
   InsertLearningPath,
   InsertModule,
   InsertUserProgress,
@@ -21,7 +22,8 @@ import {
   InsertQuizAttempt,
   InsertModuleNote,
   InsertResource,
-  InsertBookmark
+  InsertBookmark,
+  InsertPathEnrollment
 } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
@@ -130,6 +132,66 @@ export async function getLearningPathBySlug(slug: string) {
   
   const result = await db.select().from(learningPaths).where(eq(learningPaths.slug, slug)).limit(1);
   return result.length > 0 ? result[0] : undefined;
+}
+
+export async function enrollInPath(userId: number, pathId: number) {
+  const db = await getDb();
+  if (!db) return null;
+  
+  // Check if already enrolled
+  const existing = await db.select().from(pathEnrollments)
+    .where(and(eq(pathEnrollments.userId, userId), eq(pathEnrollments.pathId, pathId)))
+    .limit(1);
+  
+  if (existing.length > 0) {
+    return existing[0];
+  }
+  
+  // Enroll user
+  await db.insert(pathEnrollments).values({
+    userId,
+    pathId,
+    progressPercent: 0,
+  });
+  
+  const result = await db.select().from(pathEnrollments)
+    .where(and(eq(pathEnrollments.userId, userId), eq(pathEnrollments.pathId, pathId)))
+    .limit(1);
+  
+  return result.length > 0 ? result[0] : null;
+}
+
+export async function getEnrolledPaths(userId: number) {
+  const db = await getDb();
+  if (!db) return [];
+  
+  const enrollments = await db.select()
+    .from(pathEnrollments)
+    .where(eq(pathEnrollments.userId, userId))
+    .orderBy(desc(pathEnrollments.enrolledAt));
+  
+  // Get path details for each enrollment
+  const pathIds = enrollments.map(e => e.pathId);
+  const paths = await db.select().from(learningPaths).where(eq(learningPaths.isPublished, true));
+  
+  return enrollments.map(enrollment => {
+    const path = paths.find(p => p.id === enrollment.pathId);
+    return {
+      ...enrollment,
+      path,
+    };
+  }).filter(e => e.path); // Filter out paths that don't exist
+}
+
+export async function getEnrollmentStatus(userId: number, pathId: number) {
+  const db = await getDb();
+  if (!db) return null;
+  
+  const result = await db.select().from(pathEnrollments)
+    .where(and(eq(pathEnrollments.userId, userId), eq(pathEnrollments.pathId, pathId)))
+    .limit(1);
+  
+  return result.length > 0 ? result[0] : null;
 }
 
 // ===== Modules =====

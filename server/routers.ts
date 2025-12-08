@@ -370,6 +370,19 @@ export const appRouter = router({
       .query(async ({ input }) => {
         return db.getLearningPathBySlug(input.slug);
       }),
+    enroll: protectedProcedure
+      .input(z.object({ pathId: z.number() }))
+      .mutation(async ({ ctx, input }) => {
+        return db.enrollInPath(ctx.user.id, input.pathId);
+      }),
+    getEnrolled: protectedProcedure.query(async ({ ctx }) => {
+      return db.getEnrolledPaths(ctx.user.id);
+    }),
+    getEnrollmentStatus: protectedProcedure
+      .input(z.object({ pathId: z.number() }))
+      .query(async ({ ctx, input }) => {
+        return db.getEnrollmentStatus(ctx.user.id, input.pathId);
+      }),
   }),
 
   modules: router({

@@ -300,3 +300,28 @@
 - [x] Update frontend to display learning paths
 - [ ] Add path enrollment functionality
 - [x] Test learning paths display
+
+## Expand Learning Paths
+- [x] Add 10+ modules to AI Fundamentals path
+- [x] Add 10+ modules to Machine Learning Essentials path
+- [x] Add modules to Deep Learning path
+- [ ] Add modules to NLP path
+- [ ] Add modules to Computer Vision path
+- [x] Create detailed module content with examples
+
+## Create Quizzes
+- [x] Create quizzes for each module
+- [x] Add 5-10 questions per quiz
+- [x] Include multiple choice, true/false, and code questions
+- [x] Add explanations for correct answers
+- [x] Set passing scores for quizzes
+
+## Path Enrollment
+- [x] Create path enrollment database schema
+- [x] Implement enroll in path API endpoint
+- [x] Implement get enrolled paths API endpoint
+- [x] Create My Learning section on Dashboard
+- [x] Display enrolled paths with progress
+- [x] Show next recommended module
+- [x] Add path completion tracking
+- [ ] Test enrollment functionality

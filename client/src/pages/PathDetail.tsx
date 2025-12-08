@@ -26,6 +26,26 @@ export default function PathDetail() {
     { pathId: path?.id || 0 },
     { enabled: !!path?.id && isAuthenticated }
   );
+  const { data: enrollmentStatus } = trpc.learningPaths.getEnrollmentStatus.useQuery(
+    { pathId: path?.id || 0 },
+    { enabled: !!path?.id && isAuthenticated }
+  );
+
+  const enrollMutation = trpc.learningPaths.enroll.useMutation({
+    onSuccess: () => {
+      toast.success("Enrolled successfully!");
+      utils.learningPaths.getEnrollmentStatus.invalidate();
+      utils.learningPaths.getEnrolled.invalidate();
+    },
+    onError: (error) => {
+      toast.error(error.message || "Failed to enroll");
+    },
+  });
+
+  const handleEnroll = () => {
+    if (!path?.id) return;
+    enrollMutation.mutate({ pathId: path.id });
+  };
 
   const generateCertificate = trpc.certificates.generate.useMutation({
     onSuccess: () => {
@@ -118,7 +138,15 @@ export default function PathDetail() {
               )}
             </div>
 
-            {isAuthenticated && totalModules > 0 && (
+            {isAuthenticated && !enrollmentStatus && (
+              <div className="mt-6">
+                <Button onClick={handleEnroll} size="lg" disabled={enrollMutation.isPending}>
+                  {enrollMutation.isPending ? "Enrolling..." : "Enroll in this Path"}
+                </Button>
+              </div>
+            )}
+
+            {isAuthenticated && enrollmentStatus && totalModules > 0 && (
               <div className="mt-6 p-4 bg-card rounded-lg border">
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-sm font-medium">Your Progress</span>
