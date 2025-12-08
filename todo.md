@@ -117,3 +117,8 @@
 - [x] Add retake functionality with attempt limit or cooldown
 - [x] Show quiz results summary with correct answers review
 - [ ] Update module completion to require passing quiz
+
+## Quiz Completion - NLP & Computer Vision
+- [x] Create quiz questions for all NLP modules (7 modules × 3-5 questions each)
+- [x] Create quiz questions for all Computer Vision modules (7 modules × 3-5 questions each)
+- [x] Verify all quiz questions are properly seeded to database
