@@ -1,4 +1,5 @@
 import { useAuth } from "@/_core/hooks/useAuth";
+import { useAchievements } from "@/hooks/useAchievements";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { WelcomeWizard } from "@/components/WelcomeWizard";
@@ -12,7 +13,8 @@ import { ArrowRight, BookOpen, Brain, Cpu, Eye, MessageSquare, Network, Sparkles
 import { Link } from "wouter";
 
 export default function Home() {
-  const { user, isAuthenticated, loading: authLoading } = useAuth();
+  const { user, isAuthenticated } = useAuth();
+  const { checkAchievements, NotificationContainer } = useAchievements();
   const [showWizard, setShowWizard] = useState(false);
   const [showTutorial, setShowTutorial] = useState(false);
 
@@ -22,9 +24,11 @@ export default function Home() {
     }
   }, [user]);
 
-  const handleWizardComplete = () => {
+  const handleWizardComplete = async () => {
     setShowWizard(false);
     setShowTutorial(true);
+    // Check for Early Bird achievement after onboarding
+    await checkAchievements();
   };
 
   const handleTutorialComplete = () => {
@@ -54,6 +58,7 @@ export default function Home() {
 
   return (
     <>
+      <NotificationContainer />
       {showWizard && <WelcomeWizard onComplete={handleWizardComplete} />}
       {showTutorial && (
         <InteractiveTutorial onComplete={handleTutorialComplete} onSkip={handleTutorialSkip} />

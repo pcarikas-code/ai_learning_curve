@@ -57,6 +57,13 @@
       "when": 1765161661919,
       "tag": "0007_living_overlord",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "5",
+      "when": 1765162549218,
+      "tag": "0008_material_lady_deathstrike",
+      "breakpoints": true
     }
   ]
 }

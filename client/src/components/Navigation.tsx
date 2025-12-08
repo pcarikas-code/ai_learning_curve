@@ -54,6 +54,9 @@ export function Navigation() {
             <Link href="/dashboard">
               <Button variant={location === "/dashboard" ? "default" : "ghost"}>Dashboard</Button>
             </Link>
+            <Link href="/achievements">
+              <Button variant={location === "/achievements" ? "default" : "ghost"}>Achievements</Button>
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}
@@ -90,6 +93,9 @@ export function Navigation() {
             </Link>
             <Link href="/dashboard" onClick={() => setIsMobileMenuOpen(false)}>
               <Button variant={location === "/dashboard" ? "default" : "ghost"} className="w-full justify-start">Dashboard</Button>
+            </Link>
+            <Link href="/achievements" onClick={() => setIsMobileMenuOpen(false)}>
+              <Button variant={location === "/achievements" ? "default" : "ghost"} className="w-full justify-start">Achievements</Button>
             </Link>
           </div>
         )}

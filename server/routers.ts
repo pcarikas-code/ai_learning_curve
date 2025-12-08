@@ -7,8 +7,9 @@ import * as db from "./db";
 import { certificateRouter } from "./certificateRouter";
 import { TRPCError } from "@trpc/server";
 import { eq } from "drizzle-orm";
-import { users } from "../drizzle/schema";
+import { users, achievements } from "../drizzle/schema";
 import { getDb } from "./db";
+import * as achievementService from "./achievementService";
 
 export const appRouter = router({
   user: router({
@@ -253,6 +254,38 @@ export const appRouter = router({
       .query(async ({ ctx, input }) => {
         return db.checkBookmark(ctx.user.id, input.itemType, input.itemId);
       }),
+  }),
+
+  achievements: router({
+    // Get all achievements earned by the user
+    getUserAchievements: protectedProcedure.query(async ({ ctx }) => {
+      return achievementService.getUserAchievements(ctx.user.id);
+    }),
+
+    // Get achievement progress stats
+    getProgress: protectedProcedure.query(async ({ ctx }) => {
+      return achievementService.getAchievementProgress(ctx.user.id);
+    }),
+
+    // Check all achievements and award any newly earned
+    checkAll: protectedProcedure.mutation(async ({ ctx }) => {
+      const newAchievements = await achievementService.checkAllAchievements(ctx.user.id);
+      return { newAchievements };
+    }),
+
+    // Check specific achievement
+    check: protectedProcedure
+      .input(z.object({ achievementKey: z.string() }))
+      .mutation(async ({ ctx, input }) => {
+        return achievementService.checkAchievement(ctx.user.id, input.achievementKey);
+      }),
+
+    // Get all available achievements (for display)
+    listAll: publicProcedure.query(async () => {
+      const db = await getDb();
+      if (!db) return [];
+      return db.select().from(achievements).where(eq(achievements.isActive, true));
+    }),
   }),
 });
 

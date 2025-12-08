@@ -14,6 +14,7 @@ import { useEffect, useState } from "react";
 import { Streamdown } from "streamdown";
 import { Link, useParams } from "wouter";
 import { toast } from "sonner";
+import { useAchievements } from "@/hooks/useAchievements";
 
 export default function ModuleDetail() {
   const { slug } = useParams<{ slug: string }>();
@@ -30,10 +31,14 @@ export default function ModuleDetail() {
     { enabled: !!module?.id && isAuthenticated }
   );
 
+  const { checkAchievements, NotificationContainer } = useAchievements();
+
   const updateProgress = trpc.progress.update.useMutation({
-    onSuccess: () => {
+    onSuccess: async () => {
       utils.progress.get.invalidate();
       utils.progress.getAll.invalidate();
+      // Check for new achievements after progress update
+      await checkAchievements();
     },
   });
 
@@ -119,6 +124,7 @@ export default function ModuleDetail() {
 
   return (
     <div className="min-h-screen bg-background">
+      <NotificationContainer />
       <Navigation />
 
       {/* Module Content */}

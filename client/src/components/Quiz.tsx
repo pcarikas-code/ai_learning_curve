@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Progress } from "@/components/ui/progress";
 import { CheckCircle2, XCircle, Trophy, RotateCcw, Clock } from "lucide-react";
 import { toast } from "sonner";
+import { useAchievements } from "@/hooks/useAchievements";
 
 interface QuizProps {
   moduleId: number;
@@ -19,6 +20,7 @@ export function Quiz({ moduleId, onComplete }: QuizProps) {
   const [timeRemaining, setTimeRemaining] = useState<number | null>(null);
 
   const utils = trpc.useUtils();
+  const { checkAchievements } = useAchievements();
   const { data: quiz, isLoading } = trpc.quizzes.getByModuleId.useQuery({ moduleId });
   const { data: questions } = trpc.quizzes.getQuestions.useQuery(
     { quizId: quiz?.id || 0 },
@@ -30,7 +32,7 @@ export function Quiz({ moduleId, onComplete }: QuizProps) {
   );
 
   const submitAttempt = trpc.quizzes.submitAttempt.useMutation({
-      onSuccess: (data: { attemptId: number; score: number; passed: boolean; correctCount: number; totalQuestions: number }) => {
+      onSuccess: async (data: { attemptId: number; score: number; passed: boolean; correctCount: number; totalQuestions: number }) => {
       setQuizAttemptId(data.attemptId);
       setShowResults(true);
       utils.quizzes.getAttempts.invalidate({ quizId: quiz?.id || 0 });
@@ -38,6 +40,9 @@ export function Quiz({ moduleId, onComplete }: QuizProps) {
       if (onComplete) {
         onComplete(data.score, data.passed);
       }
+
+      // Check for new achievements after quiz completion
+      await checkAchievements();
 
       if (data.passed) {
         toast.success(`Congratulations! You passed with ${data.score}%`);

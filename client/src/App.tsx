@@ -11,6 +11,7 @@ import PathDetail from "./pages/PathDetail";
 import ModuleDetail from "./pages/ModuleDetail";
 import Dashboard from "./pages/Dashboard";
 import Resources from "./pages/Resources";
+import Achievements from "./pages/Achievements";
 
 function Router() {
   return (
@@ -20,7 +21,7 @@ function Router() {
       <Route path="/paths/:slug" component={PathDetail} />
       <Route path="/modules/:slug" component={ModuleDetail} />
       <Route path="/dashboard" component={Dashboard} />
-        <Route path={"/"} component={Home} />
+      <Route path="/achievements" component={Achievements} />
       <Route path="/certificate/:pathId" component={Certificate} />
       <Route path="/404" component={NotFound} />
       <Route component={NotFound} />

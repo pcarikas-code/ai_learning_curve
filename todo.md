@@ -141,3 +141,17 @@
 - [x] Fix Vite HMR WebSocket connection error in proxied environment
 - [x] Configure Vite server.hmr settings for Manus proxy
 - [x] Test hot module replacement functionality
+
+## Achievement System
+- [x] Design achievement types and criteria (first module, quiz master, path completion, etc.)
+- [x] Create achievements database table with achievement definitions
+- [x] Create user_achievements table to track earned achievements
+- [x] Implement backend API for checking and awarding achievements
+- [x] Create achievement badge UI components
+- [x] Add achievement notification/toast when earned
+- [x] Display achievements on user dashboard
+- [x] Integrate achievement triggers after module completion
+- [x] Integrate achievement triggers after quiz completion
+- [x] Integrate achievement triggers after path completion
+- [x] Add achievement progress tracking
+- [x] Write unit tests for achievement system
