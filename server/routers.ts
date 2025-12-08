@@ -59,6 +59,11 @@ export const appRouter = router({
         // Hash password
         const hashedPassword = await bcrypt.hash(input.password, 10);
         
+        // Generate email verification token
+        const crypto = await import('crypto');
+        const verificationToken = crypto.randomBytes(32).toString('hex');
+        const verificationExpiry = new Date(Date.now() + 86400000); // 24 hours from now
+        
         // Create user
         const result = await database.insert(users).values({
           name: input.name,
@@ -66,9 +71,19 @@ export const appRouter = router({
           password: hashedPassword,
           loginMethod: 'email',
           role: 'user',
+          emailVerified: 0,
+          emailVerificationToken: verificationToken,
+          emailVerificationExpiry: verificationExpiry,
         });
         
-        const userId = Number((result as any).insertId);
+        // Get the created user
+        const userResult = await database.select().from(users).where(eq(users.email, input.email));
+        const userId = userResult[0].id;
+        
+        // Send verification email
+        const { sendEmailVerificationEmail } = await import('./emailService');
+        const baseUrl = `${ctx.req.protocol}://${ctx.req.get('host')}`;
+        await sendEmailVerificationEmail(input.email, verificationToken, baseUrl);
         
         // Create JWT token
         const jwtSecret = process.env.JWT_SECRET || 'default-secret-change-in-production';
@@ -78,7 +93,7 @@ export const appRouter = router({
         const cookieOptions = getSessionCookieOptions(ctx.req);
         ctx.res.cookie(COOKIE_NAME, token, cookieOptions);
         
-        return { success: true, userId };
+        return { success: true, userId, message: 'Registration successful. Please check your email to verify your account.' };
       }),
     login: publicProcedure
       .input(z.object({
@@ -123,6 +138,148 @@ export const appRouter = router({
         ctx.res.cookie(COOKIE_NAME, token, cookieOptions);
         
         return { success: true, user: { id: user.id, name: user.name, email: user.email } };
+      }),
+    requestPasswordReset: publicProcedure
+      .input(z.object({
+        email: z.string().email(),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        const crypto = await import('crypto');
+        const database = await getDb();
+        if (!database) throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Database not available' });
+        
+        // Find user
+        const userResult = await database.select().from(users).where(eq(users.email, input.email));
+        if (userResult.length === 0) {
+          // Don't reveal if email exists or not (security best practice)
+          return { success: true, message: 'If the email exists, a reset link has been sent' };
+        }
+        
+        const user = userResult[0];
+        
+        // Generate reset token
+        const resetToken = crypto.randomBytes(32).toString('hex');
+        const resetExpiry = new Date(Date.now() + 3600000); // 1 hour from now
+        
+        // Save token to database
+        await database.update(users)
+          .set({
+            passwordResetToken: resetToken,
+            passwordResetExpiry: resetExpiry,
+          })
+          .where(eq(users.id, user.id));
+        
+        // Send email
+        const { sendPasswordResetEmail } = await import('./emailService');
+        const baseUrl = `${ctx.req.protocol}://${ctx.req.get('host')}`;
+        await sendPasswordResetEmail(user.email, resetToken, baseUrl);
+        
+        return { success: true, message: 'If the email exists, a reset link has been sent' };
+      }),
+    resetPassword: publicProcedure
+      .input(z.object({
+        token: z.string(),
+        newPassword: z.string().min(6),
+      }))
+      .mutation(async ({ input }) => {
+        const bcrypt = await import('bcryptjs');
+        const database = await getDb();
+        if (!database) throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Database not available' });
+        
+        // Find user with valid token
+        const userResult = await database.select().from(users)
+          .where(eq(users.passwordResetToken, input.token));
+        
+        if (userResult.length === 0) {
+          throw new TRPCError({ code: 'BAD_REQUEST', message: 'Invalid or expired reset token' });
+        }
+        
+        const user = userResult[0];
+        
+        // Check if token is expired
+        if (!user.passwordResetExpiry || user.passwordResetExpiry < new Date()) {
+          throw new TRPCError({ code: 'BAD_REQUEST', message: 'Invalid or expired reset token' });
+        }
+        
+        // Hash new password
+        const hashedPassword = await bcrypt.hash(input.newPassword, 10);
+        
+        // Update password and clear reset token
+        await database.update(users)
+          .set({
+            password: hashedPassword,
+            passwordResetToken: null,
+            passwordResetExpiry: null,
+          })
+          .where(eq(users.id, user.id));
+        
+        return { success: true, message: 'Password reset successfully' };
+      }),
+    verifyEmail: publicProcedure
+      .input(z.object({
+        token: z.string(),
+      }))
+      .mutation(async ({ input }) => {
+        const database = await getDb();
+        if (!database) throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Database not available' });
+        
+        // Find user with valid token
+        const userResult = await database.select().from(users)
+          .where(eq(users.emailVerificationToken, input.token));
+        
+        if (userResult.length === 0) {
+          throw new TRPCError({ code: 'BAD_REQUEST', message: 'Invalid or expired verification token' });
+        }
+        
+        const user = userResult[0];
+        
+        // Check if token is expired
+        if (!user.emailVerificationExpiry || user.emailVerificationExpiry < new Date()) {
+          throw new TRPCError({ code: 'BAD_REQUEST', message: 'Invalid or expired verification token' });
+        }
+        
+        // Mark email as verified and clear token
+        await database.update(users)
+          .set({
+            emailVerified: 1,
+            emailVerificationToken: null,
+            emailVerificationExpiry: null,
+          })
+          .where(eq(users.id, user.id));
+        
+        return { success: true, message: 'Email verified successfully' };
+      }),
+    resendVerificationEmail: protectedProcedure
+      .mutation(async ({ ctx }) => {
+        const crypto = await import('crypto');
+        const database = await getDb();
+        if (!database) throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Database not available' });
+        
+        const user = ctx.user;
+        
+        // Check if already verified
+        if (user.emailVerified === 1) {
+          throw new TRPCError({ code: 'BAD_REQUEST', message: 'Email already verified' });
+        }
+        
+        // Generate verification token
+        const verificationToken = crypto.randomBytes(32).toString('hex');
+        const verificationExpiry = new Date(Date.now() + 86400000); // 24 hours from now
+        
+        // Save token to database
+        await database.update(users)
+          .set({
+            emailVerificationToken: verificationToken,
+            emailVerificationExpiry: verificationExpiry,
+          })
+          .where(eq(users.id, user.id));
+        
+        // Send email
+        const { sendEmailVerificationEmail } = await import('./emailService');
+        const baseUrl = `${ctx.req.protocol}://${ctx.req.get('host')}`;
+        await sendEmailVerificationEmail(user.email, verificationToken, baseUrl);
+        
+        return { success: true, message: 'Verification email sent' };
       }),
     logout: publicProcedure.mutation(({ ctx }) => {
       const cookieOptions = getSessionCookieOptions(ctx.req);

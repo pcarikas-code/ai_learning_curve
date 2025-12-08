@@ -197,3 +197,27 @@
 - [x] Remove Manus OAuth dependencies
 - [x] Test authentication flow
 - [x] Update environment variables documentation
+
+## Password Reset & Email Verification
+- [x] Add password reset tokens table to database schema
+- [x] Add email verification fields to users table
+- [x] Create password reset request endpoint
+- [x] Create password reset confirmation endpoint
+- [x] Create email verification endpoint
+- [x] Send password reset emails
+- [x] Send email verification emails
+- [x] Create Forgot Password UI page
+- [x] Create Reset Password UI page
+- [x] Create Email Verification UI page
+- [ ] Add email verification notice to dashboard
+- [ ] Test password reset flow
+- [ ] Test email verification flow
+
+## Rate Limiting
+- [x] Install rate limiting package
+- [x] Create rate limiting middleware
+- [x] Apply rate limiting to login endpoint
+- [x] Apply rate limiting to register endpoint
+- [x] Apply rate limiting to password reset endpoint
+- [x] Add rate limit error handling
+- [ ] Test rate limiting functionality

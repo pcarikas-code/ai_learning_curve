@@ -71,6 +71,13 @@
       "when": 1765171575703,
       "tag": "0009_nifty_turbo",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "5",
+      "when": 1765172141402,
+      "tag": "0010_dry_forge",
+      "breakpoints": true
     }
   ]
 }

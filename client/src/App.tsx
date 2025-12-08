@@ -14,6 +14,9 @@ import Resources from "./pages/Resources";
 import Achievements from "./pages/Achievements";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
+import VerifyEmail from "./pages/VerifyEmail";
 
 function Router() {
   return (
@@ -21,6 +24,9 @@ function Router() {
       <Route path="/" component={Home} />
       <Route path="/login" component={Login} />
       <Route path="/register" component={Register} />
+      <Route path="/forgot-password" component={ForgotPassword} />
+      <Route path="/reset-password" component={ResetPassword} />
+      <Route path="/verify-email" component={VerifyEmail} />
       <Route path="/paths" component={LearningPaths} />
       <Route path="/paths/:slug" component={PathDetail} />
       <Route path="/modules/:slug" component={ModuleDetail} />

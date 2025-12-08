@@ -18,6 +18,11 @@ export const users = mysqlTable("users", {
   experienceLevel: varchar("experienceLevel", { length: 50 }), // beginner, intermediate, advanced
   learningGoals: text("learningGoals"), // JSON array of goals
   interests: text("interests"), // JSON array of interest areas
+  emailVerified: int("emailVerified").default(0).notNull(), // 0 = not verified, 1 = verified
+  emailVerificationToken: varchar("emailVerificationToken", { length: 255 }), // Token for email verification
+  emailVerificationExpiry: timestamp("emailVerificationExpiry"), // Expiry time for verification token
+  passwordResetToken: varchar("passwordResetToken", { length: 255 }), // Token for password reset
+  passwordResetExpiry: timestamp("passwordResetExpiry"), // Expiry time for reset token
 });
 
 export type User = typeof users.$inferSelect;
