@@ -325,3 +325,12 @@
 - [x] Show next recommended module
 - [x] Add path completion tracking
 - [ ] Test enrollment functionality
+
+## Production Deployment Issues (Vercel)
+- [x] Update production database schema with pathEnrollments table
+- [x] Seed production database with new modules and quizzes
+- [x] Fix 404 error on /resources route
+- [x] Fix SSL connection for TiDB Cloud in getDb()
+- [ ] Verify all routes work on Vercel deployment
+- [ ] Test enrollment flow on production
+- [ ] Deploy latest changes to Vercel

@@ -32,6 +32,7 @@ function Router() {
       <Route path="/paths/:slug" component={PathDetail} />
       <Route path="/modules/:slug" component={ModuleDetail} />
       <Route path="/dashboard" component={Dashboard} />
+      <Route path="/resources" component={Resources} />
       <Route path="/achievements" component={Achievements} />
       <Route path="/profile" component={Profile} />
       <Route path="/certificate/:pathId" component={Certificate} />
