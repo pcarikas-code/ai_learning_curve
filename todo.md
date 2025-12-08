@@ -371,3 +371,14 @@
 - [x] Test learning paths pages
 - [x] NLP path: 9 unique modules (down from 10)
 - [x] CV path: 9 unique modules (down from 16)
+
+## Module Content Expansion
+- [x] Create comprehensive NLP module content with code examples
+- [x] Create comprehensive CV module content with code examples
+- [x] Add real-world applications to each module
+- [x] Include interactive exercises and practice problems
+- [x] Update database with enriched content (3 modules updated)
+- [x] Test content display on module pages
+- [x] Verified: Introduction to NLP (60002)
+- [x] Verified: Text Preprocessing & Tokenization (60003)
+- [x] Verified: Introduction to Computer Vision (60004)
