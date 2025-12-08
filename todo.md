@@ -341,3 +341,14 @@
 - [x] Add superjson import to Vercel API handler
 - [x] Test build process
 - [ ] Test registration endpoint on production after deployment
+
+## Manus Hosting Preparation
+- [x] Remove Vercel-specific files (api/index.ts, vercel.json)
+- [x] Remove Vercel deployment documentation
+- [x] Keep email/password authentication (already working)
+- [x] Configure database to work with Manus built-in DB
+- [x] Test learning paths loading locally
+- [ ] Run database migrations on Manus DB
+- [ ] Seed learning paths and modules
+- [ ] Create final checkpoint for Manus deployment
+- [ ] Publish to Manus hosting

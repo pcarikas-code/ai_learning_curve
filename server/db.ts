@@ -33,11 +33,21 @@ let _db: ReturnType<typeof drizzle> | null = null;
 export async function getDb() {
   if (!_db && process.env.DATABASE_URL) {
     try {
-      const pool = mysql.createPool({
-        uri: process.env.DATABASE_URL,
-        ssl: { minVersion: 'TLSv1.2', rejectUnauthorized: true }
-      });
-      _db = drizzle(pool);
+      // Check if DATABASE_URL contains SSL parameters (external DB like TiDB)
+      const needsSSL = process.env.DATABASE_URL.includes('tidbcloud.com') || 
+                       process.env.DATABASE_URL.includes('ssl=true');
+      
+      if (needsSSL) {
+        // External database with SSL (TiDB Cloud, etc.)
+        const pool = mysql.createPool({
+          uri: process.env.DATABASE_URL,
+          ssl: { minVersion: 'TLSv1.2', rejectUnauthorized: true }
+        });
+        _db = drizzle(pool);
+      } else {
+        // Manus built-in database or local database (no SSL needed)
+        _db = drizzle(process.env.DATABASE_URL);
+      }
     } catch (error) {
       console.warn("[Database] Failed to connect:", error);
       _db = null;
