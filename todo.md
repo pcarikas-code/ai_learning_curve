@@ -290,3 +290,13 @@
 - [x] Make email features optional when SMTP not configured
 - [ ] Test API endpoints return valid JSON
 - [ ] Redeploy to Vercel
+
+## Fix Learning Paths Page
+- [x] Check Learning Paths page component
+- [x] Create learning paths database schema
+- [x] Create modules database schema
+- [x] Seed sample learning paths data
+- [x] Implement backend API for fetching learning paths
+- [x] Update frontend to display learning paths
+- [ ] Add path enrollment functionality
+- [x] Test learning paths display
