@@ -52,7 +52,8 @@ export const appRouter = router({
     get: protectedProcedure
       .input(z.object({ moduleId: z.number() }))
       .query(async ({ ctx, input }) => {
-        return db.getUserProgress(ctx.user.id, input.moduleId);
+        const progress = await db.getUserProgress(ctx.user.id, input.moduleId);
+        return progress || null;
       }),
     getAll: protectedProcedure
       .query(async ({ ctx }) => {

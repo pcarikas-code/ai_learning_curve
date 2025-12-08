@@ -91,3 +91,6 @@
 - [x] Add modules for Computer Vision learning path
 - [x] Reorder learning paths from beginner to advanced (AI Fundamentals → ML → Deep Learning → NLP/Computer Vision)
 - [x] Update path order/sequence numbers in database
+
+## Bug Fixes (Round 3)
+- [x] Fix progress query returning undefined instead of null when no progress exists
