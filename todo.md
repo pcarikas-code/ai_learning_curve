@@ -363,3 +363,11 @@
 - [ ] Add more comprehensive CV content (6-8 more modules)
 - [ ] Create quizzes for NLP and CV modules
 - [ ] Clean up duplicate modules in database
+
+## Database Cleanup
+- [x] Identify duplicate modules in NLP and CV paths
+- [x] Remove duplicate modules keeping best versions (removed 8 duplicates)
+- [x] Verify module display after cleanup
+- [x] Test learning paths pages
+- [x] NLP path: 9 unique modules (down from 10)
+- [x] CV path: 9 unique modules (down from 16)
