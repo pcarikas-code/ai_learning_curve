@@ -479,3 +479,12 @@
 - [x] Add /api/auth/google endpoint (for future use)
 - [x] Add /api/auth/facebook endpoint (for future use)
 - [x] Test complete OAuth flow from button click to callback
+
+## Direct Microsoft OAuth Integration
+- [x] Request Azure OAuth credentials (client ID, client secret, tenant ID)
+- [x] Add Microsoft OAuth environment variables
+- [x] Implement direct Microsoft OAuth authorization endpoint
+- [x] Implement Microsoft OAuth token exchange
+- [x] Implement Microsoft Graph API user info retrieval
+- [x] Update /api/auth/microsoft to use Azure endpoints
+- [x] Test complete direct OAuth flow
