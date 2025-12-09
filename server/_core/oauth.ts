@@ -3,6 +3,7 @@ import type { Express, Request, Response } from "express";
 import * as db from "../db";
 import { getSessionCookieOptions } from "./cookies";
 import { sdk } from "./sdk";
+import { ENV } from "./env";
 
 function getQueryParam(req: Request, key: string): string | undefined {
   const value = req.query[key];
@@ -10,6 +11,28 @@ function getQueryParam(req: Request, key: string): string | undefined {
 }
 
 export function registerOAuthRoutes(app: Express) {
+  // OAuth provider initiation routes
+  app.get("/api/auth/microsoft", (req: Request, res: Response) => {
+    const redirectUri = `${req.protocol}://${req.get('host')}/api/oauth/callback`;
+    const state = Buffer.from(redirectUri).toString('base64');
+    const oauthUrl = `${ENV.oAuthPortalUrl}?client_id=${ENV.appId}&redirect_uri=${encodeURIComponent(redirectUri)}&state=${state}&platform=microsoft`;
+    res.redirect(302, oauthUrl);
+  });
+
+  app.get("/api/auth/google", (req: Request, res: Response) => {
+    const redirectUri = `${req.protocol}://${req.get('host')}/api/oauth/callback`;
+    const state = Buffer.from(redirectUri).toString('base64');
+    const oauthUrl = `${ENV.oAuthPortalUrl}?client_id=${ENV.appId}&redirect_uri=${encodeURIComponent(redirectUri)}&state=${state}&platform=google`;
+    res.redirect(302, oauthUrl);
+  });
+
+  app.get("/api/auth/facebook", (req: Request, res: Response) => {
+    const redirectUri = `${req.protocol}://${req.get('host')}/api/oauth/callback`;
+    const state = Buffer.from(redirectUri).toString('base64');
+    const oauthUrl = `${ENV.oAuthPortalUrl}?client_id=${ENV.appId}&redirect_uri=${encodeURIComponent(redirectUri)}&state=${state}&platform=facebook`;
+    res.redirect(302, oauthUrl);
+  });
+
   app.get("/api/oauth/callback", async (req: Request, res: Response) => {
     const code = getQueryParam(req, "code");
     const state = getQueryParam(req, "state");
