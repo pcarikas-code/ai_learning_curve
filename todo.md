@@ -481,3 +481,17 @@
 - [x] Fix verification link URL (use ENV.appUrl instead of req headers)
 - [x] Added ENV import to routers.ts
 - [x] Fixed both register and resend verification endpoints
+
+## Production Email Verification Debug
+- [ ] Check if token exists in production database
+- [ ] Verify endpoint logic for token validation
+- [ ] Check if database connection is working in production
+- [ ] Test verification flow end-to-end
+
+## Email Verification Bug Fix
+- [x] Fixed VerifyEmail component URL parsing using window.location.search
+- [x] Added useRef to prevent double mutation calls in React strict mode
+- [x] Changed useEffect dependency from [token] to [] to run only once on mount
+- [x] Added console logging for debugging token parsing
+- [x] Created comprehensive test suite for email verification
+- [ ] Test email verification flow end-to-end in production
