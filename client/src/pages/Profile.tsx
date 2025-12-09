@@ -26,6 +26,13 @@ export default function Profile() {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
+  // Notification preferences state
+  const [emailNotifications, setEmailNotifications] = useState(user?.emailNotifications === 1);
+  const [notifyOnModuleComplete, setNotifyOnModuleComplete] = useState(user?.notifyOnModuleComplete === 1);
+  const [notifyOnQuizResult, setNotifyOnQuizResult] = useState(user?.notifyOnQuizResult === 1);
+  const [notifyOnPathComplete, setNotifyOnPathComplete] = useState(user?.notifyOnPathComplete === 1);
+  const [notifyOnNewContent, setNotifyOnNewContent] = useState(user?.notifyOnNewContent === 1);
+
   // Update profile mutation
   const updateProfile = trpc.auth.updateProfile.useMutation({
     onSuccess: () => {
@@ -39,6 +46,13 @@ export default function Profile() {
       setCurrentPassword("");
       setNewPassword("");
       setConfirmPassword("");
+    },
+  });
+
+  // Update notification preferences mutation
+  const updateNotifications = trpc.user.updateNotificationPreferences.useMutation({
+    onSuccess: () => {
+      utils.auth.me.invalidate();
     },
   });
 
@@ -79,6 +93,16 @@ export default function Profile() {
     });
   };
 
+  const handleNotificationsSubmit = () => {
+    updateNotifications.mutate({
+      emailNotifications: emailNotifications ? 1 : 0,
+      notifyOnModuleComplete: notifyOnModuleComplete ? 1 : 0,
+      notifyOnQuizResult: notifyOnQuizResult ? 1 : 0,
+      notifyOnPathComplete: notifyOnPathComplete ? 1 : 0,
+      notifyOnNewContent: notifyOnNewContent ? 1 : 0,
+    });
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
@@ -91,7 +115,7 @@ export default function Profile() {
           </div>
 
           <Tabs defaultValue="account" className="space-y-6">
-            <TabsList className="grid w-full grid-cols-3">
+            <TabsList className="grid w-full grid-cols-4">
               <TabsTrigger value="account">
                 <User className="w-4 h-4 mr-2" />
                 Account
@@ -103,6 +127,10 @@ export default function Profile() {
               <TabsTrigger value="connected">
                 <LinkIcon className="w-4 h-4 mr-2" />
                 Connected Accounts
+              </TabsTrigger>
+              <TabsTrigger value="notifications">
+                <Mail className="w-4 h-4 mr-2" />
+                Notifications
               </TabsTrigger>
             </TabsList>
 
@@ -374,6 +402,134 @@ export default function Profile() {
                       </Button>
                     )}
                   </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            {/* Notifications Tab */}
+            <TabsContent value="notifications">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Email Notifications</CardTitle>
+                  <CardDescription>Manage your email notification preferences</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <div className="space-y-0.5">
+                        <Label htmlFor="emailNotifications" className="text-base">
+                          Email Notifications
+                        </Label>
+                        <p className="text-sm text-muted-foreground">
+                          Enable or disable all email notifications
+                        </p>
+                      </div>
+                      <input
+                        type="checkbox"
+                        id="emailNotifications"
+                        className="h-4 w-4"
+                        checked={emailNotifications}
+                        onChange={(e) => setEmailNotifications(e.target.checked)}
+                      />
+                    </div>
+
+                    <div className="flex items-center justify-between">
+                      <div className="space-y-0.5">
+                        <Label htmlFor="notifyOnModuleComplete" className="text-base">
+                          Module Completion
+                        </Label>
+                        <p className="text-sm text-muted-foreground">
+                          Get notified when you complete a learning module
+                        </p>
+                      </div>
+                      <input
+                        type="checkbox"
+                        id="notifyOnModuleComplete"
+                        className="h-4 w-4"
+                        checked={notifyOnModuleComplete}
+                        onChange={(e) => setNotifyOnModuleComplete(e.target.checked)}
+                      />
+                    </div>
+
+                    <div className="flex items-center justify-between">
+                      <div className="space-y-0.5">
+                        <Label htmlFor="notifyOnQuizResult" className="text-base">
+                          Quiz Results
+                        </Label>
+                        <p className="text-sm text-muted-foreground">
+                          Receive your quiz scores and feedback via email
+                        </p>
+                      </div>
+                      <input
+                        type="checkbox"
+                        id="notifyOnQuizResult"
+                        className="h-4 w-4"
+                        checked={notifyOnQuizResult}
+                        onChange={(e) => setNotifyOnQuizResult(e.target.checked)}
+                      />
+                    </div>
+
+                    <div className="flex items-center justify-between">
+                      <div className="space-y-0.5">
+                        <Label htmlFor="notifyOnPathComplete" className="text-base">
+                          Learning Path Completion
+                        </Label>
+                        <p className="text-sm text-muted-foreground">
+                          Celebrate when you finish an entire learning path
+                        </p>
+                      </div>
+                      <input
+                        type="checkbox"
+                        id="notifyOnPathComplete"
+                        className="h-4 w-4"
+                        checked={notifyOnPathComplete}
+                        onChange={(e) => setNotifyOnPathComplete(e.target.checked)}
+                      />
+                    </div>
+
+                    <div className="flex items-center justify-between">
+                      <div className="space-y-0.5">
+                        <Label htmlFor="notifyOnNewContent" className="text-base">
+                          New Content
+                        </Label>
+                        <p className="text-sm text-muted-foreground">
+                          Stay updated about new modules and learning paths
+                        </p>
+                      </div>
+                      <input
+                        type="checkbox"
+                        id="notifyOnNewContent"
+                        className="h-4 w-4"
+                        checked={notifyOnNewContent}
+                        onChange={(e) => setNotifyOnNewContent(e.target.checked)}
+                      />
+                    </div>
+                  </div>
+
+                  {updateNotifications.isError && (
+                    <Alert variant="destructive">
+                      <AlertDescription>
+                        {updateNotifications.error.message}
+                      </AlertDescription>
+                    </Alert>
+                  )}
+
+                  {updateNotifications.isSuccess && (
+                    <Alert>
+                      <AlertDescription>
+                        Notification preferences updated successfully!
+                      </AlertDescription>
+                    </Alert>
+                  )}
+
+                  <Button
+                    type="button"
+                    onClick={handleNotificationsSubmit}
+                    disabled={updateNotifications.isPending}
+                  >
+                    {updateNotifications.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                    Save Notification Preferences
+                  </Button>
                 </CardContent>
               </Card>
             </TabsContent>

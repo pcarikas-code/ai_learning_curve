@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'wouter';
 import { trpc } from '../lib/trpc';
 import { Button } from '../components/ui/button';
@@ -6,27 +6,11 @@ import { Card } from '../components/ui/card';
 
 export default function VerifyEmail() {
   const [location, setLocation] = useLocation();
-  
-  // Parse token from URL - handle both query string formats
-  const getTokenFromUrl = () => {
-    // Try URLSearchParams first
-    const searchParams = new URLSearchParams(window.location.search);
-    const tokenFromParams = searchParams.get('token');
-    if (tokenFromParams) return tokenFromParams;
-    
-    // Fallback: manual parsing in case URLSearchParams fails
-    const queryString = location.includes('?') ? location.split('?')[1] : '';
-    const params = new URLSearchParams(queryString);
-    return params.get('token') || '';
-  };
-  
-  const token = getTokenFromUrl();
+  const searchParams = new URLSearchParams(location.split('?')[1]);
+  const token = searchParams.get('token') || '';
   
   const [status, setStatus] = useState<'verifying' | 'success' | 'error'>('verifying');
   const [message, setMessage] = useState('');
-  
-  // Use ref to prevent double calls in React strict mode
-  const hasCalledMutation = useRef(false);
   
   const verifyEmail = trpc.auth.verifyEmail.useMutation({
     onSuccess: (data) => {
@@ -40,19 +24,13 @@ export default function VerifyEmail() {
   });
 
   useEffect(() => {
-    // Prevent double calls
-    if (hasCalledMutation.current) return;
-    
     if (token) {
-      hasCalledMutation.current = true;
-      console.log('Verifying email with token:', token.substring(0, 10) + '...');
       verifyEmail.mutate({ token });
     } else {
-      console.error('No token found in URL. Full location:', location, 'Window search:', window.location.search);
       setStatus('error');
-      setMessage('Invalid verification link - no token provided');
+      setMessage('Invalid verification link');
     }
-  }, []); // Empty dependency array - only run once on mount
+  }, [token]);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 px-4">

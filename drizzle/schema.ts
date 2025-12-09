@@ -23,6 +23,11 @@ export const users = mysqlTable("users", {
   emailVerificationExpiry: timestamp("emailVerificationExpiry"), // Expiry time for verification token
   passwordResetToken: varchar("passwordResetToken", { length: 255 }), // Token for password reset
   passwordResetExpiry: timestamp("passwordResetExpiry"), // Expiry time for reset token
+  emailNotifications: int("emailNotifications").default(1).notNull(), // 0 = disabled, 1 = enabled
+  notifyOnModuleComplete: int("notifyOnModuleComplete").default(1).notNull(), // Email when module completed
+  notifyOnQuizResult: int("notifyOnQuizResult").default(1).notNull(), // Email quiz results
+  notifyOnPathComplete: int("notifyOnPathComplete").default(1).notNull(), // Email when path completed
+  notifyOnNewContent: int("notifyOnNewContent").default(1).notNull(), // Email about new modules/paths
 });
 
 export type User = typeof users.$inferSelect;

@@ -5,19 +5,41 @@ import { publicProcedure, protectedProcedure, router } from "./_core/trpc";
 import { z } from "zod";
 import * as db from "./db";
 import { certificateRouter } from "./certificateRouter";
-import { TRPCError } from '@trpc/server';
-import { ENV } from './_core/env';
+import { adminRouter } from "./adminRouter";
+import { TRPCError } from "@trpc/server";
 import { eq } from "drizzle-orm";
 import { users, achievements } from "../drizzle/schema";
 import { getDb } from "./db";
 import * as achievementService from "./achievementService";
-// Use createRequire to load jsonwebtoken synchronously in ESM
-import { createRequire } from 'module';
-const require = createRequire(import.meta.url);
-const jwt = require('jsonwebtoken');
+import jwt from "jsonwebtoken";
 
 export const appRouter = router({
+  admin: adminRouter,
   user: router({
+    updateNotificationPreferences: protectedProcedure
+      .input(z.object({
+        emailNotifications: z.number(),
+        notifyOnModuleComplete: z.number(),
+        notifyOnQuizResult: z.number(),
+        notifyOnPathComplete: z.number(),
+        notifyOnNewContent: z.number(),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        const db = await getDb();
+        if (!db) throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Database not available' });
+        
+        await db.update(users)
+          .set({
+            emailNotifications: input.emailNotifications,
+            notifyOnModuleComplete: input.notifyOnModuleComplete,
+            notifyOnQuizResult: input.notifyOnQuizResult,
+            notifyOnPathComplete: input.notifyOnPathComplete,
+            notifyOnNewContent: input.notifyOnNewContent,
+          })
+          .where(eq(users.id, ctx.user.id));
+        
+        return { success: true, message: 'Notification preferences updated successfully' };
+      }),
     updateOnboarding: protectedProcedure
       .input(z.object({
         experienceLevel: z.string(),
@@ -51,6 +73,7 @@ export const appRouter = router({
       }))
       .mutation(async ({ ctx, input }) => {
         const bcrypt = await import('bcryptjs');
+        const jwt = await import('jsonwebtoken');
         const database = await getDb();
         if (!database) throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Database not available' });
         
@@ -86,7 +109,8 @@ export const appRouter = router({
         
         // Send verification email
         const { sendEmailVerificationEmail } = await import('./emailService');
-        await sendEmailVerificationEmail(input.email, verificationToken, ENV.appUrl);
+        const baseUrl = `${ctx.req.protocol}://${ctx.req.get('host')}`;
+        await sendEmailVerificationEmail(input.email, verificationToken, baseUrl);
         
         // Create JWT token
         const jwtSecret = process.env.JWT_SECRET || 'default-secret-change-in-production';
@@ -105,6 +129,7 @@ export const appRouter = router({
       }))
       .mutation(async ({ ctx, input }) => {
         const bcrypt = await import('bcryptjs');
+        const jwt = await import('jsonwebtoken');
         const database = await getDb();
         if (!database) throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Database not available' });
         
@@ -173,8 +198,8 @@ export const appRouter = router({
         
         // Send email
         const { sendPasswordResetEmail } = await import('./emailService');
-        const { ENV } = await import('./_core/env');
-        await sendPasswordResetEmail(user.email, resetToken, ENV.appUrl);
+        const baseUrl = `${ctx.req.protocol}://${ctx.req.get('host')}`;
+        await sendPasswordResetEmail(user.email, resetToken, baseUrl);
         
         return { success: true, message: 'If the email exists, a reset link has been sent' };
       }),
@@ -278,7 +303,8 @@ export const appRouter = router({
         
         // Send email
         const { sendEmailVerificationEmail } = await import('./emailService');
-        await sendEmailVerificationEmail(user.email, verificationToken, ENV.appUrl);
+        const baseUrl = `${ctx.req.protocol}://${ctx.req.get('host')}`;
+        await sendEmailVerificationEmail(user.email, verificationToken, baseUrl);
         
         return { success: true, message: 'Verification email sent' };
       }),

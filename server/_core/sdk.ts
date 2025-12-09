@@ -4,10 +4,7 @@ import axios, { type AxiosInstance } from "axios";
 import { parse as parseCookieHeader } from "cookie";
 import type { Request } from "express";
 import { SignJWT, jwtVerify } from "jose";
-// Use createRequire to load jsonwebtoken synchronously in ESM
-import { createRequire } from 'module';
-const require = createRequire(import.meta.url);
-const jwt = require('jsonwebtoken');
+import jwt from "jsonwebtoken";
 import type { User } from "../../drizzle/schema";
 import * as db from "../db";
 import { ENV } from "./env";
@@ -272,6 +269,7 @@ class SDKServer {
 
     // Try JWT verification first (for email/password auth)
     try {
+      const jwt = await import('jsonwebtoken');
       const jwtSecret = process.env.JWT_SECRET || 'default-secret-change-in-production';
       const decoded = jwt.verify(sessionCookie, jwtSecret) as { userId: number; email: string };
       
