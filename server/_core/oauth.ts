@@ -96,10 +96,14 @@ export function registerOAuthRoutes(app: Express) {
         const microsoftOAuth = new MicrosoftOAuthService(clientId, clientSecret, tenantId, redirectUri);
         
         // Exchange code for token
+        console.log('[Microsoft OAuth] Exchanging code for token...');
         const tokenResponse = await microsoftOAuth.exchangeCodeForToken(code);
+        console.log('[Microsoft OAuth] Token exchange successful');
         
         // Get user info from Microsoft Graph
+        console.log('[Microsoft OAuth] Fetching user info from Microsoft Graph...');
         const userInfo = await microsoftOAuth.getUserInfo(tokenResponse.access_token);
+        console.log('[Microsoft OAuth] User info retrieved:', { email: userInfo.mail || userInfo.userPrincipalName, name: userInfo.displayName });
         
         // Create or update user in database
         const email = userInfo.mail || userInfo.userPrincipalName;
@@ -174,9 +178,17 @@ export function registerOAuthRoutes(app: Express) {
 
         res.redirect(302, "/");
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("[OAuth] Callback failed", error);
-      res.status(500).json({ error: "OAuth callback failed" });
+      console.error("[OAuth] Error details:", {
+        message: error.message,
+        response: error.response?.data,
+        status: error.response?.status
+      });
+      res.status(500).json({ 
+        error: "OAuth callback failed",
+        details: error.message 
+      });
     }
   });
 }
