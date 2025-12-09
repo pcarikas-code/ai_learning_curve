@@ -14,6 +14,20 @@ function getQueryParam(req: Request, key: string): string | undefined {
 }
 
 export function registerOAuthRoutes(app: Express) {
+  // Debug endpoint to show redirect URI
+  app.get("/api/auth/debug-redirect", (req: Request, res: Response) => {
+    const redirectUri = `${req.protocol}://${req.get('host')}/api/oauth/callback`;
+    res.json({
+      protocol: req.protocol,
+      host: req.get('host'),
+      redirectUri,
+      headers: {
+        'x-forwarded-proto': req.get('x-forwarded-proto'),
+        'x-forwarded-host': req.get('x-forwarded-host'),
+      }
+    });
+  });
+
   // Direct Microsoft OAuth integration
   app.get("/api/auth/microsoft", (req: Request, res: Response) => {
     const clientId = process.env.MICROSOFT_CLIENT_ID;
@@ -25,7 +39,8 @@ export function registerOAuthRoutes(app: Express) {
       return;
     }
 
-    const redirectUri = `${req.protocol}://${req.get('host')}/api/oauth/callback`;
+    // Use hardcoded production domain to ensure consistency
+    const redirectUri = 'https://theailearningcurve.com/api/oauth/callback';
     const microsoftOAuth = new MicrosoftOAuthService(clientId, clientSecret, tenantId, redirectUri);
     
     // Generate random state for CSRF protection
@@ -76,7 +91,8 @@ export function registerOAuthRoutes(app: Express) {
           return;
         }
 
-        const redirectUri = `${req.protocol}://${req.get('host')}/api/oauth/callback`;
+        // Use hardcoded production domain to ensure consistency
+        const redirectUri = 'https://theailearningcurve.com/api/oauth/callback';
         const microsoftOAuth = new MicrosoftOAuthService(clientId, clientSecret, tenantId, redirectUri);
         
         // Exchange code for token

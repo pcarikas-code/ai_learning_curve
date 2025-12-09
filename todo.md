@@ -492,3 +492,9 @@
 ## Azure OAuth Tenant Endpoint Fix
 - [x] Update MICROSOFT_TENANT_ID to 'consumers' for personal Microsoft accounts
 - [x] Test OAuth flow with /consumers endpoint
+
+## OAuth Redirect URI Mismatch
+- [x] Investigate current redirect URI being generated
+- [x] Update Azure app to include correct redirect URI
+- [x] Ensure production domain is used in redirect URI
+- [ ] Test OAuth flow with correct redirect URI
