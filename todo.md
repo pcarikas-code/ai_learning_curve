@@ -457,3 +457,10 @@
 - [x] Resolve variable naming conflict in JWT import
 - [x] Reverted to simple `import jwt from "jsonwebtoken"` pattern
 - [x] Applied fix to routers.ts, index.ts, and sdk.ts
+
+## Password Reset Link Issue
+- [x] Investigate how reset link is generated
+- [x] Fix reset link to use production URL (APP_URL env var)
+- [x] Added APP_URL to ENV configuration
+- [x] Updated password reset to use ENV.appUrl
+- [x] Validated configuration with vitest test

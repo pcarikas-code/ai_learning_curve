@@ -172,8 +172,8 @@ export const appRouter = router({
         
         // Send email
         const { sendPasswordResetEmail } = await import('./emailService');
-        const baseUrl = `${ctx.req.protocol}://${ctx.req.get('host')}`;
-        await sendPasswordResetEmail(user.email, resetToken, baseUrl);
+        const { ENV } = await import('./_core/env');
+        await sendPasswordResetEmail(user.email, resetToken, ENV.appUrl);
         
         return { success: true, message: 'If the email exists, a reset link has been sent' };
       }),
