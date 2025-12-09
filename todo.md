@@ -438,3 +438,9 @@
 - [x] Fix quizzes.getByModuleId returning undefined
 - [x] Changed return value from undefined to null when no quiz exists
 - [x] React Query now accepts the null value without errors
+
+## Persistent JWT Login Error
+- [x] Check which file is throwing jwt.sign error during login
+- [x] Verify all files have correct JWT imports
+- [x] Fixed import pattern to handle bundler's dynamic import conversion
+- [x] Changed from `import jwt from "jsonwebtoken"` to `import * as jwtModule` with fallback

@@ -10,7 +10,8 @@ import { appRouter } from "../routers";
 import { createContext } from "./context";
 import { serveStatic, setupVite } from "./vite";
 // import { configureSocialAuth } from "../socialAuth";
-import jwt from "jsonwebtoken";
+import * as jwtModule from "jsonwebtoken";
+const jwt = (jwtModule as any).default || jwtModule;
 import { COOKIE_NAME, getSessionCookieOptions } from "./cookies";
 
 function isPortAvailable(port: number): Promise<boolean> {
