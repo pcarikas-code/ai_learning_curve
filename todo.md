@@ -407,3 +407,10 @@
 - [x] Verified email sent successfully via AWS SES
 - [x] Configured: email-smtp.us-east-1.amazonaws.com:587 (TLS)
 - [x] Sender: noreply@theailearningcurve.com
+
+## Database Query Error Fix
+- [x] Investigate users table query error
+- [x] Check database schema vs Drizzle schema
+- [x] Manually added missing columns (emailVerified, emailVerificationToken, emailVerificationExpiry, passwordResetToken, passwordResetExpiry)
+- [x] Restarted dev server
+- [x] Database schema now in sync
