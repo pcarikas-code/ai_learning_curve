@@ -1,12 +1,20 @@
 import { Button } from "@/components/ui/button";
-import { Menu, X } from "lucide-react";
+import { Menu, X, LogOut } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
+import { useAuth } from "@/hooks/useAuth";
+import { trpc } from "@/lib/trpc";
 
 export function Navigation() {
   const [location] = useLocation();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { user } = useAuth();
+  const logoutMutation = trpc.auth.logout.useMutation({
+    onSuccess: () => {
+      window.location.href = '/';
+    },
+  });
 
   useEffect(() => {
     const handleScroll = () => {
@@ -60,6 +68,16 @@ export function Navigation() {
             <Link href="/profile">
               <Button variant={location === "/profile" ? "default" : "ghost"}>Profile</Button>
             </Link>
+            {user && (
+              <Button
+                variant="ghost"
+                onClick={() => logoutMutation.mutate()}
+                disabled={logoutMutation.isPending}
+              >
+                <LogOut className="w-4 h-4 mr-2" />
+                Logout
+              </Button>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -103,6 +121,20 @@ export function Navigation() {
             <Link href="/profile" onClick={() => setIsMobileMenuOpen(false)}>
               <Button variant={location === "/profile" ? "default" : "ghost"} className="w-full justify-start">Profile</Button>
             </Link>
+            {user && (
+              <Button
+                variant="ghost"
+                className="w-full justify-start"
+                onClick={() => {
+                  setIsMobileMenuOpen(false);
+                  logoutMutation.mutate();
+                }}
+                disabled={logoutMutation.isPending}
+              >
+                <LogOut className="w-4 h-4 mr-2" />
+                Logout
+              </Button>
+            )}
           </div>
         )}
       </div>
