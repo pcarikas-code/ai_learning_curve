@@ -451,3 +451,9 @@
 - [x] Created useAuth hook for authentication state
 - [x] Added logout button to desktop and mobile navigation
 - [x] Logout button shows only when user is logged in
+
+## JWT Naming Conflict Error
+- [x] Fix jwt2.sign is not a function error
+- [x] Resolve variable naming conflict in JWT import
+- [x] Reverted to simple `import jwt from "jsonwebtoken"` pattern
+- [x] Applied fix to routers.ts, index.ts, and sdk.ts
