@@ -184,6 +184,12 @@ export const appRouter = router({
         
         const user = userResult[0];
         
+        // Check if user is OAuth-only (no password set)
+        if (user.loginMethod && user.loginMethod !== 'email' && !user.password) {
+          // Don't reveal authentication method (security best practice)
+          return { success: true, message: 'If the email exists, a reset link has been sent' };
+        }
+        
         // Generate reset token
         const resetToken = crypto.randomBytes(32).toString('hex');
         const resetExpiry = new Date(Date.now() + 3600000); // 1 hour from now
@@ -226,6 +232,14 @@ export const appRouter = router({
         // Check if token is expired
         if (!user.passwordResetExpiry || user.passwordResetExpiry < new Date()) {
           throw new TRPCError({ code: 'BAD_REQUEST', message: 'Invalid or expired reset token' });
+        }
+        
+        // Check if user is OAuth-only (no password set)
+        if (user.loginMethod && user.loginMethod !== 'email' && !user.password) {
+          throw new TRPCError({ 
+            code: 'BAD_REQUEST', 
+            message: `This account uses ${user.loginMethod} authentication. Please sign in with ${user.loginMethod} instead.` 
+          });
         }
         
         // Hash new password

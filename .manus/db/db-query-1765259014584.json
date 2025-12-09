@@ -1,0 +1,18 @@
+{
+  "query": "SELECT id, name, email, loginMethod, password, openId FROM users WHERE email = 'peterc@scopetrading.co.nz' LIMIT 1",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3xdfM6hBeGk8i8i.49c2bd1d0122 --database WzEfFSNW3r85DCdw7RuniC --execute SELECT id, name, email, loginMethod, password, openId FROM users WHERE email = 'peterc@scopetrading.co.nz' LIMIT 1",
+  "rows": [
+    {
+      "id": "840015",
+      "name": "Peter Carikas",
+      "email": "peterc@scopetrading.co.nz",
+      "loginMethod": "microsoft",
+      "password": "NULL",
+      "openId": "UMFXWWULPaCKL3i2v62nFd"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\temail\tloginMethod\tpassword\topenId\n840015\tPeter Carikas\tpeterc@scopetrading.co.nz\tmicrosoft\tNULL\tUMFXWWULPaCKL3i2v62nFd\n",
+  "stderr": "",
+  "execution_time_ms": 1795
+}

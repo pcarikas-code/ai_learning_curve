@@ -458,3 +458,9 @@
 - [x] Show user statistics (modules completed, quiz scores, time spent)
 - [x] Add backend endpoints for fetching user activity data
 - [x] Write tests for user edit functionality
+
+## Password Reset Bug
+- [x] Fix password reset for users with Microsoft OAuth authentication
+- [x] Prevent password reset for OAuth-only users (no password set)
+- [x] Verify social auth buttons are properly hidden
+- [x] Add proper error messaging for OAuth users trying to reset password
