@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Loader2 } from "lucide-react";
-// import SocialLoginButtons from "@/components/SocialLoginButtons";
+import SocialLoginButtons from "@/components/SocialLoginButtons";
 
 export default function Register() {
   const [, setLocation] = useLocation();
@@ -121,7 +121,7 @@ export default function Register() {
               {registerMutation.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               Create Account
             </Button>
-            {/* <SocialLoginButtons /> */}
+            <SocialLoginButtons />
             <div className="text-sm text-center text-muted-foreground">
               Already have an account?{" "}
               <button

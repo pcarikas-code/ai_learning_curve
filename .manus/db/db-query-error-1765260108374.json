@@ -1,0 +1,8 @@
+{
+  "query": "DELETE FROM user_achievements; DELETE FROM quiz_attempts; DELETE FROM notes; DELETE FROM user_progress; DELETE FROM path_enrollments; DELETE FROM users;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3xdfM6hBeGk8i8i.49c2bd1d0122 --database WzEfFSNW3r85DCdw7RuniC --execute DELETE FROM user_achievements; DELETE FROM quiz_attempts; DELETE FROM notes; DELETE FROM user_progress; DELETE FROM path_enrollments; DELETE FROM users;",
+  "returncode": 1,
+  "logs": [
+    "ERROR 1146 (42S02) at line 1: Table 'wzeffsnw3r85dcdw7runic.notes' doesn't exist"
+  ]
+}

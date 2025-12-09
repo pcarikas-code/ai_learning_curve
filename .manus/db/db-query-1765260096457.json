@@ -1,0 +1,55 @@
+{
+  "query": "SHOW TABLES",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3xdfM6hBeGk8i8i.49c2bd1d0122 --database WzEfFSNW3r85DCdw7RuniC --execute SHOW TABLES",
+  "rows": [
+    {
+      "Tables_in_WzEfFSNW3r85DCdw7RuniC": "__drizzle_migrations"
+    },
+    {
+      "Tables_in_WzEfFSNW3r85DCdw7RuniC": "achievements"
+    },
+    {
+      "Tables_in_WzEfFSNW3r85DCdw7RuniC": "bookmarks"
+    },
+    {
+      "Tables_in_WzEfFSNW3r85DCdw7RuniC": "certificates"
+    },
+    {
+      "Tables_in_WzEfFSNW3r85DCdw7RuniC": "learning_paths"
+    },
+    {
+      "Tables_in_WzEfFSNW3r85DCdw7RuniC": "module_notes"
+    },
+    {
+      "Tables_in_WzEfFSNW3r85DCdw7RuniC": "modules"
+    },
+    {
+      "Tables_in_WzEfFSNW3r85DCdw7RuniC": "path_enrollments"
+    },
+    {
+      "Tables_in_WzEfFSNW3r85DCdw7RuniC": "quiz_attempts"
+    },
+    {
+      "Tables_in_WzEfFSNW3r85DCdw7RuniC": "quiz_questions"
+    },
+    {
+      "Tables_in_WzEfFSNW3r85DCdw7RuniC": "quizzes"
+    },
+    {
+      "Tables_in_WzEfFSNW3r85DCdw7RuniC": "resources"
+    },
+    {
+      "Tables_in_WzEfFSNW3r85DCdw7RuniC": "user_achievements"
+    },
+    {
+      "Tables_in_WzEfFSNW3r85DCdw7RuniC": "user_progress"
+    },
+    {
+      "Tables_in_WzEfFSNW3r85DCdw7RuniC": "users"
+    }
+  ],
+  "messages": [],
+  "stdout": "Tables_in_WzEfFSNW3r85DCdw7RuniC\n__drizzle_migrations\nachievements\nbookmarks\ncertificates\nlearning_paths\nmodule_notes\nmodules\npath_enrollments\nquiz_attempts\nquiz_questions\nquizzes\nresources\nuser_achievements\nuser_progress\nusers\n",
+  "stderr": "",
+  "execution_time_ms": 1598
+}
