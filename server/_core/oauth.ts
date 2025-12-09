@@ -28,7 +28,8 @@ export function registerOAuthRoutes(app: Express) {
     });
   });
 
-  // Direct Microsoft OAuth integration
+  // Direct Microsoft OAuth integration (disabled)
+  /*
   app.get("/api/auth/microsoft", (req: Request, res: Response) => {
     const clientId = process.env.MICROSOFT_CLIENT_ID;
     const clientSecret = process.env.MICROSOFT_CLIENT_SECRET;
@@ -52,7 +53,9 @@ export function registerOAuthRoutes(app: Express) {
     const authUrl = microsoftOAuth.getAuthorizationUrl(state);
     res.redirect(302, authUrl);
   });
+  */
 
+  /*
   app.get("/api/auth/google", (req: Request, res: Response) => {
     const redirectUri = `${req.protocol}://${req.get('host')}/api/oauth/callback`;
     const state = Buffer.from(redirectUri).toString('base64');
@@ -66,6 +69,7 @@ export function registerOAuthRoutes(app: Express) {
     const oauthUrl = `${ENV.oAuthPortalUrl}?client_id=${ENV.appId}&redirect_uri=${encodeURIComponent(redirectUri)}&state=${state}&platform=facebook`;
     res.redirect(302, oauthUrl);
   });
+  */
 
   app.get("/api/oauth/callback", async (req: Request, res: Response) => {
     const code = getQueryParam(req, "code");

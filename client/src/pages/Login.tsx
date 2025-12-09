@@ -85,7 +85,7 @@ export default function Login() {
               {loginMutation.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               Sign In
             </Button>
-            <SocialLoginButtons />
+            {/* <SocialLoginButtons /> */}
             <div className="text-sm text-center text-muted-foreground">
               Don't have an account?{" "}
               <button

@@ -121,7 +121,7 @@ export default function Register() {
               {registerMutation.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               Create Account
             </Button>
-            <SocialLoginButtons />
+            {/* <SocialLoginButtons /> */}
             <div className="text-sm text-center text-muted-foreground">
               Already have an account?{" "}
               <button

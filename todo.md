@@ -516,3 +516,9 @@
 ## Final OAuth Tenant Fix Attempt
 - [x] Change MICROSOFT_TENANT_ID from 'consumers' to 'common'
 - [ ] Test OAuth flow with 'common' tenant endpoint
+
+## Disable Microsoft OAuth (Final)
+- [x] Remove Microsoft OAuth button from Login page
+- [x] Remove Microsoft OAuth button from Register page
+- [x] Comment out OAuth routes in server/_core/oauth.ts
+- [x] Switch to email/password authentication only
