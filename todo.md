@@ -474,3 +474,10 @@
 - [x] JWT module loading and signing verified
 - [x] Environment configuration verified
 - [x] Password reset URL generation verified
+
+## Email Verification Issue
+- [x] Investigate email verification link generation
+- [x] Check verification endpoint handler (working correctly)
+- [x] Fix verification link URL (use ENV.appUrl instead of req headers)
+- [x] Added ENV import to routers.ts
+- [x] Fixed both register and resend verification endpoints

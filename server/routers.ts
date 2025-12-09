@@ -5,7 +5,8 @@ import { publicProcedure, protectedProcedure, router } from "./_core/trpc";
 import { z } from "zod";
 import * as db from "./db";
 import { certificateRouter } from "./certificateRouter";
-import { TRPCError } from "@trpc/server";
+import { TRPCError } from '@trpc/server';
+import { ENV } from './_core/env';
 import { eq } from "drizzle-orm";
 import { users, achievements } from "../drizzle/schema";
 import { getDb } from "./db";
@@ -85,8 +86,7 @@ export const appRouter = router({
         
         // Send verification email
         const { sendEmailVerificationEmail } = await import('./emailService');
-        const baseUrl = `${ctx.req.protocol}://${ctx.req.get('host')}`;
-        await sendEmailVerificationEmail(input.email, verificationToken, baseUrl);
+        await sendEmailVerificationEmail(input.email, verificationToken, ENV.appUrl);
         
         // Create JWT token
         const jwtSecret = process.env.JWT_SECRET || 'default-secret-change-in-production';
@@ -278,8 +278,7 @@ export const appRouter = router({
         
         // Send email
         const { sendEmailVerificationEmail } = await import('./emailService');
-        const baseUrl = `${ctx.req.protocol}://${ctx.req.get('host')}`;
-        await sendEmailVerificationEmail(user.email, verificationToken, baseUrl);
+        await sendEmailVerificationEmail(user.email, verificationToken, ENV.appUrl);
         
         return { success: true, message: 'Verification email sent' };
       }),
