@@ -545,3 +545,15 @@
 - [x] Remove passport auth routes from server/_core/index.ts (already commented out)
 - [x] Remove JWT import from routers.ts
 - [x] Flush database of all users
+
+## Update Homepage Login Buttons
+- [x] Change "Get Started Free" button to use getLoginUrl() instead of /register
+- [x] Remove separate "Login" button (consolidated into "Get Started Free")
+
+## Comprehensive Authentication Testing
+- [x] Test /login page displays "Sign In with Manus" button
+- [x] Test /register page displays "Sign Up with Manus" button
+- [x] Test homepage "Get Started Free" button redirects to Manus OAuth
+- [x] Test OAuth redirect to Manus portal works correctly
+- [x] Update getLoginUrl() to generate proper Manus OAuth URL
+- [x] Flush database of all users

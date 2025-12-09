@@ -90,18 +90,11 @@ export default function Home() {
                   </Button>
                 </Link>
               ) : (
-                <>
-                  <Link href="/register">
-                    <Button size="lg" className="gap-2">
-                      Get Started Free <ArrowRight className="w-4 h-4" />
-                    </Button>
-                  </Link>
-                  <Link href="/login">
-                    <Button size="lg" variant="outline" className="gap-2">
-                      Login
-                    </Button>
-                  </Link>
-                </>
+                <a href={getLoginUrl()}>
+                  <Button size="lg" className="gap-2">
+                    Get Started Free <ArrowRight className="w-4 h-4" />
+                  </Button>
+                </a>
               )}
               <Link href="/paths">
                 <Button size="lg" variant="outline" className="gap-2">
