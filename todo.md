@@ -527,3 +527,14 @@
 - [x] Fix jwt2.sign is not a function error in production (using createRequire pattern)
 - [x] Fix email verification link parsing (using window.location.search and useRef)
 - [x] Clear database of all users and authentication data for fresh testing
+
+## Switch to Manus Built-in Authentication
+- [x] Research Manus OAuth authentication system
+- [x] Remove custom JWT implementation causing bundling issues
+- [x] Implement Manus OAuth for user authentication
+- [x] Update login/register flow to use Manus OAuth portal
+- [x] Simplified oauth.ts to only use Manus OAuth (removed Microsoft OAuth)
+- [x] Updated Login.tsx to use "Sign In with Manus" button
+- [x] Updated Register.tsx to use "Sign Up with Manus" button
+- [x] Updated getLoginUrl() to generate Manus OAuth portal URL
+- [ ] Test complete authentication flow on production
