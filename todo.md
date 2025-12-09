@@ -398,3 +398,12 @@
 - [ ] Expand Machine Learning modules
 - [ ] Expand Deep Learning modules
 - [ ] Verify all content displays correctly
+
+## AWS SES SMTP Configuration
+- [x] Request AWS SES SMTP credentials from user
+- [x] Update emailService.ts to use AWS SES SMTP settings
+- [x] Configure SMTP host, port, and authentication
+- [x] Test email sending with vitest (passed)
+- [x] Verified email sent successfully via AWS SES
+- [x] Configured: email-smtp.us-east-1.amazonaws.com:587 (TLS)
+- [x] Sender: noreply@theailearningcurve.com

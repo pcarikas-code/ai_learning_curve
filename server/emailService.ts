@@ -10,14 +10,18 @@ const createTransporter = () => {
     pass: process.env.SMTP_PASS || 'testpassword',
   };
 
+  const port = parseInt(process.env.SMTP_PORT || '587');
+  
   return nodemailer.createTransport({
     host: process.env.SMTP_HOST || 'smtp.ethereal.email',
-    port: parseInt(process.env.SMTP_PORT || '587'),
-    secure: false, // true for 465, false for other ports
+    port: port,
+    secure: port === 465, // true for 465 (SSL), false for 587 (TLS/STARTTLS)
     auth: {
       user: testAccount.user,
       pass: testAccount.pass,
     },
+    // AWS SES requires explicit TLS configuration
+    requireTLS: true,
   });
 };
 
