@@ -59,6 +59,7 @@ export class MicrosoftOAuthService {
       code,
       redirect_uri: this.redirectUri,
       grant_type: 'authorization_code',
+      scope: 'openid profile email User.Read',
     });
 
     console.log('[Microsoft OAuth] Token exchange request:', {

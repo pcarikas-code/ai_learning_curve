@@ -508,3 +508,7 @@
 - [ ] Add detailed request/response logging to token exchange
 - [ ] Analyze Microsoft's error response
 - [ ] Identify and fix root cause
+
+## Token Exchange Scope Parameter
+- [x] Add scope parameter to token exchange request
+- [ ] Test OAuth flow with scope included
