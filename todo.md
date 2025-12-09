@@ -512,3 +512,7 @@
 ## Token Exchange Scope Parameter
 - [x] Add scope parameter to token exchange request
 - [ ] Test OAuth flow with scope included
+
+## Final OAuth Tenant Fix Attempt
+- [x] Change MICROSOFT_TENANT_ID from 'consumers' to 'common'
+- [ ] Test OAuth flow with 'common' tenant endpoint
