@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { Link, useLocation } from 'wouter';
 import { trpc } from '../lib/trpc';
 import { Button } from '../components/ui/button';
@@ -6,11 +6,13 @@ import { Card } from '../components/ui/card';
 
 export default function VerifyEmail() {
   const [location, setLocation] = useLocation();
-  const searchParams = new URLSearchParams(location.split('?')[1]);
+  // Use window.location.search for more reliable URL parsing
+  const searchParams = new URLSearchParams(window.location.search);
   const token = searchParams.get('token') || '';
   
   const [status, setStatus] = useState<'verifying' | 'success' | 'error'>('verifying');
   const [message, setMessage] = useState('');
+  const hasVerified = useRef(false);
   
   const verifyEmail = trpc.auth.verifyEmail.useMutation({
     onSuccess: (data) => {
@@ -24,13 +26,16 @@ export default function VerifyEmail() {
   });
 
   useEffect(() => {
+    if (hasVerified.current) return; // Prevent double calls
+    
     if (token) {
+      hasVerified.current = true;
       verifyEmail.mutate({ token });
     } else {
       setStatus('error');
       setMessage('Invalid verification link');
     }
-  }, [token]);
+  }, []);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 px-4">

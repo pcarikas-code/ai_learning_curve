@@ -1,0 +1,9 @@
+{
+  "query": "\n-- Delete all user-related data\nDELETE FROM user_achievements;\nDELETE FROM quiz_attempts;\nDELETE FROM user_progress;\nDELETE FROM path_enrollments;\nDELETE FROM certificates;\nDELETE FROM module_notes;\nDELETE FROM bookmarks;\nDELETE FROM users;\n",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3xdfM6hBeGk8i8i.49c2bd1d0122 --database WzEfFSNW3r85DCdw7RuniC --execute \n-- Delete all user-related data\nDELETE FROM user_achievements;\nDELETE FROM quiz_attempts;\nDELETE FROM user_progress;\nDELETE FROM path_enrollments;\nDELETE FROM certificates;\nDELETE FROM module_notes;\nDELETE FROM bookmarks;\nDELETE FROM users;\n",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 3457
+}

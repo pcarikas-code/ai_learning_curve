@@ -11,7 +11,9 @@ import { eq } from "drizzle-orm";
 import { users, achievements } from "../drizzle/schema";
 import { getDb } from "./db";
 import * as achievementService from "./achievementService";
-import jwt from "jsonwebtoken";
+import { createRequire } from "module";
+const require = createRequire(import.meta.url);
+const jwt = require("jsonwebtoken");
 
 export const appRouter = router({
   admin: adminRouter,

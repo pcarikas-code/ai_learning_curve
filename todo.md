@@ -522,3 +522,8 @@
 - [x] Remove Microsoft OAuth button from Register page
 - [x] Comment out OAuth routes in server/_core/oauth.ts
 - [x] Switch to email/password authentication only
+
+## Critical Bug Fixes
+- [x] Fix jwt2.sign is not a function error in production (using createRequire pattern)
+- [x] Fix email verification link parsing (using window.location.search and useRef)
+- [x] Clear database of all users and authentication data for fresh testing
