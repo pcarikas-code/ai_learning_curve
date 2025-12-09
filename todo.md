@@ -503,3 +503,8 @@
 - [x] Verify MICROSOFT_CLIENT_SECRET matches Azure app
 - [x] Update client secret if expired or regenerated
 - [x] Test OAuth flow with verified credentials
+
+## Persistent 401 OAuth Error
+- [ ] Add detailed request/response logging to token exchange
+- [ ] Analyze Microsoft's error response
+- [ ] Identify and fix root cause

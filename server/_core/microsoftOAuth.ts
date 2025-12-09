@@ -61,6 +61,15 @@ export class MicrosoftOAuthService {
       grant_type: 'authorization_code',
     });
 
+    console.log('[Microsoft OAuth] Token exchange request:', {
+      endpoint: tokenEndpoint,
+      client_id: this.clientId,
+      redirect_uri: this.redirectUri,
+      code_length: code.length,
+      has_secret: !!this.clientSecret,
+      secret_length: this.clientSecret?.length
+    });
+
     try {
       const response = await axios.post<MicrosoftTokenResponse>(
         tokenEndpoint,
@@ -74,8 +83,13 @@ export class MicrosoftOAuthService {
 
       return response.data;
     } catch (error: any) {
-      console.error('[Microsoft OAuth] Token exchange failed:', error.response?.data || error.message);
-      throw new Error('Failed to exchange code for token');
+      console.error('[Microsoft OAuth] Token exchange failed:',{
+        status: error.response?.status,
+        statusText: error.response?.statusText,
+        data: error.response?.data,
+        message: error.message
+      });
+      throw error;
     }
   }
 

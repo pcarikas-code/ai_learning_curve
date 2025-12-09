@@ -187,7 +187,9 @@ export function registerOAuthRoutes(app: Express) {
       });
       res.status(500).json({ 
         error: "OAuth callback failed",
-        details: error.message 
+        details: error.message,
+        microsoft_error: error.response?.data,
+        status: error.response?.status
       });
     }
   });
