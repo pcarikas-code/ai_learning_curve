@@ -11,9 +11,6 @@ import { eq } from "drizzle-orm";
 import { users, achievements } from "../drizzle/schema";
 import { getDb } from "./db";
 import * as achievementService from "./achievementService";
-import { createRequire } from "module";
-const require = createRequire(import.meta.url);
-const jwt = require("jsonwebtoken");
 
 export const appRouter = router({
   admin: adminRouter,
@@ -67,107 +64,6 @@ export const appRouter = router({
   system: systemRouter,
   auth: router({
     me: publicProcedure.query(opts => opts.ctx.user),
-    register: publicProcedure
-      .input(z.object({
-        name: z.string().min(1),
-        email: z.string().email(),
-        password: z.string().min(6),
-      }))
-      .mutation(async ({ ctx, input }) => {
-        const bcrypt = await import('bcryptjs');
-        const jwt = await import('jsonwebtoken');
-        const database = await getDb();
-        if (!database) throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Database not available' });
-        
-        // Check if user already exists
-        const existingUser = await database.select().from(users).where(eq(users.email, input.email));
-        if (existingUser.length > 0) {
-          throw new TRPCError({ code: 'CONFLICT', message: 'Email already registered' });
-        }
-        
-        // Hash password
-        const hashedPassword = await bcrypt.hash(input.password, 10);
-        
-        // Generate email verification token
-        const crypto = await import('crypto');
-        const verificationToken = crypto.randomBytes(32).toString('hex');
-        const verificationExpiry = new Date(Date.now() + 86400000); // 24 hours from now
-        
-        // Create user
-        const result = await database.insert(users).values({
-          name: input.name,
-          email: input.email,
-          password: hashedPassword,
-          loginMethod: 'email',
-          role: 'user',
-          emailVerified: 0,
-          emailVerificationToken: verificationToken,
-          emailVerificationExpiry: verificationExpiry,
-        });
-        
-        // Get the created user
-        const userResult = await database.select().from(users).where(eq(users.email, input.email));
-        const userId = userResult[0].id;
-        
-        // Send verification email
-        const { sendEmailVerificationEmail } = await import('./emailService');
-        const baseUrl = `${ctx.req.protocol}://${ctx.req.get('host')}`;
-        await sendEmailVerificationEmail(input.email, verificationToken, baseUrl);
-        
-        // Create JWT token
-        const jwtSecret = process.env.JWT_SECRET || 'default-secret-change-in-production';
-        const token = jwt.sign({ userId, email: input.email }, jwtSecret, { expiresIn: '7d' });
-        
-        // Set cookie
-        const cookieOptions = getSessionCookieOptions(ctx.req);
-        ctx.res.cookie(COOKIE_NAME, token, cookieOptions);
-        
-        return { success: true, userId, message: 'Registration successful. Please check your email to verify your account.' };
-      }),
-    login: publicProcedure
-      .input(z.object({
-        email: z.string().email(),
-        password: z.string(),
-      }))
-      .mutation(async ({ ctx, input }) => {
-        const bcrypt = await import('bcryptjs');
-        const jwt = await import('jsonwebtoken');
-        const database = await getDb();
-        if (!database) throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Database not available' });
-        
-        // Find user
-        const userResult = await database.select().from(users).where(eq(users.email, input.email));
-        if (userResult.length === 0) {
-          throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Invalid email or password' });
-        }
-        
-        const user = userResult[0];
-        
-        // Verify password
-        if (!user.password) {
-          throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Invalid email or password' });
-        }
-        
-        const isValidPassword = await bcrypt.compare(input.password, user.password);
-        if (!isValidPassword) {
-          throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Invalid email or password' });
-        }
-        
-        // Update last signed in
-        await database.update(users)
-          .set({ lastSignedIn: new Date() })
-          .where(eq(users.id, user.id));
-        
-        // Create JWT token
-        const jwtSecret = process.env.JWT_SECRET || 'default-secret-change-in-production';
-        const token = jwt.sign({ userId: user.id, email: user.email }, jwtSecret, { expiresIn: '7d' });
-        
-        // Set cookie
-        const cookieOptions = getSessionCookieOptions(ctx.req);
-        ctx.res.cookie(COOKIE_NAME, token, cookieOptions);
-        
-        return { success: true, user: { id: user.id, name: user.name, email: user.email } };
-      }),
     requestPasswordReset: publicProcedure
       .input(z.object({
         email: z.string().email(),

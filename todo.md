@@ -538,3 +538,10 @@
 - [x] Updated Register.tsx to use "Sign Up with Manus" button
 - [x] Updated getLoginUrl() to generate Manus OAuth portal URL
 - [ ] Test complete authentication flow on production
+
+## Remove Unused Email/Password Auth Code
+- [x] Remove auth.register procedure from routers.ts
+- [x] Remove auth.login procedure from routers.ts
+- [x] Remove passport auth routes from server/_core/index.ts (already commented out)
+- [x] Remove JWT import from routers.ts
+- [x] Flush database of all users
