@@ -433,3 +433,8 @@
 - [x] Check if package is installed in node_modules (confirmed)
 - [x] Ensure all JWT imports are correct (added missing import to sdk.ts)
 - [x] Fixed server/_core/sdk.ts missing jwt import
+
+## Quiz Query Error Fix
+- [x] Fix quizzes.getByModuleId returning undefined
+- [x] Changed return value from undefined to null when no quiz exists
+- [x] React Query now accepts the null value without errors

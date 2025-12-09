@@ -274,10 +274,10 @@ export async function upsertUserProgress(progress: InsertUserProgress) {
 
 export async function getQuizByModuleId(moduleId: number) {
   const db = await getDb();
-  if (!db) return undefined;
+  if (!db) return null;
   
   const result = await db.select().from(quizzes).where(eq(quizzes.moduleId, moduleId)).limit(1);
-  return result.length > 0 ? result[0] : undefined;
+  return result.length > 0 ? result[0] : null;
 }
 
 export async function getQuizById(quizId: number) {
