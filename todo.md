@@ -488,3 +488,7 @@
 - [x] Implement Microsoft Graph API user info retrieval
 - [x] Update /api/auth/microsoft to use Azure endpoints
 - [x] Test complete direct OAuth flow
+
+## Azure OAuth Tenant Endpoint Fix
+- [x] Update MICROSOFT_TENANT_ID to 'consumers' for personal Microsoft accounts
+- [x] Test OAuth flow with /consumers endpoint
