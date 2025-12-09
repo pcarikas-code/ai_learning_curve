@@ -427,3 +427,9 @@
 - [x] Create path_enrollments table with all required columns
 - [x] Added indexes for user_id and path_id for performance
 - [x] Dashboard enrollment query should now work
+
+## Production JWT Error Fix
+- [x] Verify jsonwebtoken package is in dependencies (confirmed)
+- [x] Check if package is installed in node_modules (confirmed)
+- [x] Ensure all JWT imports are correct (added missing import to sdk.ts)
+- [x] Fixed server/_core/sdk.ts missing jwt import
