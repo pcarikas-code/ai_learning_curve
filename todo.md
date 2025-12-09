@@ -414,3 +414,9 @@
 - [x] Manually added missing columns (emailVerified, emailVerificationToken, emailVerificationExpiry, passwordResetToken, passwordResetExpiry)
 - [x] Restarted dev server
 - [x] Database schema now in sync
+
+## JWT Signing Error Fix
+- [x] Investigate jwt.sign error
+- [x] Check JWT package installation (jsonwebtoken is installed)
+- [x] Fix JWT import statement (added import jwt from "jsonwebtoken")
+- [x] TypeScript compilation successful

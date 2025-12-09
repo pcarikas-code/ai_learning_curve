@@ -10,6 +10,7 @@ import { eq } from "drizzle-orm";
 import { users, achievements } from "../drizzle/schema";
 import { getDb } from "./db";
 import * as achievementService from "./achievementService";
+import jwt from "jsonwebtoken";
 
 export const appRouter = router({
   user: router({
