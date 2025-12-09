@@ -497,4 +497,9 @@
 - [x] Investigate current redirect URI being generated
 - [x] Update Azure app to include correct redirect URI
 - [x] Ensure production domain is used in redirect URI
-- [ ] Test OAuth flow with correct redirect URI
+- [x] Test OAuth flow with correct redirect URI
+
+## OAuth 401 Token Exchange Error
+- [x] Verify MICROSOFT_CLIENT_SECRET matches Azure app
+- [x] Update client secret if expired or regenerated
+- [x] Test OAuth flow with verified credentials
