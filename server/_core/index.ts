@@ -10,7 +10,10 @@ import { appRouter } from "../routers";
 import { createContext } from "./context";
 import { serveStatic, setupVite } from "./vite";
 // import { configureSocialAuth } from "../socialAuth";
-import jwt from "jsonwebtoken";
+// Use createRequire to load jsonwebtoken synchronously in ESM
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+const jwt = require('jsonwebtoken');
 import { COOKIE_NAME, getSessionCookieOptions } from "./cookies";
 
 function isPortAvailable(port: number): Promise<boolean> {

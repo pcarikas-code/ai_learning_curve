@@ -10,7 +10,10 @@ import { eq } from "drizzle-orm";
 import { users, achievements } from "../drizzle/schema";
 import { getDb } from "./db";
 import * as achievementService from "./achievementService";
-import jwt from "jsonwebtoken";
+// Use createRequire to load jsonwebtoken synchronously in ESM
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+const jwt = require('jsonwebtoken');
 
 export const appRouter = router({
   user: router({
@@ -47,7 +50,6 @@ export const appRouter = router({
       }))
       .mutation(async ({ ctx, input }) => {
         const bcrypt = await import('bcryptjs');
-        const jwt = await import('jsonwebtoken');
         const database = await getDb();
         if (!database) throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Database not available' });
         
@@ -103,7 +105,6 @@ export const appRouter = router({
       }))
       .mutation(async ({ ctx, input }) => {
         const bcrypt = await import('bcryptjs');
-        const jwt = await import('jsonwebtoken');
         const database = await getDb();
         if (!database) throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Database not available' });
         

@@ -464,3 +464,13 @@
 - [x] Added APP_URL to ENV configuration
 - [x] Updated password reset to use ENV.appUrl
 - [x] Validated configuration with vitest test
+
+## Regression Testing & JWT Fix
+- [x] Diagnose why JWT errors keep recurring (bundler converting to dynamic imports)
+- [x] Check production build for JWT issues (fixed with createRequire)
+- [x] Fix all JWT imports to use createRequire pattern
+- [x] Verify zero dynamic JWT imports in production build
+- [x] Create comprehensive auth test suite (6/8 tests passing)
+- [x] JWT module loading and signing verified
+- [x] Environment configuration verified
+- [x] Password reset URL generation verified
