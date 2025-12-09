@@ -449,3 +449,12 @@
 - [x] Add admin user list with search and filters
 - [x] Add admin ability to view/edit/delete users
 - [x] Add admin analytics dashboard
+
+## Admin User Edit Page
+- [x] Create detailed user edit page at /admin/users/:id
+- [x] Add user profile editing form (name, email, role, verification status)
+- [x] Display user activity history (enrollments, progress, achievements)
+- [x] Add role management with admin/user toggle
+- [x] Show user statistics (modules completed, quiz scores, time spent)
+- [x] Add backend endpoints for fetching user activity data
+- [x] Write tests for user edit functionality

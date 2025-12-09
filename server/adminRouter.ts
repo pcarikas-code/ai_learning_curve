@@ -2,7 +2,7 @@ import { router, protectedProcedure } from "./_core/trpc";
 import { TRPCError } from '@trpc/server';
 import { z } from "zod";
 import { getDb } from "./db";
-import { users } from "../drizzle/schema";
+import { users, userProgress, pathEnrollments, userAchievements, quizAttempts } from "../drizzle/schema";
 import { eq, like, or, desc } from "drizzle-orm";
 
 // Admin-only procedure that checks if user has admin role
@@ -107,6 +107,35 @@ export const adminRouter = router({
       await db.delete(users).where(eq(users.id, input.userId));
 
       return { success: true, message: 'User deleted successfully' };
+    }),
+
+  // Get user activity history
+  getUserActivity: adminProcedure
+    .input(z.object({
+      userId: z.number(),
+    }))
+    .query(async ({ input }) => {
+      const db = await getDb();
+      if (!db) throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Database not available' });
+
+      // Get user progress
+      const progress = await db.select().from(userProgress).where(eq(userProgress.userId, input.userId));
+
+      // Get path enrollments
+      const enrollments = await db.select().from(pathEnrollments).where(eq(pathEnrollments.userId, input.userId));
+
+      // Get achievements
+      const achievements = await db.select().from(userAchievements).where(eq(userAchievements.userId, input.userId));
+
+      // Get quiz attempts
+      const quizzes = await db.select().from(quizAttempts).where(eq(quizAttempts.userId, input.userId));
+
+      return {
+        progress,
+        enrollments,
+        achievements,
+        quizzes,
+      };
     }),
 
   // Get admin statistics

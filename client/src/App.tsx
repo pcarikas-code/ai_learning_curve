@@ -19,6 +19,7 @@ import ResetPassword from "./pages/ResetPassword";
 import VerifyEmail from "./pages/VerifyEmail";
 import Profile from "./pages/Profile";
 import Admin from "./pages/Admin";
+import AdminUserEdit from "./pages/AdminUserEdit";
 
 function Router() {
   return (
@@ -37,6 +38,7 @@ function Router() {
       <Route path="/achievements" component={Achievements} />
       <Route path="/profile" component={Profile} />
       <Route path="/admin" component={Admin} />
+      <Route path="/admin/users/:id" component={AdminUserEdit} />
       <Route path="/certificate/:pathId" component={Certificate} />
       <Route path="/404" component={NotFound} />
       <Route component={NotFound} />
