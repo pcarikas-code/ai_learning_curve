@@ -1,43 +1,15 @@
-import { useAuth } from "@/_core/hooks/useAuth";
-import { useAchievements } from "@/hooks/useAchievements";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
-import { WelcomeWizard } from "@/components/WelcomeWizard";
-import { InteractiveTutorial } from "@/components/InteractiveTutorial";
-import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { getLoginUrl } from "@/const";
+
 import { trpc } from "@/lib/trpc";
 import { ArrowRight, BookOpen, Brain, Cpu, Eye, MessageSquare, Network, Sparkles } from "lucide-react";
 import { Link } from "wouter";
 
 export default function Home() {
-  const { user, isAuthenticated } = useAuth();
-  const { checkAchievements, NotificationContainer } = useAchievements();
-  const [showWizard, setShowWizard] = useState(false);
-  const [showTutorial, setShowTutorial] = useState(false);
 
-  useEffect(() => {
-    if (user && user.onboardingCompleted === 0) {
-      setShowWizard(true);
-    }
-  }, [user]);
 
-  const handleWizardComplete = async () => {
-    setShowWizard(false);
-    setShowTutorial(true);
-    // Check for Early Bird achievement after onboarding
-    await checkAchievements();
-  };
-
-  const handleTutorialComplete = () => {
-    setShowTutorial(false);
-  };
-
-  const handleTutorialSkip = () => {
-    setShowTutorial(false);
-  };
   const { data: learningPaths, isLoading } = trpc.learningPaths.list.useQuery();
 
   const iconMap: Record<string, React.ElementType> = {
@@ -57,13 +29,7 @@ export default function Home() {
   };
 
   return (
-    <>
-      <NotificationContainer />
-      {showWizard && <WelcomeWizard onComplete={handleWizardComplete} />}
-      {showTutorial && (
-        <InteractiveTutorial onComplete={handleTutorialComplete} onSkip={handleTutorialSkip} />
-      )}
-      <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background">
         <Navigation />
 
       {/* Hero Section */}
@@ -83,22 +49,14 @@ export default function Home() {
               From fundamentals to cutting-edge techniques, master AI at your own pace.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              {isAuthenticated ? (
-                <Link href="/dashboard">
-                  <Button size="lg" className="gap-2">
-                    Continue Learning <ArrowRight className="w-4 h-4" />
-                  </Button>
-                </Link>
-              ) : (
-                <a href={getLoginUrl()}>
-                  <Button size="lg" className="gap-2">
-                    Get Started Free <ArrowRight className="w-4 h-4" />
-                  </Button>
-                </a>
-              )}
               <Link href="/paths">
+                <Button size="lg" className="gap-2">
+                  Get Started Free <ArrowRight className="w-4 h-4" />
+                </Button>
+              </Link>
+              <Link href="/dashboard">
                 <Button size="lg" variant="outline" className="gap-2">
-                  <BookOpen className="w-4 h-4" /> Explore Paths
+                  <BookOpen className="w-4 h-4" /> View Dashboard
                 </Button>
               </Link>
             </div>
@@ -210,24 +168,15 @@ export default function Home() {
           <p className="text-xl mb-8 opacity-90">
             Join thousands of learners mastering AI skills for the future.
           </p>
-          {isAuthenticated ? (
-            <Link href="/dashboard">
-              <Button size="lg" variant="secondary" className="gap-2">
-                Go to Dashboard <ArrowRight className="w-4 h-4" />
-              </Button>
-            </Link>
-          ) : (
-            <a href={getLoginUrl()}>
-              <Button size="lg" variant="secondary" className="gap-2">
-                Get Started Free <ArrowRight className="w-4 h-4" />
-              </Button>
-            </a>
-          )}
+          <Link href="/paths">
+            <Button size="lg" variant="secondary" className="gap-2">
+              Get Started Free <ArrowRight className="w-4 h-4" />
+            </Button>
+          </Link>
         </div>
       </section>
 
       <Footer />
-      </div>
-    </>
+    </div>
   );
 }

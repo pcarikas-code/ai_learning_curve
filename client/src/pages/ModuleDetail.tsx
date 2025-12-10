@@ -1,95 +1,27 @@
-import { useAuth } from "@/_core/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { Breadcrumb } from "@/components/Breadcrumb";
-import { ModuleNotes } from "@/components/ModuleNotes";
 import { Quiz } from "@/components/Quiz";
 import { Card, CardContent } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
-import { getLoginUrl } from "@/const";
 import { trpc } from "@/lib/trpc";
-import { Bookmark, BookmarkCheck, CheckCircle2, Clock, Sparkles } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useProgress } from "@/hooks/useProgress";
+import { CheckCircle2, Clock } from "lucide-react";
 import { Streamdown } from "streamdown";
 import { Link, useParams } from "wouter";
 import { toast } from "sonner";
-import { useAchievements } from "@/hooks/useAchievements";
 
 export default function ModuleDetail() {
   const { slug } = useParams<{ slug: string }>();
-  const { isAuthenticated, user } = useAuth();
-  const utils = trpc.useUtils();
+  const { isModuleCompleted, completeModule } = useProgress();
   
   const { data: module, isLoading } = trpc.modules.getBySlug.useQuery({ slug: slug || "" });
-  const { data: progress } = trpc.progress.get.useQuery(
-    { moduleId: module?.id || 0 },
-    { enabled: !!module?.id && isAuthenticated }
-  );
-  const { data: isBookmarked } = trpc.bookmarks.check.useQuery(
-    { itemType: "module", itemId: module?.id || 0 },
-    { enabled: !!module?.id && isAuthenticated }
-  );
-
-  const { checkAchievements, NotificationContainer } = useAchievements();
-
-  const updateProgress = trpc.progress.update.useMutation({
-    onSuccess: async () => {
-      utils.progress.get.invalidate();
-      utils.progress.getAll.invalidate();
-      // Check for new achievements after progress update
-      await checkAchievements();
-    },
-  });
-
-  const addBookmark = trpc.bookmarks.add.useMutation({
-    onSuccess: () => {
-      utils.bookmarks.check.invalidate();
-      toast.success("Module bookmarked!");
-    },
-  });
-
-  const removeBookmark = trpc.bookmarks.remove.useMutation({
-    onSuccess: () => {
-      utils.bookmarks.check.invalidate();
-      toast.success("Bookmark removed");
-    },
-  });
-
-  const [hasStarted, setHasStarted] = useState(false);
-
-  useEffect(() => {
-    if (module && isAuthenticated && !hasStarted && !progress) {
-      setHasStarted(true);
-      updateProgress.mutate({
-        moduleId: module.id,
-        status: "in_progress",
-        progressPercent: 0,
-      });
-    }
-  }, [module, isAuthenticated, progress, hasStarted]);
 
   const handleComplete = () => {
     if (!module) return;
     
-    updateProgress.mutate({
-      moduleId: module.id,
-      status: "completed",
-      progressPercent: 100,
-      completedAt: new Date(),
-    });
-    
+    completeModule(module.id);
     toast.success("Module completed! 🎉");
-  };
-
-  const handleToggleBookmark = () => {
-    if (!module) return;
-    
-    if (isBookmarked) {
-      removeBookmark.mutate({ itemType: "module", itemId: module.id });
-    } else {
-      addBookmark.mutate({ itemType: "module", itemId: module.id });
-    }
   };
 
   const difficultyColors: Record<string, string> = {
@@ -120,11 +52,10 @@ export default function ModuleDetail() {
     );
   }
 
-  const isCompleted = progress?.status === "completed";
+  const isCompleted = isModuleCompleted(module.id);
 
   return (
     <div className="min-h-screen bg-background">
-      <NotificationContainer />
       <Navigation />
 
       {/* Module Content */}
@@ -163,16 +94,6 @@ export default function ModuleDetail() {
                 </div>
               )}
             </div>
-
-            {isAuthenticated && progress && !isCompleted && (
-              <div className="mt-6 p-4 bg-card rounded-lg border">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm font-medium">Your Progress</span>
-                  <span className="text-sm text-muted-foreground">{progress.progressPercent}%</span>
-                </div>
-                <Progress value={progress.progressPercent} className="h-2" />
-              </div>
-            )}
           </div>
 
           {/* Module Content */}
@@ -182,45 +103,23 @@ export default function ModuleDetail() {
             </CardContent>
           </Card>
 
-          {/* Module Notes */}
-          {isAuthenticated && (
-            <div className="mb-8">
-              <ModuleNotes moduleId={module.id} />
-            </div>
-          )}
-
           {/* Quiz Section */}
           <div className="mb-8">
             <Quiz moduleId={module.id} />
           </div>
 
           {/* Action Buttons */}
-          {isAuthenticated && !isCompleted && (
+          {!isCompleted && (
             <div className="flex justify-center">
               <Button
                 size="lg"
                 onClick={handleComplete}
-                disabled={updateProgress.isPending}
                 className="gap-2"
               >
                 <CheckCircle2 className="w-5 h-5" />
                 Mark as Complete
               </Button>
             </div>
-          )}
-
-          {!isAuthenticated && (
-            <Card className="bg-gradient-to-br from-cyan-50 to-blue-50 dark:from-cyan-950/20 dark:to-blue-950/20 border-cyan-200 dark:border-cyan-800">
-              <CardContent className="py-8 text-center">
-                <h3 className="text-xl font-semibold mb-2">Sign in to track your progress</h3>
-                <p className="text-muted-foreground mb-4">
-                  Create an account to save your progress, take quizzes, and earn certificates.
-                </p>
-                <a href={getLoginUrl()}>
-                  <Button size="lg">Sign In</Button>
-                </a>
-              </CardContent>
-            </Card>
           )}
         </div>
       </article>

@@ -557,3 +557,51 @@
 - [x] Test OAuth redirect to Manus portal works correctly
 - [x] Update getLoginUrl() to generate proper Manus OAuth URL
 - [x] Flush database of all users
+
+
+## Transform to Public Platform - Hybrid Progress Tracking
+### Phase 1: Remove Authentication
+- [ ] Remove login, register, forgot-password, verify-email pages
+- [ ] Remove auth-related navigation and buttons from homepage
+- [ ] Make dashboard and all content publicly accessible (no auth check)
+
+### Phase 2: localStorage Progress Tracking
+- [x] Create useProgress hook for localStorage management
+- [x] Track: completed modules, quiz scores, current path, experience level
+- [ ] Display progress bars and completion status from localStorage
+- [ ] Add "Clear my progress" button in settings
+
+### Phase 3: Email Progress Sync
+- [ ] Add "Email my progress" button on dashboard
+- [ ] Generate unique resume token linked to localStorage data
+- [ ] Send email with resume link that restores progress on any device
+- [ ] Create /resume/:token route to load saved progress
+
+### Phase 4: Quiz Completion Emails
+- [ ] Add email input on quiz completion screen
+- [ ] Send immediate email with score, answers, and next module recommendation
+- [ ] Schedule follow-up email (3 days) if score < 70% with study tips
+- [ ] Store quiz results anonymously (no user table needed)
+
+
+## Transform to Public Platform - COMPLETED ✅
+### Phase 1: Remove Authentication
+- [x] Created useProgress hook for localStorage management
+- [x] Updated Dashboard to use localStorage progress (no auth required)
+- [x] Updated ModuleDetail to use localStorage progress
+- [x] Updated PathDetail to use localStorage progress  
+- [x] Deleted Profile, Achievements, Admin, AdminUserEdit pages
+- [x] Removed auth links from Navigation component (desktop + mobile)
+- [x] Removed WelcomeWizard and InteractiveTutorial from Home page
+- [x] Removed deleted page routes from App.tsx
+- [x] Tested Dashboard - works without authentication ✅
+- [x] Tested Learning Paths page - works without authentication ✅
+
+### Next Steps: Email Progress Sync & Quiz Emails
+- [ ] Add "Email my progress" button on Dashboard
+- [ ] Generate unique resume token linked to localStorage data
+- [ ] Send email with resume link that restores progress on any device
+- [ ] Create /resume/:token route to load saved progress
+- [ ] Add email input on quiz completion screen
+- [ ] Send immediate email with score, answers, and next module recommendation
+- [ ] Schedule follow-up email (3 days) if score < 70% with study tips
