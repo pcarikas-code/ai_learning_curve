@@ -7,9 +7,10 @@ import { trpc } from "@/lib/trpc";
 import { useProgress } from "@/hooks/useProgress";
 import { ArrowRight, BookOpen, Brain, CheckCircle2, Clock, Sparkles } from "lucide-react";
 import { Link } from "wouter";
+import { EmailRegistrationModal } from "@/components/EmailRegistrationModal";
 
 export default function Dashboard() {
-  const { progress } = useProgress();
+  const { progress, user, showRegistration, setShowRegistration, registerUser } = useProgress();
   const { data: learningPaths } = trpc.learningPaths.list.useQuery();
 
   const completedCount = progress.completedModules.filter((m) => m.completed).length;
@@ -152,6 +153,12 @@ export default function Dashboard() {
       </div>
 
       <Footer />
+      
+      {/* Email Registration Modal */}
+      <EmailRegistrationModal 
+        open={showRegistration} 
+        onComplete={registerUser}
+      />
     </div>
   );
 }

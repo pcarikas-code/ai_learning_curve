@@ -15,6 +15,38 @@ import * as achievementService from "./achievementService";
 export const appRouter = router({
   admin: adminRouter,
   user: router({
+    register: publicProcedure
+      .input(z.object({
+        name: z.string().min(1),
+        email: z.string().email(),
+      }))
+      .mutation(async ({ input }) => {
+        const db = await getDb();
+        if (!db) throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Database not available' });
+        
+        // Check if email already exists
+        const existing = await db.select().from(users).where(eq(users.email, input.email)).limit(1);
+        
+        if (existing.length > 0) {
+          // Return existing user's token
+          return { token: existing[0].openId, name: existing[0].name, email: existing[0].email };
+        }
+        
+        // Generate unique token
+        const token = `user_${Date.now()}_${Math.random().toString(36).substring(7)}`;
+        
+        // Create new user
+        await db.insert(users).values({
+          openId: token,
+          name: input.name,
+          email: input.email,
+          role: 'user',
+          emailVerified: 1,
+          loginMethod: 'email_registration',
+        });
+        
+        return { token, name: input.name, email: input.email };
+      }),
     updateNotificationPreferences: protectedProcedure
       .input(z.object({
         emailNotifications: z.number(),

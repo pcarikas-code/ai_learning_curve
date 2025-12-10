@@ -605,3 +605,16 @@
 - [ ] Add email input on quiz completion screen
 - [ ] Send immediate email with score, answers, and next module recommendation
 - [ ] Schedule follow-up email (3 days) if score < 70% with study tips
+
+
+## Email Registration System (No Password)
+- [x] Create registration modal component (name + email fields)
+- [x] Show registration modal when user completes first module
+- [x] Create backend API endpoint to register user (email + name only, no password)
+- [x] Generate unique user ID/token for email-based identification
+- [x] Update useProgress hook to include user registration
+- [x] Store user token in localStorage for automatic login
+- [x] Write vitest tests for registration endpoint (4 tests, all passing)
+- [x] Integrate registration modal into Dashboard page
+- [ ] Test registration flow in browser
+- [ ] Add "Change email" option in dashboard

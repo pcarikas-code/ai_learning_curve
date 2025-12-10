@@ -21,7 +21,14 @@ interface UserProgress {
   onboardingCompleted: boolean;
 }
 
+interface UserInfo {
+  name: string;
+  email: string;
+  token: string;
+}
+
 const STORAGE_KEY = "ai_learning_progress";
+const USER_KEY = "ai_learning_user";
 
 const defaultProgress: UserProgress = {
   completedModules: [],
@@ -31,16 +38,23 @@ const defaultProgress: UserProgress = {
 
 export function useProgress() {
   const [progress, setProgress] = useState<UserProgress>(defaultProgress);
+  const [user, setUser] = useState<UserInfo | null>(null);
+  const [showRegistration, setShowRegistration] = useState(false);
 
-  // Load progress from localStorage on mount
+  // Load user and progress from localStorage on mount
   useEffect(() => {
     try {
+      const storedUser = localStorage.getItem(USER_KEY);
+      if (storedUser) {
+        setUser(JSON.parse(storedUser));
+      }
+
       const stored = localStorage.getItem(STORAGE_KEY);
       if (stored) {
         setProgress(JSON.parse(stored));
       }
     } catch (error) {
-      console.error("Failed to load progress from localStorage:", error);
+      console.error("Failed to load from localStorage:", error);
     }
   }, []);
 
@@ -51,6 +65,21 @@ export function useProgress() {
       setProgress(newProgress);
     } catch (error) {
       console.error("Failed to save progress to localStorage:", error);
+    }
+  };
+
+  // Register user
+  const registerUser = (name: string, email: string, token: string) => {
+    const userInfo: UserInfo = { name, email, token };
+    localStorage.setItem(USER_KEY, JSON.stringify(userInfo));
+    setUser(userInfo);
+    setShowRegistration(false);
+  };
+
+  // Check if user should register (after first module completion)
+  const checkRegistrationNeeded = () => {
+    if (!user && progress.completedModules.length >= 1) {
+      setShowRegistration(true);
     }
   };
 
@@ -83,10 +112,15 @@ export function useProgress() {
       ];
     }
 
-    saveProgress({
+    const newProgress = {
       ...progress,
       completedModules: newCompleted,
-    });
+    };
+    
+    saveProgress(newProgress);
+    
+    // Check if registration modal should be shown
+    setTimeout(checkRegistrationNeeded, 500);
   };
 
   // Enroll in a path
@@ -140,11 +174,17 @@ export function useProgress() {
   // Clear all progress
   const clearProgress = () => {
     localStorage.removeItem(STORAGE_KEY);
+    localStorage.removeItem(USER_KEY);
     setProgress(defaultProgress);
+    setUser(null);
   };
 
   return {
     progress,
+    user,
+    showRegistration,
+    setShowRegistration,
+    registerUser,
     completeModule,
     enrollInPath,
     completeOnboarding,
