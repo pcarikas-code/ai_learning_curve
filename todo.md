@@ -672,3 +672,10 @@
 - [x] Remove storage COPY from Dockerfile (server/storage.ts is a file, not directory)
 - [ ] Test Docker build completes successfully
 - [ ] Push fix to GitHub
+
+## Fix Production Build Directory Path
+- [x] Review server/_core/vite.ts production path logic
+- [x] Update Dockerfile to create correct directory structure for production (dist/public)
+- [ ] Add OAUTH_SERVER_URL to .env.example
+- [ ] Test container startup
+- [ ] Push fix to GitHub
