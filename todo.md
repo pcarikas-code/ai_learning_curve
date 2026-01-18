@@ -708,5 +708,6 @@
 ## Fix seed-db.mjs Database Connection Error
 - [x] Review seed-db.mjs database connection code
 - [x] Fix DATABASE_URL parsing to handle mysql2 connection properly (parse URL and create config object)
+- [x] Switch to manual string parsing using regex (URL constructor doesn't support mysql:// protocol)
 - [ ] Test seed script in production
 - [ ] Push to GitHub
