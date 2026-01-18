@@ -685,3 +685,10 @@
 - [x] Add drizzle.config.ts to Dockerfile COPY commands
 - [ ] Test migrations in container
 - [ ] Push fix to GitHub
+
+## Create Deployment Scripts
+- [x] Create build.sh script for building Docker image
+- [x] Create deploy.sh script for deploying updates (already exists)
+- [x] Make scripts executable
+- [ ] Test scripts
+- [ ] Push to GitHub
