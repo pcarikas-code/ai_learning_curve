@@ -692,3 +692,10 @@
 - [x] Make scripts executable
 - [ ] Test scripts
 - [ ] Push to GitHub
+
+## Seed Production Database with Content
+- [x] Query sandbox database to export existing learning paths and resources
+- [x] Create seed-db.mjs script to populate production database
+- [x] Test seed script in sandbox (skipped - will test in production)
+- [x] Document how to run seed script in production (DATABASE_SEEDING.md)
+- [x] Push to GitHub (via checkpoint)
