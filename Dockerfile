@@ -24,9 +24,9 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-# Build client
+# Build application (client + server)
 RUN corepack enable && corepack prepare pnpm@latest --activate
-RUN pnpm run build:client
+RUN pnpm run build
 
 # Production image
 FROM base AS runner

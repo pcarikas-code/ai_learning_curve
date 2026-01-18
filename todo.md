@@ -655,3 +655,8 @@
 - [x] Update Dockerfile to copy patches before pnpm install
 - [ ] Test Docker build locally
 - [x] Push fixes to GitHub (via checkpoint)
+
+## Fix Dockerfile Build Script Error
+- [x] Change Dockerfile RUN command from "pnpm run build:client" to "pnpm run build"
+- [ ] Test Docker build completes successfully
+- [ ] Push fix to GitHub
