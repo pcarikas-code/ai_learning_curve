@@ -41,7 +41,8 @@ RUN adduser --system --uid 1001 appuser
 
 # Copy necessary files
 COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/client/dist ./client/dist
+COPY --from=builder /app/dist/public ./public
+COPY --from=builder /app/dist/index.js ./dist/index.js
 COPY --from=builder /app/server ./server
 COPY --from=builder /app/drizzle ./drizzle
 COPY --from=builder /app/shared ./shared

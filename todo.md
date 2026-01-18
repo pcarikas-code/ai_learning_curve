@@ -660,3 +660,9 @@
 - [x] Change Dockerfile RUN command from "pnpm run build:client" to "pnpm run build"
 - [ ] Test Docker build completes successfully
 - [ ] Push fix to GitHub
+
+## Fix Dockerfile COPY Path Error
+- [x] Check vite.config.ts to find correct build output directory
+- [x] Update Dockerfile COPY command to use correct dist path
+- [ ] Test Docker build completes successfully
+- [ ] Push fix to GitHub
