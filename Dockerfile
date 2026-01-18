@@ -53,7 +53,7 @@ RUN chown -R appuser:nodejs /app
 USER appuser
 
 # Expose port
-EXPOSE 3000
+EXPOSE 3005
 
 # Set environment to production
 ENV NODE_ENV=production

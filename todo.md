@@ -630,3 +630,20 @@
 - [x] Document nginx reverse proxy configuration
 - [x] Document SSL setup and security recommendations
 - [x] Document maintenance and troubleshooting commands
+
+
+## Automated Deployment Script
+- [ ] Create deploy.sh script with database setup
+- [ ] Create .env.example template file
+- [ ] Add database creation automation
+- [ ] Add Docker build and run automation
+- [ ] Add database migration automation
+- [ ] Update PLESK_DEPLOYMENT.md with automated script instructions
+
+
+## Update Port Configuration
+- [x] Update deploy.sh to use port 3005
+- [x] Update docker-compose.yml to use port 3005
+- [x] Update Dockerfile EXPOSE to port 3005
+- [x] Update PLESK_DEPLOYMENT.md with port 3005
+- [x] Create .env.example template file

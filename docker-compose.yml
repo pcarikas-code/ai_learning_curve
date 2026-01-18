@@ -9,7 +9,7 @@ services:
     container_name: ai-learning-curve
     restart: unless-stopped
     ports:
-      - "3000:3000"
+      - "3005:3005"
     environment:
       - NODE_ENV=production
       - DATABASE_URL=${DATABASE_URL}

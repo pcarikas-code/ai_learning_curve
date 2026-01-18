@@ -111,7 +111,7 @@ SMTP_FROM=noreply@your-domain.com
 
 # App Configuration
 NODE_ENV=production
-PORT=3000
+PORT=3005
 ```
 
 Save and exit (`Ctrl+X`, then `Y`, then `Enter`).
@@ -138,7 +138,7 @@ This will take 5-10 minutes depending on your server speed.
 docker run -d \
   --name ai-learning-curve \
   --restart unless-stopped \
-  -p 3000:3000 \
+  -p 3005:3005 \
   --env-file .env \
   ai-learning-curve:latest
 ```
@@ -157,7 +157,7 @@ You should see output showing the container is running.
 docker logs ai-learning-curve
 ```
 
-Look for "Server running on http://localhost:3000/"
+Look for "Server running on http://localhost:3005/"
 
 ### Method B: Using Docker Compose (Alternative)
 
@@ -194,7 +194,7 @@ In the **Additional nginx directives** section, add:
 
 ```nginx
 location / {
-    proxy_pass http://localhost:3000;
+    proxy_pass http://localhost:3005;
     proxy_http_version 1.1;
     proxy_set_header Upgrade $http_upgrade;
     proxy_set_header Connection 'upgrade';
@@ -287,7 +287,7 @@ docker rm ai-learning-curve
 docker run -d \
   --name ai-learning-curve \
   --restart unless-stopped \
-  -p 3000:3000 \
+  -p 3005:3005 \
   --env-file .env \
   ai-learning-curve:latest
 
