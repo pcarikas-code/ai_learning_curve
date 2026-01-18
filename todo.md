@@ -679,3 +679,9 @@
 - [ ] Add OAUTH_SERVER_URL to .env.example
 - [ ] Test container startup
 - [ ] Push fix to GitHub
+
+## Fix Missing drizzle.config.json in Docker Container
+- [x] Check if drizzle.config.json exists in project (it's drizzle.config.ts)
+- [x] Add drizzle.config.ts to Dockerfile COPY commands
+- [ ] Test migrations in container
+- [ ] Push fix to GitHub
