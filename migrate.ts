@@ -63,20 +63,23 @@ async function runMigrations() {
     // Run each migration
     for (const file of files) {
       console.log(`⚙️  Running migration: ${file}`);
-      const sql = readFileSync(join(migrationsDir, file), 'utf-8');
+      let sql = readFileSync(join(migrationsDir, file), 'utf-8');
       
-      // Split by semicolon and filter out empty statements
+      // Remove drizzle-kit specific comments that MariaDB doesn't understand
+      sql = sql.replace(/--> statement-breakpoint/g, '');
+      
+      // Split by semicolon and filter out empty statements and comments
       const statements = sql
         .split(';')
         .map(s => s.trim())
-        .filter(s => s.length > 0);
+        .filter(s => s.length > 0 && !s.startsWith('--'));
 
       for (const statement of statements) {
         try {
           await pool.query(statement);
         } catch (err: any) {
-          // Ignore "table already exists" errors
-          if (err.code !== 'ER_TABLE_EXISTS_ERROR') {
+          // Ignore "table already exists" and "duplicate key" errors
+          if (err.code !== 'ER_TABLE_EXISTS_ERROR' && err.code !== 'ER_DUP_KEYNAME') {
             throw err;
           }
         }
