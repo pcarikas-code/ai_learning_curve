@@ -618,3 +618,15 @@
 - [x] Integrate registration modal into Dashboard page
 - [ ] Test registration flow in browser
 - [ ] Add "Change email" option in dashboard
+
+
+## Plesk Docker Deployment
+- [x] Create Dockerfile for production build
+- [x] Create docker-compose.yml configuration
+- [x] Create .dockerignore file
+- [x] Write comprehensive deployment guide (PLESK_DEPLOYMENT.md)
+- [x] Document environment variables configuration
+- [x] Document database setup and migration steps
+- [x] Document nginx reverse proxy configuration
+- [x] Document SSL setup and security recommendations
+- [x] Document maintenance and troubleshooting commands
