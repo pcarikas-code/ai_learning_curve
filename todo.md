@@ -704,3 +704,9 @@
 - [x] Add seed-db.mjs to Dockerfile COPY commands
 - [ ] Rebuild and test in production
 - [ ] Push to GitHub
+
+## Fix seed-db.mjs Database Connection Error
+- [x] Review seed-db.mjs database connection code
+- [x] Fix DATABASE_URL parsing to handle mysql2 connection properly (parse URL and create config object)
+- [ ] Test seed script in production
+- [ ] Push to GitHub

@@ -15,6 +15,7 @@
 
 import { drizzle } from 'drizzle-orm/mysql2';
 import mysql from 'mysql2/promise';
+import { URL } from 'url';
 
 const DATABASE_URL = process.env.DATABASE_URL;
 
@@ -26,8 +27,20 @@ if (!DATABASE_URL) {
 console.log('🌱 Starting database seeding...\n');
 
 try {
-  // Create database connection
-  const pool = mysql.createPool(DATABASE_URL);
+  // Parse DATABASE_URL
+  const dbUrl = new URL(DATABASE_URL);
+  
+  // Create database connection with parsed config
+  const pool = mysql.createPool({
+    host: dbUrl.hostname,
+    port: parseInt(dbUrl.port) || 3306,
+    user: dbUrl.username,
+    password: dbUrl.password,
+    database: dbUrl.pathname.slice(1), // Remove leading slash
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0
+  });
   const db = drizzle(pool);
 
   // ===== LEARNING PATHS =====
