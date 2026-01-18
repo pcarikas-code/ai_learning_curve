@@ -666,3 +666,9 @@
 - [x] Update Dockerfile COPY command to use correct dist path
 - [ ] Test Docker build completes successfully
 - [ ] Push fix to GitHub
+
+## Fix Dockerfile Storage Directory Error
+- [x] Check if storage directory exists or is needed
+- [x] Remove storage COPY from Dockerfile (server/storage.ts is a file, not directory)
+- [ ] Test Docker build completes successfully
+- [ ] Push fix to GitHub

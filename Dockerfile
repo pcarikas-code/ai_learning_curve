@@ -46,7 +46,6 @@ COPY --from=builder /app/dist/index.js ./dist/index.js
 COPY --from=builder /app/server ./server
 COPY --from=builder /app/drizzle ./drizzle
 COPY --from=builder /app/shared ./shared
-COPY --from=builder /app/storage ./storage
 COPY --from=builder /app/package.json ./package.json
 COPY --from=builder /app/tsconfig.json ./tsconfig.json
 
