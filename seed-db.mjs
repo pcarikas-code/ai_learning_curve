@@ -15,6 +15,7 @@
 
 import { drizzle } from 'drizzle-orm/mysql2';
 import mysql from 'mysql2/promise';
+import * as schema from './drizzle/schema.js';
 
 const DATABASE_URL = process.env.DATABASE_URL;
 
@@ -110,12 +111,9 @@ try {
   ];
 
   for (const path of learningPathsData) {
-    await db.execute(
-      `INSERT INTO learning_paths (title, slug, description, difficulty, estimated_hours, icon, color, \`order\`, is_published, created_at, updated_at)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())
-       ON DUPLICATE KEY UPDATE updated_at = NOW()`,
-      [path.title, path.slug, path.description, path.difficulty, path.estimatedHours, path.icon, path.color, path.order, path.isPublished]
-    );
+    await db.insert(schema.learningPaths).values(path).onDuplicateKeyUpdate({
+      set: { updatedAt: new Date() }
+    });
   }
 
   console.log(`✅ Seeded ${learningPathsData.length} learning paths\n`);
@@ -207,12 +205,9 @@ try {
   ];
 
   for (const resource of resourcesData) {
-    await db.execute(
-      `INSERT INTO resources (title, type, url, description, category, difficulty, estimated_minutes, is_published, created_at, updated_at)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())
-       ON DUPLICATE KEY UPDATE updated_at = NOW()`,
-      [resource.title, resource.type, resource.url, resource.description, resource.category, resource.difficulty, resource.estimatedMinutes, resource.isPublished]
-    );
+    await db.insert(schema.resources).values(resource).onDuplicateKeyUpdate({
+      set: { updatedAt: new Date() }
+    });
   }
 
   console.log(`✅ Seeded ${resourcesData.length} resources\n`);

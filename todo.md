@@ -711,3 +711,9 @@
 - [x] Switch to manual string parsing using regex (URL constructor doesn't support mysql:// protocol)
 - [ ] Test seed script in production
 - [ ] Push to GitHub
+
+## Fix SQL Syntax Error in seed-db.mjs
+- [x] Review INSERT statements causing MariaDB syntax error
+- [x] Replace raw SQL with Drizzle ORM insert methods for proper SQL generation
+- [ ] Test seed script in production
+- [ ] Push to GitHub
