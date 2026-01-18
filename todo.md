@@ -720,3 +720,8 @@
 
 ## Seed Script Module Import Fix
 - [x] Fix seed-db.mjs module import error by converting to TypeScript (.ts) and using tsx
+
+## Database Migration Fix
+- [x] Create standalone migrate.ts script to run SQL migrations directly
+- [ ] Test migration script creates all 14 tables
+- [ ] Run seed script after successful migration
