@@ -23,7 +23,7 @@ ssh root@your-server.com
 cd /var/www/vhosts/theailearningcurve.com/httpdocs
 
 # Run the seed script inside the container
-docker exec -it ai-learning-curve node seed-db.mjs
+docker exec -it ai-learning-curve pnpm tsx seed-db.ts
 ```
 
 ### Option 2: Directly on Server (If not using Docker)
@@ -38,7 +38,7 @@ ssh root@your-server.com
 cd /var/www/vhosts/theailearningcurve.com/httpdocs
 
 # Run the seed script
-node seed-db.mjs
+pnpm tsx seed-db.ts
 ```
 
 ### Option 3: Local Development
@@ -47,7 +47,7 @@ If you're running locally:
 
 ```bash
 # Make sure DATABASE_URL is set in your .env file
-node seed-db.mjs
+pnpm tsx seed-db.ts
 ```
 
 ## Expected Output
@@ -86,7 +86,7 @@ The seed script uses `ON DUPLICATE KEY UPDATE` to avoid creating duplicate entri
 
 To customize the learning paths and resources:
 
-1. Edit the `seed-db.mjs` file
+1. Edit the `seed-db.ts` file
 2. Modify the `learningPathsData` and `resourcesData` arrays
 3. Re-run the seed script
 

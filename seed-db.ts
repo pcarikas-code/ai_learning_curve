@@ -7,10 +7,10 @@
  * Run this after deploying to production to add content to the platform.
  * 
  * Usage:
- *   node seed-db.mjs
+ *   pnpm tsx seed-db.ts
  * 
  * Or in Docker container:
- *   docker exec -it ai-learning-curve node seed-db.mjs
+ *   docker exec -it ai-learning-curve pnpm tsx seed-db.ts
  */
 
 import { drizzle } from 'drizzle-orm/mysql2';

@@ -717,3 +717,6 @@
 - [x] Replace raw SQL with Drizzle ORM insert methods for proper SQL generation
 - [ ] Test seed script in production
 - [ ] Push to GitHub
+
+## Seed Script Module Import Fix
+- [x] Fix seed-db.mjs module import error by converting to TypeScript (.ts) and using tsx
