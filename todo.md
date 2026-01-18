@@ -726,3 +726,4 @@
 - [x] Fix migrate.ts to strip statement-breakpoint comments for MariaDB
 - [x] Rewrite seed-db.ts with correct schema column names (raw SQL)
 - [ ] Test migration and seed scripts on production
+- [x] Fix db.ts getDb() to manually parse DATABASE_URL for non-SSL connections

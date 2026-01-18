@@ -45,8 +45,28 @@ export async function getDb() {
         });
         _db = drizzle(pool);
       } else {
-        // Manus built-in database or local database (no SSL needed)
-        _db = drizzle(process.env.DATABASE_URL);
+        // Local database or MariaDB (no SSL needed)
+        // Parse DATABASE_URL manually since drizzle can't handle mysql:// URLs directly
+        const match = process.env.DATABASE_URL.match(/mysql:\/\/([^:]+):([^@]+)@([^:]+):(\d+)\/(.+)/);
+        
+        if (match) {
+          const [, user, password, host, port, database] = match;
+          const pool = mysql.createPool({
+            host,
+            port: parseInt(port),
+            user,
+            password,
+            database,
+            waitForConnections: true,
+            connectionLimit: 10,
+            queueLimit: 0
+          });
+          _db = drizzle(pool);
+        } else {
+          // Fallback: try using the URL directly (may work for some formats)
+          const pool = mysql.createPool({ uri: process.env.DATABASE_URL });
+          _db = drizzle(pool);
+        }
       }
     } catch (error) {
       console.warn("[Database] Failed to connect:", error);
