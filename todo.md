@@ -723,5 +723,6 @@
 
 ## Database Migration Fix
 - [x] Create standalone migrate.ts script to run SQL migrations directly
-- [ ] Test migration script creates all 14 tables
-- [ ] Run seed script after successful migration
+- [x] Fix migrate.ts to strip statement-breakpoint comments for MariaDB
+- [x] Rewrite seed-db.ts with correct schema column names (raw SQL)
+- [ ] Test migration and seed scripts on production
