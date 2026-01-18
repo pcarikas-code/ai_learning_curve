@@ -699,3 +699,8 @@
 - [x] Test seed script in sandbox (skipped - will test in production)
 - [x] Document how to run seed script in production (DATABASE_SEEDING.md)
 - [x] Push to GitHub (via checkpoint)
+
+## Fix Dockerfile to Include seed-db.mjs
+- [x] Add seed-db.mjs to Dockerfile COPY commands
+- [ ] Rebuild and test in production
+- [ ] Push to GitHub
