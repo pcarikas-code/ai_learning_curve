@@ -9,6 +9,9 @@ WORKDIR /app
 COPY package.json pnpm-lock.yaml ./
 COPY .npmrc ./
 
+# Copy patches directory BEFORE pnpm install
+COPY patches ./patches
+
 # Install pnpm and dependencies
 RUN corepack enable && corepack prepare pnpm@latest --activate
 RUN pnpm install --frozen-lockfile

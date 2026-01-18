@@ -647,3 +647,11 @@
 - [x] Update Dockerfile EXPOSE to port 3005
 - [x] Update PLESK_DEPLOYMENT.md with port 3005
 - [x] Create .env.example template file
+
+
+## Fix Docker Build Issues
+- [x] Create .npmrc file for pnpm configuration
+- [x] Create patches directory (empty, for pnpm patches)
+- [x] Update Dockerfile to copy patches before pnpm install
+- [ ] Test Docker build locally
+- [x] Push fixes to GitHub (via checkpoint)
